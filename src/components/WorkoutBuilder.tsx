@@ -1,0 +1,134 @@
+import { useEffect, useState } from "react";
+import { ArrowLeft, Plus, Trash2, Check } from "lucide-react";
+import { AppShell } from "./AppShell";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { storage, uid } from "@/lib/storage";
+import type { Workout, ExerciseTemplate } from "@/lib/types";
+import { toast } from "sonner";
+
+interface Props {
+  workoutId?: string;
+  onBack: () => void;
+  onSaved: () => void;
+}
+
+export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
+  const settings = storage.getSettings();
+  const [name, setName] = useState("Push Day");
+  const [exercises, setExercises] = useState<ExerciseTemplate[]>([]);
+
+  useEffect(() => {
+    if (workoutId) {
+      const w = storage.getWorkouts().find(x => x.id === workoutId);
+      if (w) { setName(w.name); setExercises(w.exercises); }
+    } else {
+      setExercises([newExercise(settings.defaultRestSeconds)]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workoutId]);
+
+  function newExercise(rest: number): ExerciseTemplate {
+    return { id: uid(), name: "", sets: 3, reps: 8, restSeconds: rest };
+  }
+
+  const update = (id: string, patch: Partial<ExerciseTemplate>) => {
+    setExercises(list => list.map(e => e.id === id ? { ...e, ...patch } : e));
+  };
+  const remove = (id: string) => setExercises(list => list.filter(e => e.id !== id));
+
+  const save = () => {
+    const cleaned = exercises.map(e => ({ ...e, name: e.name.trim() })).filter(e => e.name);
+    if (!name.trim()) return toast.error("Name your workout");
+    if (cleaned.length === 0) return toast.error("Add at least one exercise");
+    const all = storage.getWorkouts();
+    if (workoutId) {
+      const idx = all.findIndex(w => w.id === workoutId);
+      if (idx >= 0) all[idx] = { ...all[idx], name: name.trim(), exercises: cleaned };
+    } else {
+      const w: Workout = { id: uid(), name: name.trim(), createdAt: Date.now(), exercises: cleaned };
+      all.unshift(w);
+    }
+    storage.saveWorkouts(all);
+    toast.success("Workout saved");
+    onSaved();
+  };
+
+  return (
+    <AppShell
+      title={workoutId ? "Edit workout" : "New workout"}
+      left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
+      right={<button onClick={save} aria-label="Save" className="p-2 -mr-2 text-primary"><Check className="w-5 h-5" /></button>}
+    >
+      <div className="pt-5 space-y-5">
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Workout name</label>
+          <Input
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="e.g. Push Day"
+            className="mt-2 h-12 text-base bg-card border-border rounded-xl"
+          />
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between mb-2 px-1">
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Exercises</label>
+          </div>
+          <ul className="space-y-3">
+            {exercises.map((ex, i) => (
+              <li key={ex.id} className="rounded-2xl bg-card border border-border p-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold w-6 h-6 rounded-full bg-secondary text-foreground flex items-center justify-center">{i + 1}</span>
+                  <Input
+                    value={ex.name}
+                    onChange={e => update(ex.id, { name: e.target.value })}
+                    placeholder="Exercise name (e.g. Bench Press)"
+                    className="flex-1 h-11 bg-secondary border-0 rounded-lg"
+                  />
+                  <button onClick={() => remove(ex.id)} aria-label="Remove" className="p-2 text-muted-foreground hover:text-destructive transition-base">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <NumField label="Sets" value={ex.sets} min={1} max={20} onChange={v => update(ex.id, { sets: v })} />
+                  <NumField label="Reps" value={ex.reps} min={1} max={50} onChange={v => update(ex.id, { reps: v })} />
+                  <NumField label="Rest" suffix="s" step={15} value={ex.restSeconds} min={15} max={600} onChange={v => update(ex.id, { restSeconds: v })} />
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <Button
+            variant="outline"
+            onClick={() => setExercises(list => [...list, newExercise(settings.defaultRestSeconds)])}
+            className="w-full mt-3 h-12 rounded-2xl border-dashed border-border bg-transparent text-foreground hover:bg-secondary"
+          >
+            <Plus className="w-4 h-4 mr-1.5" /> Add exercise
+          </Button>
+        </div>
+
+        <Button onClick={save} className="w-full h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-base shadow-glow">
+          Save workout
+        </Button>
+      </div>
+    </AppShell>
+  );
+};
+
+const NumField = ({
+  label, value, onChange, min = 0, max = 999, step = 1, suffix,
+}: { label: string; value: number; onChange: (v: number) => void; min?: number; max?: number; step?: number; suffix?: string }) => {
+  const dec = () => onChange(Math.max(min, value - step));
+  const inc = () => onChange(Math.min(max, value + step));
+  return (
+    <div className="rounded-xl bg-secondary p-2">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">{label}</p>
+      <div className="flex items-center justify-between mt-1">
+        <button onClick={dec} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-sm">−</button>
+        <span className="font-mono-timer font-bold text-lg">{value}{suffix}</span>
+        <button onClick={inc} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-sm">+</button>
+      </div>
+    </div>
+  );
+};
