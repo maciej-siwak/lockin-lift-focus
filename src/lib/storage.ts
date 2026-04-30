@@ -40,6 +40,13 @@ export const storage = {
     all.unshift(s);
     storage.saveSessions(all.slice(0, 100));
   },
+  upsertSession: (s: SessionLog) => {
+    const all = storage.getSessions();
+    const idx = all.findIndex(x => x.id === s.id);
+    if (idx >= 0) all[idx] = s;
+    else all.unshift(s);
+    storage.saveSessions(all.slice(0, 100));
+  },
 
   getSettings: (): Settings => ({ ...defaultSettings, ...read<Partial<Settings>>(KEYS.settings, {}) }),
   saveSettings: (s: Settings) => write(KEYS.settings, s),

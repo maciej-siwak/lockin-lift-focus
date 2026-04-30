@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Lock, Check, SkipForward, X } from "lucide-react";
+import { Lock, Check, SkipForward, X, Plus, Minus } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { PinPad } from "./PinPad";
 import { storage, uid } from "@/lib/storage";
-import type { Workout, SessionLog, ExerciseLog } from "@/lib/types";
+import type { Workout, SessionLog, ExerciseLog, SetLog } from "@/lib/types";
 import { beep, vibrate } from "@/lib/feedback";
 import { toast } from "sonner";
 
@@ -13,7 +13,7 @@ interface Props {
   onExit: () => void;
 }
 
-type Phase = "lifting" | "resting" | "done";
+type Phase = "lifting" | "resting" | "logging" | "done";
 
 export const Session = ({ workoutId, onExit }: Props) => {
   const settings = useMemo(() => storage.getSettings(), []);
@@ -23,29 +23,19 @@ export const Session = ({ workoutId, onExit }: Props) => {
   );
 
   const [exIdx, setExIdx] = useState(0);
-  const [setIdx, setSetIdx] = useState(0);
+  const [setIdx, setSetIdx] = useState(0); // sets completed for current exercise
   const [phase, setPhase] = useState<Phase>("lifting");
   const [restLeft, setRestLeft] = useState(0);
-  const [weight, setWeight] = useState<string>("");
-  const [reps, setReps] = useState<string>("");
   const [showUnlock, setShowUnlock] = useState(false);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
+  // pending logging state for an exercise just finished
+  const [pendingSets, setPendingSets] = useState<SetLog[]>([]);
   const sessionIdRef = useRef(uid());
   const startedAtRef = useRef(Date.now());
   const wakeLockRef = useRef<any>(null);
   const lastBeepRef = useRef(-1);
 
   const current = workout?.exercises[exIdx];
-
-  // Initialize last weight when exercise changes
-  useEffect(() => {
-    if (!current) return;
-    const last = storage.getLastWeights()[current.name.toLowerCase()];
-    setWeight(last ? String(last) : "");
-    setReps(String(current.reps));
-    setSetIdx(0);
-    setPhase("lifting");
-  }, [exIdx, current]);
 
   // Wake lock
   useEffect(() => {
@@ -118,61 +108,87 @@ export const Session = ({ workoutId, onExit }: Props) => {
   }
 
   const totalSets = workout.exercises.reduce((s, e) => s + e.sets, 0);
-  const completedSets = logs.reduce((s, e) => s + e.sets.length, 0);
+  const completedSetsAcrossExercises = logs.reduce((s, e) => s + e.sets.length, 0);
+  // visual progress = completed (logged) + currently-finished-but-unlogged
+  const progressDots = completedSetsAcrossExercises + setIdx;
 
-  const logSet = () => {
+  const completeSet = () => {
     if (!current) return;
-    const w = parseFloat(weight) || 0;
-    const r = parseInt(reps) || 0;
-    setLogs(prev => {
-      const copy = [...prev];
-      let entry = copy.find(e => e.exerciseId === current.id);
-      if (!entry) { entry = { exerciseId: current.id, exerciseName: current.name, sets: [] }; copy.push(entry); }
-      entry.sets.push({ setIndex: setIdx, weight: w, reps: r, completedAt: Date.now() });
-      return copy;
-    });
-    if (w > 0) storage.setLastWeight(current.name, w);
     if (settings.vibration) vibrate(30);
-
-    const isLastSet = setIdx + 1 >= current.sets;
-    const isLastExercise = exIdx + 1 >= workout.exercises.length;
-
-    if (isLastSet && isLastExercise) {
-      finish([...logs]); // finish below uses fresh logs via state, but pass current snapshot
-      setPhase("done");
-      return;
-    }
+    const nextSetCount = setIdx + 1;
+    const isLastSet = nextSetCount >= current.sets;
+    setSetIdx(nextSetCount);
     if (isLastSet) {
-      setExIdx(i => i + 1);
-      return;
+      // Open logging screen
+      const last = storage.getLastWeights()[current.name.toLowerCase()] ?? 0;
+      const seed: SetLog[] = Array.from({ length: current.sets }).map((_, i) => ({
+        setIndex: i,
+        weight: last,
+        reps: current.reps,
+        completedAt: Date.now(),
+      }));
+      setPendingSets(seed);
+      setPhase("logging");
+    } else {
+      setRestLeft(current.restSeconds);
+      lastBeepRef.current = -1;
+      setPhase("resting");
     }
-    setSetIdx(i => i + 1);
-    setRestLeft(current.restSeconds);
-    lastBeepRef.current = -1;
-    setPhase("resting");
   };
 
   const skipRest = () => { setPhase("lifting"); setRestLeft(0); };
 
-  const finish = (_snapshot?: ExerciseLog[]) => {
+  const saveLogged = (newLogs: ExerciseLog[]) => {
     const session: SessionLog = {
       id: sessionIdRef.current,
       workoutId: workout.id,
       workoutName: workout.name,
       startedAt: startedAtRef.current,
       endedAt: Date.now(),
-      exercises: logs,
+      exercises: newLogs,
     };
-    storage.appendSession(session);
+    storage.upsertSession(session);
+  };
+
+  const confirmLogging = () => {
+    if (!current) return;
+    const entry: ExerciseLog = {
+      exerciseId: current.id,
+      exerciseName: current.name,
+      sets: pendingSets,
+    };
+    const nextLogs = [...logs.filter(l => l.exerciseId !== current.id), entry];
+    setLogs(nextLogs);
+
+    // store last weight = max weight used
+    const maxW = pendingSets.reduce((m, s) => Math.max(m, s.weight), 0);
+    if (maxW > 0) storage.setLastWeight(current.name, maxW);
+
+    saveLogged(nextLogs);
+
+    const isLastExercise = exIdx + 1 >= workout.exercises.length;
+    if (isLastExercise) {
+      setPhase("done");
+      return;
+    }
+    setExIdx(i => i + 1);
+    setSetIdx(0);
+    setPendingSets([]);
+    setPhase("lifting");
   };
 
   const requestExit = () => setShowUnlock(true);
-  const confirmExit = () => { finish(); toast("Session ended"); onExit(); };
+  const confirmExit = () => {
+    if (logs.length > 0) saveLogged(logs);
+    toast("Session ended");
+    onExit();
+  };
 
   // Done screen
   if (phase === "done") {
     const totalReps = logs.reduce((s, e) => s + e.sets.reduce((ss, x) => ss + x.reps, 0), 0);
     const totalVolume = logs.reduce((s, e) => s + e.sets.reduce((ss, x) => ss + x.reps * x.weight, 0), 0);
+    const setsLogged = logs.reduce((s, e) => s + e.sets.length, 0);
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
         <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center shadow-glow">
@@ -181,7 +197,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
         <h2 className="mt-6 text-3xl font-extrabold tracking-tight">Locked in. Done.</h2>
         <p className="mt-2 text-sm text-muted-foreground">{workout.name}</p>
         <div className="mt-8 grid grid-cols-3 gap-3 w-full max-w-xs">
-          <Stat label="Sets" value={completedSets} />
+          <Stat label="Sets" value={setsLogged} />
           <Stat label="Reps" value={totalReps} />
           <Stat label={`Vol ${settings.weightUnit}`} value={Math.round(totalVolume)} />
         </div>
@@ -216,7 +232,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
         {/* Progress dots */}
         <div className="mt-3 flex gap-1">
           {Array.from({ length: totalSets }).map((_, i) => (
-            <span key={i} className={`flex-1 h-1 rounded-full ${i < completedSets ? "bg-primary" : "bg-secondary"}`} />
+            <span key={i} className={`flex-1 h-1 rounded-full ${i < progressDots ? "bg-primary" : "bg-secondary"}`} />
           ))}
         </div>
 
@@ -228,34 +244,24 @@ export const Session = ({ workoutId, onExit }: Props) => {
           <h2 className="mt-1 text-3xl font-extrabold tracking-tight leading-tight">{current!.name}</h2>
         </div>
 
-        {phase === "lifting" ? (
+        {phase === "lifting" && (
           <div className="mt-6 flex-1 flex flex-col">
-            <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card">
-              <div className="flex items-baseline justify-between">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
-                  <p className="font-mono-timer text-5xl font-bold mt-1">
-                    {setIdx + 1}<span className="text-muted-foreground text-2xl">/{current!.sets}</span>
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Target</p>
-                  <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">{current!.reps}</p>
-                  <p className="text-xs text-muted-foreground -mt-1">reps</p>
-                </div>
-              </div>
+            <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card flex-1 flex flex-col items-center justify-center">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
+              <p className="font-mono-timer text-7xl font-bold mt-2">
+                {setIdx + 1}<span className="text-muted-foreground text-3xl">/{current!.sets}</span>
+              </p>
+              <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Target</p>
+              <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">{current!.reps} <span className="text-muted-foreground text-xl">reps</span></p>
             </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-3">
-              <NumPadField label={`Weight (${settings.weightUnit})`} value={weight} onChange={setWeight} step={2.5} decimals />
-              <NumPadField label="Reps done" value={reps} onChange={setReps} step={1} />
-            </div>
-
-            <Button onClick={logSet} className="mt-auto w-full h-16 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-extrabold text-lg shadow-glow">
-              <Check className="w-5 h-5 mr-2" /> Log set
+            <Button onClick={completeSet} className="mt-5 w-full h-16 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-extrabold text-lg shadow-glow">
+              <Check className="w-5 h-5 mr-2" /> Set complete
             </Button>
           </div>
-        ) : (
+        )}
+
+        {phase === "resting" && (
           <div className="mt-6 flex-1 flex flex-col items-center justify-center">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Rest</p>
             <div className="relative mt-4">
@@ -277,6 +283,15 @@ export const Session = ({ workoutId, onExit }: Props) => {
             </div>
           </div>
         )}
+
+        {phase === "logging" && (
+          <LoggingPanel
+            unit={settings.weightUnit}
+            sets={pendingSets}
+            setSets={setPendingSets}
+            onConfirm={confirmLogging}
+          />
+        )}
       </div>
     </AppShell>
   );
@@ -296,25 +311,126 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
   </div>
 );
 
-const NumPadField = ({
-  label, value, onChange, step, decimals,
-}: { label: string; value: string; onChange: (v: string) => void; step: number; decimals?: boolean }) => {
-  const num = parseFloat(value) || 0;
-  const dec = () => onChange(String(Math.max(0, +(num - step).toFixed(decimals ? 2 : 0))));
-  const inc = () => onChange(String(+(num + step).toFixed(decimals ? 2 : 0)));
+const LoggingPanel = ({
+  unit, sets, setSets, onConfirm,
+}: {
+  unit: string;
+  sets: SetLog[];
+  setSets: (updater: (prev: SetLog[]) => SetLog[]) => void;
+  onConfirm: () => void;
+}) => {
+  const update = (i: number, patch: Partial<SetLog>) =>
+    setSets(prev => prev.map((s, idx) => idx === i ? { ...s, ...patch } : s));
+
+  const setAllWeight = (w: number) =>
+    setSets(prev => prev.map(s => ({ ...s, weight: w })));
+
+  const firstWeight = sets[0]?.weight ?? 0;
+  const allSame = sets.every(s => s.weight === firstWeight);
+
   return (
-    <div className="rounded-2xl bg-card border border-border p-3">
+    <div className="mt-5 flex-1 flex flex-col">
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Log your sets</p>
+      <p className="text-sm text-muted-foreground mt-1">Tap to adjust weight & reps for each set.</p>
+
+      {/* Bulk weight - applies to all sets if same */}
+      <div className="mt-4 rounded-2xl bg-card border border-border p-3">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">
+          Weight all sets ({unit})
+        </p>
+        <Stepper
+          value={firstWeight}
+          onChange={setAllWeight}
+          step={2.5}
+          decimals
+          large
+        />
+        {!allSame && (
+          <p className="text-[10px] text-muted-foreground text-center mt-1">Per-set weights differ — tap a row to override.</p>
+        )}
+      </div>
+
+      {/* Per-set rows */}
+      <ul className="mt-3 space-y-2 overflow-y-auto">
+        {sets.map((s, i) => (
+          <li key={i} className="rounded-2xl bg-card border border-border p-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold w-7 h-7 rounded-full bg-secondary text-foreground flex items-center justify-center shrink-0">{i + 1}</span>
+              <div className="flex-1 grid grid-cols-2 gap-2">
+                <MiniStepper
+                  label={unit}
+                  value={s.weight}
+                  onChange={v => update(i, { weight: v })}
+                  step={2.5}
+                  decimals
+                />
+                <MiniStepper
+                  label="reps"
+                  value={s.reps}
+                  onChange={v => update(i, { reps: v })}
+                  step={1}
+                />
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <Button onClick={onConfirm} className="mt-4 w-full h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-extrabold text-base shadow-glow">
+        <Check className="w-5 h-5 mr-2" /> Save & continue
+      </Button>
+    </div>
+  );
+};
+
+const Stepper = ({
+  value, onChange, step, decimals, large,
+}: { value: number; onChange: (v: number) => void; step: number; decimals?: boolean; large?: boolean }) => {
+  const dec = () => onChange(Math.max(0, +(value - step).toFixed(decimals ? 2 : 0)));
+  const inc = () => onChange(+(value + step).toFixed(decimals ? 2 : 0));
+  return (
+    <div className="flex items-center justify-between mt-2 gap-2">
+      <button onClick={dec} className={`${large ? "w-12 h-12" : "w-9 h-9"} rounded-full bg-secondary text-foreground font-bold shrink-0 flex items-center justify-center`}>
+        <Minus className="w-5 h-5" />
+      </button>
+      <input
+        inputMode="decimal"
+        value={value === 0 ? "" : String(value)}
+        placeholder="0"
+        onChange={e => {
+          const v = parseFloat(e.target.value.replace(/[^0-9.]/g, "")) || 0;
+          onChange(v);
+        }}
+        className={`flex-1 min-w-0 bg-transparent text-center font-mono-timer font-bold outline-none ${large ? "text-4xl" : "text-2xl"}`}
+      />
+      <button onClick={inc} className={`${large ? "w-12 h-12" : "w-9 h-9"} rounded-full bg-secondary text-foreground font-bold shrink-0 flex items-center justify-center`}>
+        <Plus className="w-5 h-5" />
+      </button>
+    </div>
+  );
+};
+
+const MiniStepper = ({
+  label, value, onChange, step, decimals,
+}: { label: string; value: number; onChange: (v: number) => void; step: number; decimals?: boolean }) => {
+  const dec = () => onChange(Math.max(0, +(value - step).toFixed(decimals ? 2 : 0)));
+  const inc = () => onChange(+(value + step).toFixed(decimals ? 2 : 0));
+  return (
+    <div className="rounded-xl bg-secondary p-2">
       <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">{label}</p>
-      <div className="flex items-center justify-between mt-2 gap-1">
-        <button onClick={dec} className="w-9 h-9 rounded-full bg-secondary text-foreground font-bold text-lg shrink-0">−</button>
+      <div className="flex items-center justify-between mt-1 gap-1">
+        <button onClick={dec} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-sm shrink-0">−</button>
         <input
           inputMode="decimal"
-          value={value}
-          onChange={e => onChange(e.target.value.replace(/[^0-9.]/g, ""))}
+          value={value === 0 ? "" : String(value)}
           placeholder="0"
-          className="flex-1 min-w-0 bg-transparent text-center font-mono-timer text-2xl font-bold outline-none"
+          onChange={e => {
+            const v = parseFloat(e.target.value.replace(/[^0-9.]/g, "")) || 0;
+            onChange(v);
+          }}
+          className="flex-1 min-w-0 bg-transparent text-center font-mono-timer text-base font-bold outline-none"
         />
-        <button onClick={inc} className="w-9 h-9 rounded-full bg-secondary text-foreground font-bold text-lg shrink-0">+</button>
+        <button onClick={inc} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-sm shrink-0">+</button>
       </div>
     </div>
   );
