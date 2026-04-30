@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Dumbbell, Settings as SettingsIcon, Play, Trash2, Pencil } from "lucide-react";
+import { Plus, Dumbbell, Settings as SettingsIcon, Play, Trash2, Pencil, History as HistoryIcon } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { storage } from "@/lib/storage";
@@ -10,9 +10,10 @@ interface Props {
   onEditWorkout: (id: string) => void;
   onStartWorkout: (id: string) => void;
   onOpenSettings: () => void;
+  onOpenHistory: () => void;
 }
 
-export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettings }: Props) => {
+export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettings, onOpenHistory }: Props) => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
   useEffect(() => { setWorkouts(storage.getWorkouts()); }, []);
@@ -87,6 +88,21 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
             ))}
           </ul>
         )}
+      </section>
+
+      <section className="mt-6">
+        <button
+          onClick={onOpenHistory}
+          className="w-full rounded-2xl bg-card border border-border p-4 flex items-center gap-3 text-left transition-base hover:bg-secondary"
+        >
+          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center text-primary">
+            <HistoryIcon className="w-5 h-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold">Lifting history</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Review your past sessions and lifts.</p>
+          </div>
+        </button>
       </section>
     </AppShell>
   );
