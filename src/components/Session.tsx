@@ -255,8 +255,12 @@ export const Session = ({ workoutId, onExit }: Props) => {
               <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">{current!.reps} <span className="text-muted-foreground text-xl">reps</span></p>
             </div>
 
+            <p className="mt-4 text-center text-sm text-muted-foreground px-4">
+              After you finish your set, press <span className="text-foreground font-semibold">Start Rest</span> to recover for the next lift.
+            </p>
+
             <Button onClick={completeSet} className="mt-5 w-full h-16 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-extrabold text-lg shadow-glow">
-              <Check className="w-5 h-5 mr-2" /> Set complete
+              <Check className="w-5 h-5 mr-2" /> Start Rest
             </Button>
           </div>
         )}
