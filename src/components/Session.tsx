@@ -13,7 +13,7 @@ interface Props {
   onExit: () => void;
 }
 
-type Phase = "lifting" | "resting" | "logging" | "done";
+type Phase = "lifting" | "resting" | "ready" | "logging" | "done";
 
 export const Session = ({ workoutId, onExit }: Props) => {
   const settings = useMemo(() => storage.getSettings(), []);
@@ -26,6 +26,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const [setIdx, setSetIdx] = useState(0); // sets completed for current exercise
   const [phase, setPhase] = useState<Phase>("lifting");
   const [restLeft, setRestLeft] = useState(0);
+  const [readyLeft, setReadyLeft] = useState(0);
   const [showUnlock, setShowUnlock] = useState(false);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
   // pending logging state for an exercise just finished
@@ -87,7 +88,8 @@ export const Session = ({ workoutId, onExit }: Props) => {
           if (settings.sound) beep(1320, 0.25, 0.25);
           if (settings.vibration) vibrate([100, 60, 200]);
           clearInterval(id);
-          setPhase("lifting");
+          setReadyLeft(5);
+          setPhase("ready");
           return 0;
         }
         return next;
@@ -95,6 +97,23 @@ export const Session = ({ workoutId, onExit }: Props) => {
     }, 1000);
     return () => clearInterval(id);
   }, [phase, settings]);
+
+  // Ready, Set, Lift! interlude
+  useEffect(() => {
+    if (phase !== "ready") return;
+    const id = setInterval(() => {
+      setReadyLeft(prev => {
+        const next = prev - 1;
+        if (next <= 0) {
+          clearInterval(id);
+          setPhase("lifting");
+          return 0;
+        }
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(id);
+  }, [phase]);
 
   if (!workout) {
     return (
@@ -136,7 +155,11 @@ export const Session = ({ workoutId, onExit }: Props) => {
     }
   };
 
-  const skipRest = () => { setPhase("lifting"); setRestLeft(0); };
+  const skipRest = () => {
+    setRestLeft(0);
+    setReadyLeft(5);
+    setPhase("ready");
+  };
 
   const saveLogged = (newLogs: ExerciseLog[]) => {
     const session: SessionLog = {
@@ -288,12 +311,26 @@ export const Session = ({ workoutId, onExit }: Props) => {
           </div>
         )}
 
+        {phase === "ready" && (
+          <div className="mt-6 flex-1 flex flex-col items-center justify-center text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Get up</p>
+            <h2 className="mt-4 font-extrabold tracking-tight text-5xl leading-tight">
+              Ready,<br/>Set,<br/><span className="text-primary">Lift!</span>
+            </h2>
+            <p className="mt-8 font-mono-timer text-6xl font-bold text-primary animate-count-pop" key={readyLeft}>
+              {readyLeft}
+            </p>
+            <p className="mt-4 text-sm text-muted-foreground">Set {setIdx + 1} of {current!.sets} — {current!.name}</p>
+          </div>
+        )}
+
         {phase === "logging" && (
           <LoggingPanel
             unit={settings.weightUnit}
             sets={pendingSets}
             setSets={setPendingSets}
             onConfirm={confirmLogging}
+            restSeconds={current!.restSeconds}
           />
         )}
       </div>
@@ -316,12 +353,13 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
 );
 
 const LoggingPanel = ({
-  unit, sets, setSets, onConfirm,
+  unit, sets, setSets, onConfirm, restSeconds,
 }: {
   unit: string;
   sets: SetLog[];
   setSets: (updater: (prev: SetLog[]) => SetLog[]) => void;
   onConfirm: () => void;
+  restSeconds: number;
 }) => {
   const update = (i: number, patch: Partial<SetLog>) =>
     setSets(prev => prev.map((s, idx) => idx === i ? { ...s, ...patch } : s));
@@ -332,10 +370,27 @@ const LoggingPanel = ({
   const firstWeight = sets[0]?.weight ?? 0;
   const allSame = sets.every(s => s.weight === firstWeight);
 
+  const [elapsed, setElapsed] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setElapsed(e => e + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const mm = Math.floor(elapsed / 60);
+  const ss = elapsed % 60;
+  const timeStr = `${mm}:${String(ss).padStart(2, "0")}`;
+
   return (
     <div className="mt-5 flex-1 flex flex-col">
-      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Log your sets</p>
-      <p className="text-sm text-muted-foreground mt-1">Tap to adjust weight & reps for each set.</p>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Log your sets</p>
+          <p className="text-sm text-muted-foreground mt-1">Enter your results while you recover for the next exercise.</p>
+        </div>
+        <div className="rounded-xl bg-secondary border border-border px-3 py-1.5 text-center shrink-0">
+          <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground leading-none">Recover</p>
+          <p className="font-mono-timer text-lg font-bold text-primary leading-tight mt-0.5">{timeStr}</p>
+        </div>
+      </div>
 
       {/* Bulk weight - applies to all sets if same */}
       <div className="mt-4 rounded-2xl bg-card border border-border p-3">
