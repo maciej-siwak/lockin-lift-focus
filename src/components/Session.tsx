@@ -24,9 +24,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
   const [exIdx, setExIdx] = useState(0);
   const [setIdx, setSetIdx] = useState(0); // sets completed for current exercise
-  const [phase, setPhase] = useState<Phase>("lifting");
+  const [phase, setPhase] = useState<Phase>("ready");
   const [restLeft, setRestLeft] = useState(0);
-  const [readyLeft, setReadyLeft] = useState(0);
+  const [readyLeft, setReadyLeft] = useState(5);
   const [showUnlock, setShowUnlock] = useState(false);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
   // pending logging state for an exercise just finished
@@ -270,7 +270,10 @@ export const Session = ({ workoutId, onExit }: Props) => {
         {phase === "lifting" && (
           <div className="mt-6 flex-1 flex flex-col">
             <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card flex-1 flex flex-col items-center justify-center">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-primary/70 animate-pulse">
+                • Lifting in progress
+              </p>
+              <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
               <p className="font-mono-timer text-7xl font-bold mt-2">
                 {setIdx + 1}<span className="text-muted-foreground text-3xl">/{current!.sets}</span>
               </p>
@@ -313,7 +316,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
         {phase === "ready" && (
           <div className="mt-6 flex-1 flex flex-col items-center justify-center text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Get up</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+              {completedSetsAcrossExercises === 0 && setIdx === 0 ? "Starting" : "Get up"}
+            </p>
             <h2 className="mt-4 font-extrabold tracking-tight text-5xl leading-tight">
               Ready,<br/>Set,<br/><span className="text-primary">Lift!</span>
             </h2>
