@@ -17,13 +17,13 @@ export const History = ({ onBack }: Props) => {
 
   // All-time PRs across all sessions (for the summary card)
   const allTimePRs = useMemo(() => buildPRs(sessions, Infinity), [sessions]);
-  const allTimeEntries = useMemo(
-    () =>
-      Object.entries(allTimePRs)
-        .filter(([, p]) => p.bestWeight > 0 || p.bestReps > 0)
-        .sort((a, b) => b[1].bestE1RM - a[1].bestE1RM),
-    [allTimePRs],
-  );
+  // Top 3 by best single-set volume (weight * reps) across all exercises
+  const topRecords = useMemo(() => {
+    return Object.entries(allTimePRs)
+      .filter(([, p]) => p.bestSetVolume > 0)
+      .sort((a, b) => b[1].bestSetVolume - a[1].bestSetVolume)
+      .slice(0, 3);
+  }, [allTimePRs]);
 
   // PR display name lookup (preserve original casing)
   const displayName = useMemo(() => {
@@ -39,6 +39,26 @@ export const History = ({ onBack }: Props) => {
     const next = sessions.filter(s => s.id !== id);
     setSessions(next);
     storage.saveSessions(next);
+  };
+
+  const sharePRs = async () => {
+    if (topRecords.length === 0) {
+      toast("No records yet");
+      return;
+    }
+    const lines = [
+      `🏆 Top Records — Lock In`,
+      "",
+      ...topRecords.map(([key, pr], i) =>
+        `${i + 1}. ${displayName[key] ?? key} — ${Math.round(pr.bestSetVolume)}${unit} (top set vol)`
+      ),
+    ];
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      toast("Records copied to clipboard");
+    } catch {
+      toast("Could not copy");
+    }
   };
 
   const toggle = (id: string) =>
@@ -74,22 +94,32 @@ export const History = ({ onBack }: Props) => {
       left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
     >
       <div className="pt-5">
-        {allTimeEntries.length > 0 && (
+        {topRecords.length > 0 && (
           <section className="mb-5 rounded-2xl bg-gradient-dark border border-border p-4 shadow-card">
-            <div className="flex items-center gap-2">
-              <Trophy className="w-4 h-4 text-primary" />
-              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Personal records</h3>
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Trophy className="w-4 h-4 text-primary" />
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Top 3 records</h3>
+              </div>
+              <button
+                onClick={sharePRs}
+                aria-label="Share records"
+                className="p-1.5 -mr-1 text-muted-foreground hover:text-primary transition-base"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
             </div>
             <ul className="mt-3 space-y-2">
-              {allTimeEntries.map(([key, pr]) => (
-                <li key={key} className="rounded-xl bg-card border border-border p-2.5">
-                  <p className="text-sm font-semibold truncate">{displayName[key] ?? key}</p>
-                  <div className="mt-1 flex flex-wrap gap-1.5">
-                    <PRChip label="Top weight" value={`${pr.bestWeight}${unit}`} show={pr.bestWeight > 0} />
-                    <PRChip label="Top reps" value={`${pr.bestReps}`} show={pr.bestReps > 0} />
-                    <PRChip label="Top set vol" value={`${Math.round(pr.bestSetVolume)}${unit}`} show={pr.bestSetVolume > 0} />
-                    <PRChip label="e1RM" value={`${Math.round(pr.bestE1RM)}${unit}`} show={pr.bestE1RM > 0} />
+              {topRecords.map(([key, pr], i) => (
+                <li key={key} className="rounded-xl bg-card border border-border p-3 flex items-center gap-3">
+                  <span className="font-mono-timer text-lg font-bold text-primary w-6 text-center">{i + 1}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold truncate">{displayName[key] ?? key}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Top set volume</p>
                   </div>
+                  <span className="font-mono-timer text-base font-bold text-primary shrink-0">
+                    {Math.round(pr.bestSetVolume)}{unit}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -213,11 +243,3 @@ const Mini = ({ label, value }: { label: string; value: number }) => (
     <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-1">{label}</p>
   </div>
 );
-
-const PRChip = ({ label, value, show }: { label: string; value: string; show: boolean }) =>
-  show ? (
-    <span className="text-[11px] rounded-md px-1.5 py-0.5 bg-primary/10 border border-primary/30 text-primary font-mono-timer">
-      <span className="font-sans text-muted-foreground mr-1">{label}</span>
-      <span className="font-bold">{value}</span>
-    </span>
-  ) : null;
