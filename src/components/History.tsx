@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2, Trophy, Flame } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
-import type { SessionLog } from "@/lib/types";
+import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
 import { buildPRs, flagSet } from "@/lib/prs";
 
@@ -17,13 +17,27 @@ export const History = ({ onBack }: Props) => {
 
   // All-time PRs across all sessions (for the summary card)
   const allTimePRs = useMemo(() => buildPRs(sessions, Infinity), [sessions]);
-  // Top 3 by best single-set volume (weight * reps) across all exercises
-  const topRecords = useMemo(() => {
-    return Object.entries(allTimePRs)
-      .filter(([, p]) => p.bestSetVolume > 0)
-      .sort((a, b) => b[1].bestSetVolume - a[1].bestSetVolume)
-      .slice(0, 3);
-  }, [allTimePRs]);
+  // Per-exercise: top 3 sets ordered by weight (desc), then reps (desc)
+  const topByExercise = useMemo(() => {
+    const map: Record<string, SetLog[]> = {};
+    for (const s of sessions) {
+      for (const ex of s.exercises) {
+        const key = ex.exerciseName.toLowerCase();
+        if (!map[key]) map[key] = [];
+        for (const set of ex.sets) {
+          if (set.weight > 0 && set.reps > 0) map[key].push(set);
+        }
+      }
+    }
+    const out: Array<{ key: string; sets: SetLog[] }> = [];
+    for (const [key, sets] of Object.entries(map)) {
+      const top = [...sets]
+        .sort((a, b) => (b.weight - a.weight) || (b.reps - a.reps))
+        .slice(0, 3);
+      if (top.length > 0) out.push({ key, sets: top });
+    }
+    return out;
+  }, [sessions]);
 
   // PR display name lookup (preserve original casing)
   const displayName = useMemo(() => {
@@ -42,19 +56,20 @@ export const History = ({ onBack }: Props) => {
   };
 
   const sharePRs = async () => {
-    if (topRecords.length === 0) {
+    if (topByExercise.length === 0) {
       toast("No records yet");
       return;
     }
-    const lines = [
-      `🏆 Top Records — Lock In`,
-      "",
-      ...topRecords.map(([key, pr], i) =>
-        `${i + 1}. ${displayName[key] ?? key} — ${Math.round(pr.bestSetVolume)}${unit} (top set vol)`
-      ),
-    ];
+    const lines: string[] = [`🏆 Top Records — Lock In`, ""];
+    for (const { key, sets } of topByExercise) {
+      lines.push(displayName[key] ?? key);
+      sets.forEach((set, i) => {
+        lines.push(`${i + 1}. ${set.weight}${unit} × ${set.reps} reps`);
+      });
+      lines.push("");
+    }
     try {
-      await navigator.clipboard.writeText(lines.join("\n"));
+      await navigator.clipboard.writeText(lines.join("\n").trimEnd());
       toast("Records copied to clipboard");
     } catch {
       toast("Could not copy");
@@ -94,12 +109,12 @@ export const History = ({ onBack }: Props) => {
       left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
     >
       <div className="pt-5">
-        {topRecords.length > 0 && (
+        {topByExercise.length > 0 && (
           <section className="mb-5 rounded-2xl bg-gradient-dark border border-border p-4 shadow-card">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Trophy className="w-4 h-4 text-primary" />
-                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Top 3 records</h3>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Personal records</h3>
               </div>
               <button
                 onClick={sharePRs}
@@ -109,17 +124,20 @@ export const History = ({ onBack }: Props) => {
                 <Share2 className="w-4 h-4" />
               </button>
             </div>
-            <ul className="mt-3 space-y-2">
-              {topRecords.map(([key, pr], i) => (
-                <li key={key} className="rounded-xl bg-card border border-border p-3 flex items-center gap-3">
-                  <span className="font-mono-timer text-lg font-bold text-primary w-6 text-center">{i + 1}</span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold truncate">{displayName[key] ?? key}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">Top set volume</p>
-                  </div>
-                  <span className="font-mono-timer text-base font-bold text-primary shrink-0">
-                    {Math.round(pr.bestSetVolume)}{unit}
-                  </span>
+            <ul className="mt-3 space-y-3">
+              {topByExercise.map(({ key, sets }) => (
+                <li key={key} className="rounded-xl bg-card border border-border p-3">
+                  <p className="text-sm font-semibold truncate">{displayName[key] ?? key}</p>
+                  <ol className="mt-2 space-y-1">
+                    {sets.map((set, i) => (
+                      <li key={i} className="flex items-center gap-3 text-sm">
+                        <span className="font-mono-timer text-xs font-bold text-primary w-4 text-center shrink-0">{i + 1}.</span>
+                        <span className="font-mono-timer font-bold text-foreground">{set.weight}{unit}</span>
+                        <span className="text-muted-foreground">×</span>
+                        <span className="font-mono-timer text-foreground">{set.reps} reps</span>
+                      </li>
+                    ))}
+                  </ol>
                 </li>
               ))}
             </ul>
