@@ -4,7 +4,7 @@ import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { storage, uid } from "@/lib/storage";
-import type { Workout, ExerciseTemplate } from "@/lib/types";
+import type { Workout, ExerciseTemplate, ExerciseMode } from "@/lib/types";
 import { toast } from "sonner";
 
 interface Props {
@@ -29,7 +29,7 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
   }, [workoutId]);
 
   function newExercise(rest: number): ExerciseTemplate {
-    return { id: uid(), name: "", sets: 3, reps: 8, restSeconds: rest };
+    return { id: uid(), name: "", sets: 3, reps: 8, restSeconds: rest, mode: "weight_reps", targetSeconds: 30 };
   }
 
   const update = (id: string, patch: Partial<ExerciseTemplate>) => {
@@ -90,11 +90,24 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
+                <ModeToggle
+                  value={ex.mode ?? "weight_reps"}
+                  onChange={m => update(ex.id, { mode: m })}
+                />
                 <div className="grid grid-cols-3 gap-2">
                   <NumField label="Sets" value={ex.sets} min={1} max={20} onChange={v => update(ex.id, { sets: v })} />
-                  <NumField label="Reps" value={ex.reps} min={1} max={50} onChange={v => update(ex.id, { reps: v })} />
+                  {(ex.mode ?? "weight_reps") === "time" ? (
+                    <NumField label="Time" suffix="s" step={5} value={ex.targetSeconds ?? 30} min={5} max={1800} onChange={v => update(ex.id, { targetSeconds: v })} />
+                  ) : (
+                    <NumField label="Reps" value={ex.reps} min={1} max={50} onChange={v => update(ex.id, { reps: v })} />
+                  )}
                   <NumField label="Rest" suffix="s" step={15} value={ex.restSeconds} min={15} max={600} onChange={v => update(ex.id, { restSeconds: v })} />
                 </div>
+                <p className="text-[10px] text-muted-foreground px-1">
+                  {(ex.mode ?? "weight_reps") === "weight_reps" && "You'll log weight × reps for each set (e.g. Bench Press)."}
+                  {ex.mode === "reps" && "Bodyweight — you'll log reps only (e.g. Dips, Pull-ups)."}
+                  {ex.mode === "time" && "Timed hold — you'll log seconds per set (e.g. Battle Ropes, Plank)."}
+                </p>
               </li>
             ))}
           </ul>
@@ -129,6 +142,36 @@ const NumField = ({
         <span className="font-mono-timer font-bold text-lg">{value}{suffix}</span>
         <button onClick={inc} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-sm">+</button>
       </div>
+    </div>
+  );
+};
+
+const ModeToggle = ({ value, onChange }: { value: ExerciseMode; onChange: (m: ExerciseMode) => void }) => {
+  const opts: Array<{ id: ExerciseMode; label: string; hint: string }> = [
+    { id: "weight_reps", label: "Weight × Reps", hint: "Bench, Squat" },
+    { id: "reps", label: "Reps only", hint: "Dips, Pull-ups" },
+    { id: "time", label: "Time", hint: "Plank, Ropes" },
+  ];
+  return (
+    <div className="rounded-xl bg-secondary p-1 grid grid-cols-3 gap-1">
+      {opts.map(o => {
+        const active = value === o.id;
+        return (
+          <button
+            key={o.id}
+            type="button"
+            onClick={() => onChange(o.id)}
+            className={`rounded-lg px-2 py-1.5 text-center transition-base ${
+              active
+                ? "bg-primary text-primary-foreground shadow-glow"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <p className="text-[11px] font-bold leading-tight">{o.label}</p>
+            <p className={`text-[9px] leading-tight ${active ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{o.hint}</p>
+          </button>
+        );
+      })}
     </div>
   );
 };
