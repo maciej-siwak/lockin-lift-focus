@@ -4,7 +4,7 @@ import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { PinPad } from "./PinPad";
 import { storage, uid } from "@/lib/storage";
-import type { Workout, SessionLog, ExerciseLog, SetLog } from "@/lib/types";
+import type { Workout, SessionLog, ExerciseLog, SetLog, ExerciseMode } from "@/lib/types";
 import { beep, vibrate } from "@/lib/feedback";
 import { toast } from "sonner";
 
@@ -141,10 +141,12 @@ export const Session = ({ workoutId, onExit }: Props) => {
     if (isLastSet) {
       // Open logging screen
       const last = storage.getLastWeights()[current.name.toLowerCase()] ?? 0;
+      const mode: ExerciseMode = current.mode ?? "weight_reps";
       const seed: SetLog[] = Array.from({ length: current.sets }).map((_, i) => ({
         setIndex: i,
-        weight: last,
-        reps: current.reps,
+        weight: mode === "weight_reps" ? last : 0,
+        reps: mode === "time" ? 0 : current.reps,
+        seconds: mode === "time" ? (current.targetSeconds ?? 30) : undefined,
         completedAt: Date.now(),
       }));
       setPendingSets(seed);
@@ -374,7 +376,15 @@ export const Session = ({ workoutId, onExit }: Props) => {
                 {setIdx + 1}<span className="text-muted-foreground text-3xl">/{current!.sets}</span>
               </p>
               <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Target</p>
-              <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">{current!.reps} <span className="text-muted-foreground text-xl">reps</span></p>
+              {(current!.mode ?? "weight_reps") === "time" ? (
+                <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">
+                  {current!.targetSeconds ?? 30} <span className="text-muted-foreground text-xl">sec</span>
+                </p>
+              ) : (
+                <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">
+                  {current!.reps} <span className="text-muted-foreground text-xl">reps</span>
+                </p>
+              )}
             </div>
 
             <p className="mt-4 text-center text-sm text-muted-foreground px-4">
@@ -432,6 +442,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
             setSets={setPendingSets}
             onConfirm={confirmLogging}
             restSeconds={current!.restSeconds}
+            mode={current!.mode ?? "weight_reps"}
           />
         )}
       </div>
