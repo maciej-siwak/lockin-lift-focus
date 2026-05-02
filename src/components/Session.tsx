@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Lock, Check, SkipForward, X, Plus, Minus } from "lucide-react";
+import { Lock, Check, SkipForward, X, Plus, Minus, Shuffle, ArrowRight } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { PinPad } from "./PinPad";
@@ -13,7 +13,7 @@ interface Props {
   onExit: () => void;
 }
 
-type Phase = "lifting" | "resting" | "ready" | "logging" | "done";
+type Phase = "picking" | "lifting" | "resting" | "ready" | "logging" | "done";
 
 export const Session = ({ workoutId, onExit }: Props) => {
   const settings = useMemo(() => storage.getSettings(), []);
@@ -24,11 +24,12 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
   const [exIdx, setExIdx] = useState(0);
   const [setIdx, setSetIdx] = useState(0); // sets completed for current exercise
-  const [phase, setPhase] = useState<Phase>("ready");
+  const [phase, setPhase] = useState<Phase>("picking");
   const [restLeft, setRestLeft] = useState(0);
   const [readyLeft, setReadyLeft] = useState(5);
   const [showUnlock, setShowUnlock] = useState(false);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
+  const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   // pending logging state for an exercise just finished
   const [pendingSets, setPendingSets] = useState<SetLog[]>([]);
   const sessionIdRef = useRef(uid());
@@ -189,15 +190,23 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
     saveLogged(nextLogs);
 
-    const isLastExercise = exIdx + 1 >= workout.exercises.length;
-    if (isLastExercise) {
+    const nextCompleted = new Set(completedIds);
+    nextCompleted.add(current.id);
+    setCompletedIds(nextCompleted);
+    setPendingSets([]);
+    setSetIdx(0);
+    if (nextCompleted.size >= workout.exercises.length) {
       setPhase("done");
       return;
     }
-    setExIdx(i => i + 1);
+    setPhase("picking");
+  };
+
+  const pickExercise = (idx: number) => {
+    setExIdx(idx);
     setSetIdx(0);
-    setPendingSets([]);
-    setPhase("lifting");
+    setReadyLeft(5);
+    setPhase("ready");
   };
 
   const requestExit = () => setShowUnlock(true);
@@ -226,6 +235,80 @@ export const Session = ({ workoutId, onExit }: Props) => {
         </div>
         <Button onClick={onExit} className="mt-10 w-full max-w-xs h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold">Finish</Button>
       </div>
+    );
+  }
+
+  // Picking screen — choose any remaining exercise
+  if (phase === "picking") {
+    const remaining = workout.exercises
+      .map((e, i) => ({ e, i }))
+      .filter(({ e }) => !completedIds.has(e.id));
+    const isFirst = completedIds.size === 0;
+    return (
+      <AppShell immersive>
+        {showUnlock && (
+          <PinPad
+            title="Enter unlock code"
+            subtitle="Confirm you really want to leave the session."
+            expectedCode={settings.unlockCode}
+            onSuccess={confirmExit}
+            onCancel={() => setShowUnlock(false)}
+          />
+        )}
+        <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
+              <Lock className="w-3.5 h-3.5" /> Locked in
+            </div>
+            <button onClick={requestExit} aria-label="End session" className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="mt-3 flex gap-1">
+            {Array.from({ length: totalSets }).map((_, i) => (
+              <span key={i} className={`flex-1 h-1 rounded-full ${i < completedSetsAcrossExercises ? "bg-primary" : "bg-secondary"}`} />
+            ))}
+          </div>
+
+          <div className="mt-6">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {isFirst ? "Pick your first lift" : "Pick your next lift"}
+            </p>
+            <h2 className="mt-1 text-3xl font-extrabold tracking-tight leading-tight">
+              {workout.name}
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Machine busy? Tap any exercise — order is up to you.
+            </p>
+          </div>
+
+          <ul className="mt-5 space-y-3 flex-1 overflow-y-auto">
+            {remaining.map(({ e, i }) => (
+              <li key={e.id}>
+                <button
+                  onClick={() => pickExercise(i)}
+                  className="w-full rounded-2xl bg-card border border-border p-4 flex items-center gap-3 text-left transition-base hover:bg-secondary hover:border-primary/40"
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold truncate">{e.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {e.sets} sets · {e.reps} reps · {e.restSeconds}s rest
+                    </p>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-primary shrink-0" />
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          {completedIds.size > 0 && (
+            <p className="mt-4 text-center text-xs text-muted-foreground">
+              {completedIds.size} of {workout.exercises.length} exercises done
+            </p>
+          )}
+        </div>
+      </AppShell>
     );
   }
 
@@ -261,10 +344,23 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
         {/* Exercise heading */}
         <div className="mt-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Exercise {exIdx + 1} / {workout.exercises.length}
-          </p>
-          <h2 className="mt-1 text-3xl font-extrabold tracking-tight leading-tight">{current!.name}</h2>
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                {completedIds.size + 1} / {workout.exercises.length} · {workout.exercises.length - completedIds.size - (phase === "logging" ? 1 : 0)} left
+              </p>
+              <h2 className="mt-1 text-3xl font-extrabold tracking-tight leading-tight">{current!.name}</h2>
+            </div>
+            {phase === "lifting" && setIdx === 0 && (
+              <button
+                onClick={() => setPhase("picking")}
+                aria-label="Switch exercise"
+                className="shrink-0 inline-flex items-center gap-1 rounded-full bg-secondary border border-border px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground hover:border-primary/40 transition-base"
+              >
+                <Shuffle className="w-3 h-3" /> Switch
+              </button>
+            )}
+          </div>
         </div>
 
         {phase === "lifting" && (
