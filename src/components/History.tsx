@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2, Trophy, Flame } from "lucide-react";
+import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2, Flame } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
-import type { SessionLog, SetLog } from "@/lib/types";
+import type { SessionLog } from "@/lib/types";
 import { toast } from "sonner";
 import { buildPRs, flagSet } from "@/lib/prs";
 
@@ -15,65 +15,10 @@ export const History = ({ onBack }: Props) => {
 
   useEffect(() => { setSessions(storage.getSessions()); }, []);
 
-  // All-time PRs across all sessions (for the summary card)
-  const allTimePRs = useMemo(() => buildPRs(sessions, Infinity), [sessions]);
-  // Per-exercise: top 3 sets ordered by weight (desc), then reps (desc)
-  const topByExercise = useMemo(() => {
-    const map: Record<string, SetLog[]> = {};
-    for (const s of sessions) {
-      for (const ex of s.exercises) {
-        const key = ex.exerciseName.toLowerCase();
-        if (!map[key]) map[key] = [];
-        for (const set of ex.sets) {
-          if (set.weight > 0 && set.reps > 0) map[key].push(set);
-        }
-      }
-    }
-    const out: Array<{ key: string; sets: SetLog[] }> = [];
-    for (const [key, sets] of Object.entries(map)) {
-      const top = [...sets]
-        .sort((a, b) => (b.weight - a.weight) || (b.reps - a.reps))
-        .slice(0, 3);
-      if (top.length > 0) out.push({ key, sets: top });
-    }
-    return out;
-  }, [sessions]);
-
-  // PR display name lookup (preserve original casing)
-  const displayName = useMemo(() => {
-    const m: Record<string, string> = {};
-    for (const s of sessions) for (const e of s.exercises) {
-      const k = e.exerciseName.toLowerCase();
-      if (!m[k]) m[k] = e.exerciseName;
-    }
-    return m;
-  }, [sessions]);
-
   const remove = (id: string) => {
     const next = sessions.filter(s => s.id !== id);
     setSessions(next);
     storage.saveSessions(next);
-  };
-
-  const sharePRs = async () => {
-    if (topByExercise.length === 0) {
-      toast("No records yet");
-      return;
-    }
-    const lines: string[] = [`🏆 Top Records — Lock In`, ""];
-    for (const { key, sets } of topByExercise) {
-      lines.push(displayName[key] ?? key);
-      sets.forEach((set, i) => {
-        lines.push(`${i + 1}. ${set.weight}${unit} × ${set.reps} reps`);
-      });
-      lines.push("");
-    }
-    try {
-      await navigator.clipboard.writeText(lines.join("\n").trimEnd());
-      toast("Records copied to clipboard");
-    } catch {
-      toast("Could not copy");
-    }
   };
 
   const toggle = (id: string) =>
@@ -109,41 +54,6 @@ export const History = ({ onBack }: Props) => {
       left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
     >
       <div className="pt-5">
-        {topByExercise.length > 0 && (
-          <section className="mb-5 rounded-2xl bg-gradient-dark border border-border p-4 shadow-card">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-primary" />
-                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Personal records</h3>
-              </div>
-              <button
-                onClick={sharePRs}
-                aria-label="Share records"
-                className="p-1.5 -mr-1 text-muted-foreground hover:text-primary transition-base"
-              >
-                <Share2 className="w-4 h-4" />
-              </button>
-            </div>
-            <ul className="mt-3 space-y-3">
-              {topByExercise.map(({ key, sets }) => (
-                <li key={key} className="rounded-xl bg-card border border-border p-3">
-                  <p className="text-sm font-semibold truncate">{displayName[key] ?? key}</p>
-                  <ol className="mt-2 space-y-1">
-                    {sets.map((set, i) => (
-                      <li key={i} className="flex items-center gap-3 text-sm">
-                        <span className="font-mono-timer text-xs font-bold text-primary w-4 text-center shrink-0">{i + 1}.</span>
-                        <span className="font-mono-timer font-bold text-foreground">{set.weight}{unit}</span>
-                        <span className="text-muted-foreground">×</span>
-                        <span className="font-mono-timer text-foreground">{set.reps} reps</span>
-                      </li>
-                    ))}
-                  </ol>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
         {sessions.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-8 text-center">
             <Dumbbell className="w-8 h-8 mx-auto text-muted-foreground" />
