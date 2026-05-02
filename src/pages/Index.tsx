@@ -4,13 +4,15 @@ import { WorkoutBuilder } from "@/components/WorkoutBuilder";
 import { Session } from "@/components/Session";
 import { SettingsScreen } from "@/components/SettingsScreen";
 import { History } from "@/components/History";
+import { Records } from "@/components/Records";
 
 type View =
   | { name: "home" }
   | { name: "builder"; workoutId?: string }
   | { name: "session"; workoutId: string }
   | { name: "settings" }
-  | { name: "history" };
+  | { name: "history" }
+  | { name: "records" };
 
 const Index = () => {
   const [view, setView] = useState<View>({ name: "home" });
@@ -33,6 +35,9 @@ const Index = () => {
   if (view.name === "history") {
     return <History onBack={() => setView({ name: "home" })} />;
   }
+  if (view.name === "records") {
+    return <Records onBack={() => setView({ name: "home" })} />;
+  }
   return (
     <Home
       onNewWorkout={() => setView({ name: "builder" })}
@@ -40,6 +45,7 @@ const Index = () => {
       onStartWorkout={(id) => setView({ name: "session", workoutId: id })}
       onOpenSettings={() => setView({ name: "settings" })}
       onOpenHistory={() => setView({ name: "history" })}
+      onOpenRecords={() => setView({ name: "records" })}
     />
   );
 };
