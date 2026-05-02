@@ -465,13 +465,14 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
 );
 
 const LoggingPanel = ({
-  unit, sets, setSets, onConfirm, restSeconds,
+  unit, sets, setSets, onConfirm, restSeconds, mode,
 }: {
   unit: string;
   sets: SetLog[];
   setSets: (updater: (prev: SetLog[]) => SetLog[]) => void;
   onConfirm: () => void;
   restSeconds: number;
+  mode: ExerciseMode;
 }) => {
   const update = (i: number, patch: Partial<SetLog>) =>
     setSets(prev => prev.map((s, idx) => idx === i ? { ...s, ...patch } : s));
@@ -504,22 +505,24 @@ const LoggingPanel = ({
         </div>
       </div>
 
-      {/* Bulk weight - applies to all sets if same */}
-      <div className="mt-4 rounded-2xl bg-card border border-border p-3">
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">
-          Weight all sets ({unit})
-        </p>
-        <Stepper
-          value={firstWeight}
-          onChange={setAllWeight}
-          step={2.5}
-          decimals
-          large
-        />
-        {!allSame && (
-          <p className="text-[10px] text-muted-foreground text-center mt-1">Per-set weights differ — tap a row to override.</p>
-        )}
-      </div>
+      {/* Bulk weight - applies to all sets if same. Only for weight×reps mode. */}
+      {mode === "weight_reps" && (
+        <div className="mt-4 rounded-2xl bg-card border border-border p-3">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">
+            Weight all sets ({unit})
+          </p>
+          <Stepper
+            value={firstWeight}
+            onChange={setAllWeight}
+            step={2.5}
+            decimals
+            large
+          />
+          {!allSame && (
+            <p className="text-[10px] text-muted-foreground text-center mt-1">Per-set weights differ — tap a row to override.</p>
+          )}
+        </div>
+      )}
 
       {/* Per-set rows */}
       <ul className="mt-3 space-y-2 overflow-y-auto">
@@ -528,19 +531,22 @@ const LoggingPanel = ({
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold w-7 h-7 rounded-full bg-secondary text-foreground flex items-center justify-center shrink-0">{i + 1}</span>
               <div className="flex-1 grid grid-cols-2 gap-2">
-                <MiniStepper
-                  label={unit}
-                  value={s.weight}
-                  onChange={v => update(i, { weight: v })}
-                  step={2.5}
-                  decimals
-                />
-                <MiniStepper
-                  label="reps"
-                  value={s.reps}
-                  onChange={v => update(i, { reps: v })}
-                  step={1}
-                />
+                {mode === "weight_reps" && (
+                  <>
+                    <MiniStepper label={unit} value={s.weight} onChange={v => update(i, { weight: v })} step={2.5} decimals />
+                    <MiniStepper label="reps" value={s.reps} onChange={v => update(i, { reps: v })} step={1} />
+                  </>
+                )}
+                {mode === "reps" && (
+                  <div className="col-span-2">
+                    <MiniStepper label="reps" value={s.reps} onChange={v => update(i, { reps: v })} step={1} />
+                  </div>
+                )}
+                {mode === "time" && (
+                  <div className="col-span-2">
+                    <MiniStepper label="seconds" value={s.seconds ?? 0} onChange={v => update(i, { seconds: v })} step={5} />
+                  </div>
+                )}
               </div>
             </div>
           </li>
