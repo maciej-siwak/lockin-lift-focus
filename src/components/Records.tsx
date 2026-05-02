@@ -5,6 +5,21 @@ import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
 
+type ExMode = "weight_reps" | "reps" | "time";
+
+const setMode = (s: SetLog): ExMode => {
+  if ((s.seconds ?? 0) > 0 && s.weight === 0 && s.reps === 0) return "time";
+  if (s.weight === 0 && s.reps > 0) return "reps";
+  return "weight_reps";
+};
+
+const formatSet = (s: SetLog, unit: string): string => {
+  const m = setMode(s);
+  if (m === "time") return `${s.seconds}s`;
+  if (m === "reps") return `${s.reps} reps`;
+  return `${s.weight}${unit} × ${s.reps} reps`;
+};
+
 interface Props { onBack: () => void; }
 
 export const Records = ({ onBack }: Props) => {
@@ -21,17 +36,26 @@ export const Records = ({ onBack }: Props) => {
         if (!map[key]) map[key] = [];
         for (const set of ex.sets) {
           if (set.weight > 0 && set.reps > 0) map[key].push(set);
+          else if (set.weight === 0 && set.reps > 0) map[key].push(set);
+          else if ((set.seconds ?? 0) > 0) map[key].push(set);
         }
       }
     }
-    const out: Array<{ key: string; sets: SetLog[] }> = [];
+    const out: Array<{ key: string; mode: ExMode; sets: SetLog[] }> = [];
     for (const [key, sets] of Object.entries(map)) {
-      const top = [...sets]
-        .sort((a, b) => (b.weight - a.weight) || (b.reps - a.reps))
+      // Determine the dominant mode for this exercise (most recent set wins ties)
+      const mode = setMode(sets[sets.length - 1]);
+      const filtered = sets.filter(s => setMode(s) === mode);
+      const top = [...filtered]
+        .sort((a, b) => {
+          if (mode === "time") return (b.seconds ?? 0) - (a.seconds ?? 0);
+          if (mode === "reps") return b.reps - a.reps;
+          return (b.weight - a.weight) || (b.reps - a.reps);
+        })
         .slice(0, 3);
-      if (top.length > 0) out.push({ key, sets: top });
+      if (top.length > 0) out.push({ key, mode, sets: top });
     }
-    return out.sort((a, b) => (b.sets[0].weight - a.sets[0].weight));
+    return out;
   }, [sessions]);
 
   const displayName = useMemo(() => {
@@ -52,13 +76,27 @@ export const Records = ({ onBack }: Props) => {
     for (const { key, sets } of topByExercise) {
       lines.push(displayName[key] ?? key);
       sets.forEach((set, i) => {
-        lines.push(`${i + 1}. ${set.weight}${unit} × ${set.reps} reps`);
+        lines.push(`${i + 1}. ${formatSet(set, unit)}`);
       });
       lines.push("");
     }
     try {
       await navigator.clipboard.writeText(lines.join("\n").trimEnd());
       toast("Records copied to clipboard");
+    } catch {
+      toast("Could not copy");
+    }
+  };
+
+  const shareExercise = async (key: string, sets: SetLog[]) => {
+    const name = displayName[key] ?? key;
+    const lines = [
+      `🏆 ${name} — Top Records`,
+      ...sets.map((set, i) => `${i + 1}. ${formatSet(set, unit)}`),
+    ];
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      toast(`${name} copied`);
     } catch {
       toast("Could not copy");
     }
@@ -89,16 +127,35 @@ export const Records = ({ onBack }: Props) => {
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Top 3 per exercise</h3>
             </div>
             <ul className="mt-3 space-y-3">
-              {topByExercise.map(({ key, sets }) => (
+              {topByExercise.map(({ key, mode, sets }) => (
                 <li key={key} className="rounded-xl bg-card border border-border p-3">
-                  <p className="text-sm font-semibold truncate">{displayName[key] ?? key}</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-sm font-semibold truncate flex-1">{displayName[key] ?? key}</p>
+                    <button
+                      onClick={() => shareExercise(key, sets)}
+                      aria-label={`Share ${displayName[key] ?? key} records`}
+                      className="p-1.5 -mr-1 text-muted-foreground hover:text-primary transition-base shrink-0"
+                    >
+                      <Share2 className="w-4 h-4" />
+                    </button>
+                  </div>
                   <ol className="mt-2 space-y-1">
                     {sets.map((set, i) => (
                       <li key={i} className="flex items-center gap-3 text-sm">
                         <span className="font-mono-timer text-xs font-bold text-primary w-4 text-center shrink-0">{i + 1}.</span>
-                        <span className="font-mono-timer font-bold text-foreground">{set.weight}{unit}</span>
-                        <span className="text-muted-foreground">×</span>
-                        <span className="font-mono-timer text-foreground">{set.reps} reps</span>
+                        {mode === "weight_reps" && (
+                          <>
+                            <span className="font-mono-timer font-bold text-foreground">{set.weight}{unit}</span>
+                            <span className="text-muted-foreground">×</span>
+                            <span className="font-mono-timer text-foreground">{set.reps} reps</span>
+                          </>
+                        )}
+                        {mode === "reps" && (
+                          <span className="font-mono-timer font-bold text-foreground">{set.reps} reps</span>
+                        )}
+                        {mode === "time" && (
+                          <span className="font-mono-timer font-bold text-foreground">{set.seconds}s</span>
+                        )}
                       </li>
                     ))}
                   </ol>
