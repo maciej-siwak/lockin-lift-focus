@@ -2,9 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2, Flame } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
-import type { SessionLog } from "@/lib/types";
+import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
 import { buildPRs, flagSet } from "@/lib/prs";
+
+const formatSet = (s: SetLog, unit: string): string => {
+  if ((s.seconds ?? 0) > 0 && s.weight === 0 && s.reps === 0) return `${s.seconds}s`;
+  if (s.weight === 0 && s.reps > 0) return `${s.reps} reps`;
+  return `${s.weight || 0}${unit} × ${s.reps}`;
+};
 
 interface Props { onBack: () => void; }
 
