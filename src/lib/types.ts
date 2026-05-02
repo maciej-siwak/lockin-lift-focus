@@ -1,9 +1,15 @@
+export type ExerciseMode = "weight_reps" | "reps" | "time";
+
 export interface ExerciseTemplate {
   id: string;
   name: string;
   sets: number;
   reps: number;
   restSeconds: number;
+  /** How this exercise is measured. Defaults to "weight_reps" when missing (legacy). */
+  mode?: ExerciseMode;
+  /** Target seconds per set, used when mode === "time" (e.g. battle ropes, plank). */
+  targetSeconds?: number;
 }
 
 export interface Workout {
@@ -17,6 +23,8 @@ export interface SetLog {
   setIndex: number;
   weight: number;
   reps: number;
+  /** Duration logged for time-based exercises. Optional for backwards compat. */
+  seconds?: number;
   completedAt: number;
 }
 

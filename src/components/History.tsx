@@ -2,9 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2, Flame } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
-import type { SessionLog } from "@/lib/types";
+import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
 import { buildPRs, flagSet } from "@/lib/prs";
+
+const formatSet = (s: SetLog, unit: string): string => {
+  if ((s.seconds ?? 0) > 0 && s.weight === 0 && s.reps === 0) return `${s.seconds}s`;
+  if (s.weight === 0 && s.reps > 0) return `${s.reps} reps`;
+  return `${s.weight || 0}${unit} × ${s.reps}`;
+};
 
 interface Props { onBack: () => void; }
 
@@ -36,7 +42,7 @@ export const History = ({ onBack }: Props) => {
       `Exercises: ${s.exercises.length} • Sets: ${totalSets} • Volume: ${Math.round(totalVol)}${unit}`,
       "",
       ...s.exercises.map(e =>
-        `• ${e.exerciseName}\n  ${e.sets.map(set => `${set.weight || 0}${unit} × ${set.reps}`).join(", ")}`
+        `• ${e.exerciseName}\n  ${e.sets.map(set => formatSet(set, unit)).join(", ")}`
       ),
     ];
     const text = lines.join("\n");
@@ -144,7 +150,7 @@ export const History = ({ onBack }: Props) => {
                                       }`}
                                     >
                                       {isPR && <Flame className="w-2.5 h-2.5" />}
-                                      {set.weight || 0}{unit} × {set.reps}
+                                      {formatSet(set, unit)}
                                     </span>
                                   );
                                 })}
