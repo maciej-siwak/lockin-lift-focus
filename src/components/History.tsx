@@ -36,7 +36,7 @@ export const History = ({ onBack }: Props) => {
       `Exercises: ${s.exercises.length} • Sets: ${totalSets} • Volume: ${Math.round(totalVol)}${unit}`,
       "",
       ...s.exercises.map(e =>
-        `• ${e.exerciseName}\n  ${e.sets.map(set => `${set.weight || 0}${unit} × ${set.reps}`).join(", ")}`
+        `• ${e.exerciseName}\n  ${e.sets.map(set => formatSet(set, unit)).join(", ")}`
       ),
     ];
     const text = lines.join("\n");
@@ -144,7 +144,7 @@ export const History = ({ onBack }: Props) => {
                                       }`}
                                     >
                                       {isPR && <Flame className="w-2.5 h-2.5" />}
-                                      {set.weight || 0}{unit} × {set.reps}
+                                      {formatSet(set, unit)}
                                     </span>
                                   );
                                 })}
