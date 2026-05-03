@@ -4,6 +4,7 @@ import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { storage } from "@/lib/storage";
 import type { Workout } from "@/lib/types";
+import logoUrl from "@/assets/logo.png";
 
 interface Props {
   onNewWorkout: () => void;
@@ -27,14 +28,24 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
 
   return (
     <AppShell
-      title="LOCK IN"
-      subtitle="Focused Lifts"
       right={
         <button onClick={onOpenSettings} aria-label="Settings" className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
           <SettingsIcon className="w-5 h-5" />
         </button>
       }
     >
+      <section className="pt-6 flex items-center gap-3">
+        <div className="w-12 h-12 rounded-2xl bg-primary/15 border border-primary/30 flex items-center justify-center shadow-glow shrink-0">
+          <img src={logoUrl} alt="Lock In logo" width={32} height={32} className="w-8 h-8" />
+        </div>
+        <div className="min-w-0">
+          <h1 className="text-3xl font-extrabold tracking-tight leading-none">
+            LOCK <span className="text-primary">IN</span>
+          </h1>
+          <p className="text-xs text-muted-foreground mt-1 tracking-[0.2em] uppercase">Focused Lifts</p>
+        </div>
+      </section>
+
       <section className="pt-6">
         <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-primary/20 blur-3xl" />

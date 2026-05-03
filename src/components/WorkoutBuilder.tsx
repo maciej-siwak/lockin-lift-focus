@@ -29,7 +29,7 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
   }, [workoutId]);
 
   function newExercise(rest: number): ExerciseTemplate {
-    return { id: uid(), name: "", sets: 3, reps: 8, restSeconds: rest, mode: "weight_reps", targetSeconds: 30 };
+    return { id: uid(), name: "", sets: 3, reps: 8, restSeconds: rest, mode: "weight_reps", targetSeconds: 30, repsPerSet: undefined };
   }
 
   const update = (id: string, patch: Partial<ExerciseTemplate>) => {
@@ -37,8 +37,38 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
   };
   const remove = (id: string) => setExercises(list => list.filter(e => e.id !== id));
 
+  const togglePyramid = (ex: ExerciseTemplate) => {
+    if (ex.repsPerSet) {
+      update(ex.id, { repsPerSet: undefined });
+    } else {
+      update(ex.id, { repsPerSet: Array.from({ length: ex.sets }).map(() => ex.reps) });
+    }
+  };
+
+  const setSetCount = (ex: ExerciseTemplate, sets: number) => {
+    if (ex.repsPerSet) {
+      const next = Array.from({ length: sets }).map((_, i) => ex.repsPerSet?.[i] ?? ex.reps);
+      update(ex.id, { sets, repsPerSet: next });
+    } else {
+      update(ex.id, { sets });
+    }
+  };
+
+  const setRepAt = (ex: ExerciseTemplate, idx: number, v: number) => {
+    const arr = (ex.repsPerSet ?? Array.from({ length: ex.sets }).map(() => ex.reps)).slice();
+    arr[idx] = v;
+    update(ex.id, { repsPerSet: arr });
+  };
+
   const save = () => {
-    const cleaned = exercises.map(e => ({ ...e, name: e.name.trim() })).filter(e => e.name);
+    const cleaned = exercises.map(e => {
+      const trimmed = { ...e, name: e.name.trim() };
+      if (trimmed.repsPerSet) {
+        trimmed.repsPerSet = trimmed.repsPerSet.slice(0, trimmed.sets);
+        while (trimmed.repsPerSet.length < trimmed.sets) trimmed.repsPerSet.push(trimmed.reps);
+      }
+      return trimmed;
+    }).filter(e => e.name);
     if (!name.trim()) return toast.error("Name your workout");
     if (cleaned.length === 0) return toast.error("Add at least one exercise");
     const all = storage.getWorkouts();
@@ -95,14 +125,57 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                   onChange={m => update(ex.id, { mode: m })}
                 />
                 <div className="grid grid-cols-3 gap-2">
-                  <NumField label="Sets" value={ex.sets} min={1} max={20} onChange={v => update(ex.id, { sets: v })} />
+                  <NumField label="Sets" value={ex.sets} min={1} max={20} onChange={v => setSetCount(ex, v)} />
                   {(ex.mode ?? "weight_reps") === "time" ? (
                     <NumField label="Time" suffix="s" step={5} value={ex.targetSeconds ?? 30} min={5} max={1800} onChange={v => update(ex.id, { targetSeconds: v })} />
                   ) : (
-                    <NumField label="Reps" value={ex.reps} min={1} max={50} onChange={v => update(ex.id, { reps: v })} />
+                    <NumField
+                      label={ex.repsPerSet ? "Base reps" : "Reps"}
+                      value={ex.reps}
+                      min={1}
+                      max={50}
+                      onChange={v => update(ex.id, { reps: v })}
+                    />
                   )}
                   <NumField label="Rest" suffix="s" step={15} value={ex.restSeconds} min={15} max={600} onChange={v => update(ex.id, { restSeconds: v })} />
                 </div>
+
+                {(ex.mode ?? "weight_reps") !== "time" && (
+                  <div className="rounded-xl bg-secondary/60 p-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold">Pyramid sets</p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">
+                          Different reps per set — e.g. 10, 8, 6.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => togglePyramid(ex)}
+                        aria-pressed={!!ex.repsPerSet}
+                        className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider transition-base ${
+                          ex.repsPerSet
+                            ? "bg-primary text-primary-foreground shadow-glow"
+                            : "bg-background border border-border text-muted-foreground"
+                        }`}
+                      >
+                        {ex.repsPerSet ? "On" : "Off"}
+                      </button>
+                    </div>
+                    {ex.repsPerSet && (
+                      <div className="mt-3 grid grid-cols-4 gap-1.5">
+                        {Array.from({ length: ex.sets }).map((_, i) => (
+                          <PyramidCell
+                            key={i}
+                            index={i}
+                            value={ex.repsPerSet?.[i] ?? ex.reps}
+                            onChange={v => setRepAt(ex, i, v)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <p className="text-[10px] text-muted-foreground px-1">
                   {(ex.mode ?? "weight_reps") === "weight_reps" && "You'll log weight × reps for each set (e.g. Bench Press)."}
                   {ex.mode === "reps" && "Bodyweight — you'll log reps only (e.g. Dips, Pull-ups)."}
@@ -135,12 +208,37 @@ const NumField = ({
   const dec = () => onChange(Math.max(min, value - step));
   const inc = () => onChange(Math.min(max, value + step));
   return (
-    <div className="rounded-xl bg-secondary p-2">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">{label}</p>
-      <div className="flex items-center justify-between mt-1">
-        <button onClick={dec} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-sm">−</button>
-        <span className="font-mono-timer font-bold text-lg">{value}{suffix}</span>
-        <button onClick={inc} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-sm">+</button>
+    <div className="rounded-xl bg-secondary p-2 min-w-0">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center truncate">{label}</p>
+      <div className="flex items-center justify-between mt-1 gap-1">
+        <button onClick={dec} className="w-6 h-6 rounded-full bg-background text-foreground font-bold text-sm shrink-0 flex items-center justify-center">−</button>
+        <span className="font-mono-timer font-bold text-base truncate">
+          {value}{suffix && <span className="text-muted-foreground text-xs ml-0.5">{suffix}</span>}
+        </span>
+        <button onClick={inc} className="w-6 h-6 rounded-full bg-background text-foreground font-bold text-sm shrink-0 flex items-center justify-center">+</button>
+      </div>
+    </div>
+  );
+};
+
+const PyramidCell = ({
+  index, value, onChange,
+}: { index: number; value: number; onChange: (v: number) => void }) => {
+  return (
+    <div className="rounded-lg bg-background border border-border p-1.5">
+      <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground text-center">Set {index + 1}</p>
+      <div className="flex items-center justify-between mt-0.5 gap-0.5">
+        <button
+          type="button"
+          onClick={() => onChange(Math.max(1, value - 1))}
+          className="w-5 h-5 rounded-full bg-secondary text-foreground font-bold text-xs shrink-0 flex items-center justify-center"
+        >−</button>
+        <span className="font-mono-timer font-bold text-sm">{value}</span>
+        <button
+          type="button"
+          onClick={() => onChange(Math.min(50, value + 1))}
+          className="w-5 h-5 rounded-full bg-secondary text-foreground font-bold text-xs shrink-0 flex items-center justify-center"
+        >+</button>
       </div>
     </div>
   );

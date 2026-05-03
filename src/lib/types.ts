@@ -10,6 +10,8 @@ export interface ExerciseTemplate {
   mode?: ExerciseMode;
   /** Target seconds per set, used when mode === "time" (e.g. battle ropes, plank). */
   targetSeconds?: number;
+  /** Optional pyramid: per-set reps overrides. Length should equal `sets`. */
+  repsPerSet?: number[];
 }
 
 export interface Workout {
@@ -41,6 +43,12 @@ export interface SessionLog {
   startedAt: number;
   endedAt?: number;
   exercises: ExerciseLog[];
+  /** Times the user left the app (tab/app backgrounded) during this session. */
+  focusBreaks?: number;
+  /** Total ms spent away from the app during this session. */
+  awayMs?: number;
+  /** 0–100 focus score computed at session end. */
+  focusScore?: number;
 }
 
 export interface Settings {

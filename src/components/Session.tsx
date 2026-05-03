@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Lock, Check, SkipForward, X, Plus, Minus, Shuffle, ArrowRight } from "lucide-react";
+import { Lock, Check, SkipForward, X, Plus, Minus, Shuffle, ArrowRight, Eye } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { PinPad } from "./PinPad";
@@ -37,7 +37,20 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const wakeLockRef = useRef<any>(null);
   const lastBeepRef = useRef(-1);
 
+  // Focus tracking
+  const [focusBreaks, setFocusBreaks] = useState(0);
+  const [awayMs, setAwayMs] = useState(0);
+  const awayStartRef = useRef<number | null>(null);
+
   const current = workout?.exercises[exIdx];
+
+  // Reps for current set in current exercise (supports pyramid)
+  const repsForSet = (idx: number): number => {
+    if (!current) return 0;
+    const arr = current.repsPerSet;
+    if (arr && arr[idx] != null) return arr[idx];
+    return current.reps;
+  };
 
   // Wake lock
   useEffect(() => {
@@ -65,6 +78,22 @@ export const Session = ({ workoutId, onExit }: Props) => {
       document.removeEventListener("visibilitychange", onVis);
       try { wakeLockRef.current?.release?.(); } catch {}
     };
+  }, []);
+
+  // Focus break tracking — count app/tab backgrounding during a session
+  useEffect(() => {
+    const onVis = () => {
+      if (document.visibilityState === "hidden") {
+        awayStartRef.current = Date.now();
+        setFocusBreaks(n => n + 1);
+      } else if (document.visibilityState === "visible" && awayStartRef.current) {
+        const delta = Date.now() - awayStartRef.current;
+        awayStartRef.current = null;
+        setAwayMs(ms => ms + delta);
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
   // Warn before navigating away
@@ -145,7 +174,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
       const seed: SetLog[] = Array.from({ length: current.sets }).map((_, i) => ({
         setIndex: i,
         weight: mode === "weight_reps" ? last : 0,
-        reps: mode === "time" ? 0 : current.reps,
+        reps: mode === "time" ? 0 : repsForSet(i),
         seconds: mode === "time" ? (current.targetSeconds ?? 30) : undefined,
         completedAt: Date.now(),
       }));
@@ -165,6 +194,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
   };
 
   const saveLogged = (newLogs: ExerciseLog[]) => {
+    // Snapshot focus stats. If currently away, include current away interval.
+    const totalAway = awayMs + (awayStartRef.current ? Date.now() - awayStartRef.current : 0);
+    const focusScore = computeFocusScore(focusBreaks, totalAway);
     const session: SessionLog = {
       id: sessionIdRef.current,
       workoutId: workout.id,
@@ -172,6 +204,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
       startedAt: startedAtRef.current,
       endedAt: Date.now(),
       exercises: newLogs,
+      focusBreaks,
+      awayMs: totalAway,
+      focusScore,
     };
     storage.upsertSession(session);
   };
@@ -223,6 +258,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
     const totalReps = logs.reduce((s, e) => s + e.sets.reduce((ss, x) => ss + x.reps, 0), 0);
     const totalVolume = logs.reduce((s, e) => s + e.sets.reduce((ss, x) => ss + x.reps * x.weight, 0), 0);
     const setsLogged = logs.reduce((s, e) => s + e.sets.length, 0);
+    const totalAway = awayMs + (awayStartRef.current ? Date.now() - awayStartRef.current : 0);
+    const focusScore = computeFocusScore(focusBreaks, totalAway);
+    const fl = focusLabel(focusScore);
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
         <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center shadow-glow">
@@ -234,6 +272,18 @@ export const Session = ({ workoutId, onExit }: Props) => {
           <Stat label="Sets" value={setsLogged} />
           <Stat label="Reps" value={totalReps} />
           <Stat label={`Vol ${settings.weightUnit}`} value={Math.round(totalVolume)} />
+        </div>
+        <div className="mt-4 w-full max-w-xs rounded-2xl bg-card border border-border p-4 text-left">
+          <div className="flex items-baseline justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Focus score</p>
+              <p className={`mt-1 font-mono-timer text-3xl font-extrabold ${fl.tone}`}>{focusScore}<span className="text-muted-foreground text-base">/100</span></p>
+            </div>
+            <span className={`text-xs font-bold uppercase tracking-wider ${fl.tone}`}>{fl.label}</span>
+          </div>
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            Focus breaks: {focusBreaks}{totalAway > 0 ? ` · Away: ${Math.round(totalAway / 1000)}s` : ""}
+          </p>
         </div>
         <Button onClick={onExit} className="mt-10 w-full max-w-xs h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold">Finish</Button>
       </div>
@@ -262,9 +312,12 @@ export const Session = ({ workoutId, onExit }: Props) => {
             <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
               <Lock className="w-3.5 h-3.5" /> Locked in
             </div>
-            <button onClick={requestExit} aria-label="End session" className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
-              <X className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-1">
+              <FocusChip count={focusBreaks} />
+              <button onClick={requestExit} aria-label="End session" className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
           <div className="mt-3 flex gap-1">
@@ -295,7 +348,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold truncate">{e.name}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {e.sets} sets · {e.reps} reps · {e.restSeconds}s rest
+                      {e.sets} sets · {e.repsPerSet ? e.repsPerSet.join("/") + " reps" : `${e.reps} reps`} · {e.restSeconds}s rest
                     </p>
                   </div>
                   <ArrowRight className="w-5 h-5 text-primary shrink-0" />
@@ -332,9 +385,12 @@ export const Session = ({ workoutId, onExit }: Props) => {
           <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
             <Lock className="w-3.5 h-3.5" /> Locked in
           </div>
-          <button onClick={requestExit} aria-label="End session" className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-1">
+            <FocusChip count={focusBreaks} />
+            <button onClick={requestExit} aria-label="End session" className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Progress dots */}
@@ -368,8 +424,8 @@ export const Session = ({ workoutId, onExit }: Props) => {
         {phase === "lifting" && (
           <div className="mt-6 flex-1 flex flex-col">
             <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card flex-1 flex flex-col items-center justify-center">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-primary/70 animate-pulse">
-                • Lifting in progress
+              <p className="text-sm font-bold tracking-wide text-primary animate-pulse text-center px-2">
+                Putting in work — leveling up! 💪
               </p>
               <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
               <p className="font-mono-timer text-7xl font-bold mt-2">
@@ -382,7 +438,12 @@ export const Session = ({ workoutId, onExit }: Props) => {
                 </p>
               ) : (
                 <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">
-                  {current!.reps} <span className="text-muted-foreground text-xl">reps</span>
+                  {repsForSet(setIdx)} <span className="text-muted-foreground text-xl">reps</span>
+                </p>
+              )}
+              {current!.repsPerSet && (current!.mode ?? "weight_reps") !== "time" && (
+                <p className="mt-3 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Pyramid: {current!.repsPerSet.join(" · ")}
                 </p>
               )}
             </div>
@@ -457,11 +518,38 @@ function formatTime(s: number) {
   return String(sec);
 }
 
+function computeFocusScore(breaks: number, totalAwayMs: number): number {
+  let score = 100;
+  score -= breaks * 5;
+  if (totalAwayMs > 30_000) score -= 10;
+  return Math.max(0, Math.min(100, score));
+}
+
+function focusLabel(score: number): { label: string; tone: string } {
+  if (score >= 85) return { label: "Locked In", tone: "text-primary" };
+  if (score >= 60) return { label: "Focused", tone: "text-foreground" };
+  return { label: "Distracted", tone: "text-muted-foreground" };
+}
+
 const Stat = ({ label, value }: { label: string; value: number }) => (
   <div className="rounded-2xl bg-card border border-border p-3">
     <p className="font-mono-timer text-2xl font-bold">{value}</p>
     <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">{label}</p>
   </div>
+);
+
+const FocusChip = ({ count }: { count: number }) => (
+  <span
+    title="Times you left the app during this workout"
+    className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider border ${
+      count === 0
+        ? "border-border bg-secondary text-muted-foreground"
+        : "border-warning/40 bg-warning/10 text-warning"
+    }`}
+  >
+    <Eye className="w-3 h-3" />
+    Focus breaks: {count}
+  </span>
 );
 
 const LoggingPanel = ({
