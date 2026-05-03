@@ -26,7 +26,6 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const [phase, setPhase] = useState<Phase>("picking");
   const [restLeft, setRestLeft] = useState(0);
   const [readyLeft, setReadyLeft] = useState(5);
-  const [showUnlock, setShowUnlock] = useState(false);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   // pending logging state for an exercise just finished
@@ -245,8 +244,8 @@ export const Session = ({ workoutId, onExit }: Props) => {
     setPhase("ready");
   };
 
-  const requestExit = () => setShowUnlock(true);
-  const confirmExit = () => {
+  const requestExit = () => {
+    if (!confirm("End this session?")) return;
     if (logs.length > 0) saveLogged(logs);
     toast("Session ended");
     onExit();
@@ -297,15 +296,6 @@ export const Session = ({ workoutId, onExit }: Props) => {
     const isFirst = completedIds.size === 0;
     return (
       <AppShell immersive>
-        {showUnlock && (
-          <PinPad
-            title="Enter unlock code"
-            subtitle="Confirm you really want to leave the session."
-            expectedCode={settings.unlockCode}
-            onSuccess={confirmExit}
-            onCancel={() => setShowUnlock(false)}
-          />
-        )}
         <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
@@ -368,16 +358,6 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
   return (
     <AppShell immersive>
-      {showUnlock && (
-        <PinPad
-          title="Enter unlock code"
-          subtitle="Confirm you really want to leave the session."
-          expectedCode={settings.unlockCode}
-          onSuccess={confirmExit}
-          onCancel={() => setShowUnlock(false)}
-        />
-      )}
-
       <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
         {/* Header bar */}
         <div className="flex items-center justify-between">
@@ -486,7 +466,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
               {completedSetsAcrossExercises === 0 && setIdx === 0 ? "Starting" : "Get up"}
             </p>
             <h2 className="mt-4 font-extrabold tracking-tight text-5xl leading-tight">
-              Ready,<br/>Set,<br/><span className="text-primary">Lift!</span>
+              Ready,<br/>Set,<br/><span className="text-primary">Go!</span>
             </h2>
             <p className="mt-8 font-mono-timer text-6xl font-bold text-primary animate-count-pop" key={readyLeft}>
               {readyLeft}
