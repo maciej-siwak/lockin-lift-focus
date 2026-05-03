@@ -258,6 +258,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
     const totalReps = logs.reduce((s, e) => s + e.sets.reduce((ss, x) => ss + x.reps, 0), 0);
     const totalVolume = logs.reduce((s, e) => s + e.sets.reduce((ss, x) => ss + x.reps * x.weight, 0), 0);
     const setsLogged = logs.reduce((s, e) => s + e.sets.length, 0);
+    const totalAway = awayMs + (awayStartRef.current ? Date.now() - awayStartRef.current : 0);
+    const focusScore = computeFocusScore(focusBreaks, totalAway);
+    const fl = focusLabel(focusScore);
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
         <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center shadow-glow">
@@ -269,6 +272,18 @@ export const Session = ({ workoutId, onExit }: Props) => {
           <Stat label="Sets" value={setsLogged} />
           <Stat label="Reps" value={totalReps} />
           <Stat label={`Vol ${settings.weightUnit}`} value={Math.round(totalVolume)} />
+        </div>
+        <div className="mt-4 w-full max-w-xs rounded-2xl bg-card border border-border p-4 text-left">
+          <div className="flex items-baseline justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Focus score</p>
+              <p className={`mt-1 font-mono-timer text-3xl font-extrabold ${fl.tone}`}>{focusScore}<span className="text-muted-foreground text-base">/100</span></p>
+            </div>
+            <span className={`text-xs font-bold uppercase tracking-wider ${fl.tone}`}>{fl.label}</span>
+          </div>
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            Focus breaks: {focusBreaks}{totalAway > 0 ? ` · Away: ${Math.round(totalAway / 1000)}s` : ""}
+          </p>
         </div>
         <Button onClick={onExit} className="mt-10 w-full max-w-xs h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold">Finish</Button>
       </div>
