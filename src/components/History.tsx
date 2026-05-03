@@ -124,6 +124,20 @@ export const History = ({ onBack }: Props) => {
                         <Mini label="Sets" value={totalSets} />
                         <Mini label={`Vol ${unit}`} value={Math.round(totalVol)} />
                       </div>
+                      {(s.focusScore != null || s.focusBreaks != null) && (
+                        <div className="mt-2 flex items-center justify-between rounded-xl bg-secondary/50 px-3 py-2 text-[11px]">
+                          <span className="text-muted-foreground">
+                            Focus breaks: <span className="text-foreground font-semibold">{s.focusBreaks ?? 0}</span>
+                          </span>
+                          {s.focusScore != null && (
+                            <span className={`font-bold uppercase tracking-wider ${
+                              s.focusScore >= 85 ? "text-primary" : s.focusScore >= 60 ? "text-foreground" : "text-muted-foreground"
+                            }`}>
+                              {s.focusScore}/100 · {s.focusScore >= 85 ? "Locked In" : s.focusScore >= 60 ? "Focused" : "Distracted"}
+                            </span>
+                          )}
+                        </div>
+                      )}
                       <ul className="mt-3 space-y-1.5">
                         {s.exercises.map(e => {
                           const prior = priorPRs[e.exerciseName.toLowerCase()];
