@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Lock, Check, SkipForward, X, Plus, Minus, Shuffle, ArrowRight, Eye } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
-import { PinPad } from "./PinPad";
 import { storage, uid } from "@/lib/storage";
 import type { Workout, SessionLog, ExerciseLog, SetLog, ExerciseMode } from "@/lib/types";
 import { beep, vibrate } from "@/lib/feedback";
