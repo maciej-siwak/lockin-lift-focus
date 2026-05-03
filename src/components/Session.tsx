@@ -348,7 +348,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold truncate">{e.name}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {e.sets} sets · {e.reps} reps · {e.restSeconds}s rest
+                      {e.sets} sets · {e.repsPerSet ? e.repsPerSet.join("/") + " reps" : `${e.reps} reps`} · {e.restSeconds}s rest
                     </p>
                   </div>
                   <ArrowRight className="w-5 h-5 text-primary shrink-0" />
