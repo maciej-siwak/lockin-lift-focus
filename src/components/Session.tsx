@@ -492,6 +492,19 @@ function formatTime(s: number) {
   return String(sec);
 }
 
+function computeFocusScore(breaks: number, totalAwayMs: number): number {
+  let score = 100;
+  score -= breaks * 5;
+  if (totalAwayMs > 30_000) score -= 10;
+  return Math.max(0, Math.min(100, score));
+}
+
+function focusLabel(score: number): { label: string; tone: string } {
+  if (score >= 85) return { label: "Locked In", tone: "text-primary" };
+  if (score >= 60) return { label: "Focused", tone: "text-foreground" };
+  return { label: "Distracted", tone: "text-muted-foreground" };
+}
+
 const Stat = ({ label, value }: { label: string; value: number }) => (
   <div className="rounded-2xl bg-card border border-border p-3">
     <p className="font-mono-timer text-2xl font-bold">{value}</p>
