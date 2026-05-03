@@ -194,6 +194,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
   };
 
   const saveLogged = (newLogs: ExerciseLog[]) => {
+    // Snapshot focus stats. If currently away, include current away interval.
+    const totalAway = awayMs + (awayStartRef.current ? Date.now() - awayStartRef.current : 0);
+    const focusScore = computeFocusScore(focusBreaks, totalAway);
     const session: SessionLog = {
       id: sessionIdRef.current,
       workoutId: workout.id,
@@ -201,6 +204,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
       startedAt: startedAtRef.current,
       endedAt: Date.now(),
       exercises: newLogs,
+      focusBreaks,
+      awayMs: totalAway,
+      focusScore,
     };
     storage.upsertSession(session);
   };
