@@ -29,7 +29,7 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
   }, [workoutId]);
 
   function newExercise(rest: number): ExerciseTemplate {
-    return { id: uid(), name: "", sets: 3, reps: 8, restSeconds: rest, mode: "weight_reps", targetSeconds: 30 };
+    return { id: uid(), name: "", sets: 3, reps: 8, restSeconds: rest, mode: "weight_reps", targetSeconds: 30, repsPerSet: undefined };
   }
 
   const update = (id: string, patch: Partial<ExerciseTemplate>) => {
@@ -37,8 +37,38 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
   };
   const remove = (id: string) => setExercises(list => list.filter(e => e.id !== id));
 
+  const togglePyramid = (ex: ExerciseTemplate) => {
+    if (ex.repsPerSet) {
+      update(ex.id, { repsPerSet: undefined });
+    } else {
+      update(ex.id, { repsPerSet: Array.from({ length: ex.sets }).map(() => ex.reps) });
+    }
+  };
+
+  const setSetCount = (ex: ExerciseTemplate, sets: number) => {
+    if (ex.repsPerSet) {
+      const next = Array.from({ length: sets }).map((_, i) => ex.repsPerSet?.[i] ?? ex.reps);
+      update(ex.id, { sets, repsPerSet: next });
+    } else {
+      update(ex.id, { sets });
+    }
+  };
+
+  const setRepAt = (ex: ExerciseTemplate, idx: number, v: number) => {
+    const arr = (ex.repsPerSet ?? Array.from({ length: ex.sets }).map(() => ex.reps)).slice();
+    arr[idx] = v;
+    update(ex.id, { repsPerSet: arr });
+  };
+
   const save = () => {
-    const cleaned = exercises.map(e => ({ ...e, name: e.name.trim() })).filter(e => e.name);
+    const cleaned = exercises.map(e => {
+      const trimmed = { ...e, name: e.name.trim() };
+      if (trimmed.repsPerSet) {
+        trimmed.repsPerSet = trimmed.repsPerSet.slice(0, trimmed.sets);
+        while (trimmed.repsPerSet.length < trimmed.sets) trimmed.repsPerSet.push(trimmed.reps);
+      }
+      return trimmed;
+    }).filter(e => e.name);
     if (!name.trim()) return toast.error("Name your workout");
     if (cleaned.length === 0) return toast.error("Add at least one exercise");
     const all = storage.getWorkouts();
