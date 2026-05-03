@@ -520,6 +520,20 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
   </div>
 );
 
+const FocusChip = ({ count }: { count: number }) => (
+  <span
+    title="Times you left the app during this workout"
+    className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider border ${
+      count === 0
+        ? "border-border bg-secondary text-muted-foreground"
+        : "border-warning/40 bg-warning/10 text-warning"
+    }`}
+  >
+    <Eye className="w-3 h-3" />
+    Focus breaks: {count}
+  </span>
+);
+
 const LoggingPanel = ({
   unit, sets, setSets, onConfirm, restSeconds, mode,
 }: {
