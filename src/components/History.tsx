@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2, Flame } from "lucide-react";
+import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2 } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
-import { buildPRs, flagSet } from "@/lib/prs";
 
 const formatSet = (s: SetLog, unit: string): string => {
   if ((s.seconds ?? 0) > 0 && s.weight === 0 && s.reps === 0) return `${s.seconds}s`;
@@ -73,16 +72,6 @@ export const History = ({ onBack }: Props) => {
                 (a, e) => a + e.sets.reduce((b, x) => b + x.reps * x.weight, 0), 0,
               );
               const isOpen = !!expanded[s.id];
-              // PRs that existed BEFORE this session — used to flag PR-breaking sets
-              const priorPRs = buildPRs(sessions, s.startedAt);
-              // Per-exercise: was any PR broken in this session?
-              const sessionPRCount = s.exercises.reduce((acc, e) => {
-                const prior = priorPRs[e.exerciseName.toLowerCase()];
-                return acc + e.sets.reduce((a, set) => {
-                  const f = flagSet(set, prior);
-                  return a + (f.weight || f.reps || f.volume ? 1 : 0);
-                }, 0);
-              }, 0);
               return (
                 <li key={s.id} className="rounded-2xl bg-card border border-border p-4 shadow-card">
                   <div className="flex items-start justify-between gap-3">
@@ -95,14 +84,7 @@ export const History = ({ onBack }: Props) => {
                         ? <ChevronUp className="w-4 h-4 mt-1 text-muted-foreground shrink-0" />
                         : <ChevronDown className="w-4 h-4 mt-1 text-muted-foreground shrink-0" />}
                       <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold truncate flex items-center gap-1.5">
-                        {s.workoutName}
-                        {sessionPRCount > 0 && (
-                          <span className="inline-flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/15 rounded-full px-1.5 py-0.5">
-                            <Flame className="w-3 h-3" /> {sessionPRCount} PR
-                          </span>
-                        )}
-                      </h4>
+                      <h4 className="font-semibold truncate">{s.workoutName}</h4>
                       <p className="text-xs text-muted-foreground mt-1">
                         {new Date(s.startedAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
                       </p>
@@ -140,30 +122,16 @@ export const History = ({ onBack }: Props) => {
                       )}
                       <ul className="mt-3 space-y-1.5">
                         {s.exercises.map(e => {
-                          const prior = priorPRs[e.exerciseName.toLowerCase()];
                           return (
                             <li key={e.exerciseId} className="rounded-xl bg-secondary/50 p-2.5">
                               <p className="text-sm font-semibold truncate">{e.exerciseName}</p>
                               <div className="mt-1 flex flex-wrap gap-1.5">
                                 {e.sets.map((set, i) => {
-                                  const f = flagSet(set, prior);
-                                  const isPR = f.weight || f.reps || f.volume;
-                                  const title = [
-                                    f.weight && "Top weight",
-                                    f.reps && "Top reps",
-                                    f.volume && "Top set volume",
-                                  ].filter(Boolean).join(" • ");
                                   return (
                                     <span
                                       key={i}
-                                      title={isPR ? `New PR: ${title}` : undefined}
-                                      className={`text-[11px] font-mono-timer rounded-md px-1.5 py-0.5 inline-flex items-center gap-1 ${
-                                        isPR
-                                          ? "bg-primary/15 border border-primary/40 text-primary font-bold shadow-glow"
-                                          : "bg-background border border-border"
-                                      }`}
+                                      className="text-[11px] font-mono-timer rounded-md px-1.5 py-0.5 inline-flex items-center gap-1 bg-background border border-border"
                                     >
-                                      {isPR && <Flame className="w-2.5 h-2.5" />}
                                       {formatSet(set, unit)}
                                     </span>
                                   );

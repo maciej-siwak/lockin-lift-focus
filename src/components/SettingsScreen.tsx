@@ -13,7 +13,6 @@ export const SettingsScreen = ({ onBack }: Props) => {
   const [s, setS] = useState(storage.getSettings());
 
   const save = () => {
-    if (!/^\d{4,6}$/.test(s.unlockCode)) { toast.error("Unlock code must be 4–6 digits"); return; }
     storage.saveSettings(s);
     toast.success("Settings saved");
     onBack();
@@ -26,18 +25,6 @@ export const SettingsScreen = ({ onBack }: Props) => {
       right={<button onClick={save} aria-label="Save" className="p-2 -mr-2 text-primary"><Check className="w-5 h-5" /></button>}
     >
       <div className="pt-5 space-y-5">
-        <Card>
-          <Label>Unlock code</Label>
-          <p className="text-xs text-muted-foreground mt-1">4–6 digits. Required to exit a session.</p>
-          <Input
-            inputMode="numeric"
-            value={s.unlockCode}
-            maxLength={6}
-            onChange={e => setS({ ...s, unlockCode: e.target.value.replace(/\D/g, "") })}
-            className="mt-3 h-12 bg-secondary border-0 rounded-xl font-mono-timer text-xl tracking-widest text-center"
-          />
-        </Card>
-
         <Card>
           <Label>Default rest</Label>
           <div className="mt-3 grid grid-cols-4 gap-2">
