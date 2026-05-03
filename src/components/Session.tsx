@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Lock, Check, SkipForward, X, Plus, Minus, Shuffle, ArrowRight, Eye } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { storage, uid } from "@/lib/storage";
