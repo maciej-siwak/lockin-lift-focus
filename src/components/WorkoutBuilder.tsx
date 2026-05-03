@@ -208,12 +208,37 @@ const NumField = ({
   const dec = () => onChange(Math.max(min, value - step));
   const inc = () => onChange(Math.min(max, value + step));
   return (
-    <div className="rounded-xl bg-secondary p-2">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">{label}</p>
-      <div className="flex items-center justify-between mt-1">
-        <button onClick={dec} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-sm">−</button>
-        <span className="font-mono-timer font-bold text-lg">{value}{suffix}</span>
-        <button onClick={inc} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-sm">+</button>
+    <div className="rounded-xl bg-secondary p-2 min-w-0">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center truncate">{label}</p>
+      <div className="flex items-center justify-between mt-1 gap-1">
+        <button onClick={dec} className="w-6 h-6 rounded-full bg-background text-foreground font-bold text-sm shrink-0 flex items-center justify-center">−</button>
+        <span className="font-mono-timer font-bold text-base truncate">
+          {value}{suffix && <span className="text-muted-foreground text-xs ml-0.5">{suffix}</span>}
+        </span>
+        <button onClick={inc} className="w-6 h-6 rounded-full bg-background text-foreground font-bold text-sm shrink-0 flex items-center justify-center">+</button>
+      </div>
+    </div>
+  );
+};
+
+const PyramidCell = ({
+  index, value, onChange,
+}: { index: number; value: number; onChange: (v: number) => void }) => {
+  return (
+    <div className="rounded-lg bg-background border border-border p-1.5">
+      <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground text-center">Set {index + 1}</p>
+      <div className="flex items-center justify-between mt-0.5 gap-0.5">
+        <button
+          type="button"
+          onClick={() => onChange(Math.max(1, value - 1))}
+          className="w-5 h-5 rounded-full bg-secondary text-foreground font-bold text-xs shrink-0 flex items-center justify-center"
+        >−</button>
+        <span className="font-mono-timer font-bold text-sm">{value}</span>
+        <button
+          type="button"
+          onClick={() => onChange(Math.min(50, value + 1))}
+          className="w-5 h-5 rounded-full bg-secondary text-foreground font-bold text-xs shrink-0 flex items-center justify-center"
+        >+</button>
       </div>
     </div>
   );
