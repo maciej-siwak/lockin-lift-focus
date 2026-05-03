@@ -125,14 +125,57 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                   onChange={m => update(ex.id, { mode: m })}
                 />
                 <div className="grid grid-cols-3 gap-2">
-                  <NumField label="Sets" value={ex.sets} min={1} max={20} onChange={v => update(ex.id, { sets: v })} />
+                  <NumField label="Sets" value={ex.sets} min={1} max={20} onChange={v => setSetCount(ex, v)} />
                   {(ex.mode ?? "weight_reps") === "time" ? (
                     <NumField label="Time" suffix="s" step={5} value={ex.targetSeconds ?? 30} min={5} max={1800} onChange={v => update(ex.id, { targetSeconds: v })} />
                   ) : (
-                    <NumField label="Reps" value={ex.reps} min={1} max={50} onChange={v => update(ex.id, { reps: v })} />
+                    <NumField
+                      label={ex.repsPerSet ? "Base reps" : "Reps"}
+                      value={ex.reps}
+                      min={1}
+                      max={50}
+                      onChange={v => update(ex.id, { reps: v })}
+                    />
                   )}
                   <NumField label="Rest" suffix="s" step={15} value={ex.restSeconds} min={15} max={600} onChange={v => update(ex.id, { restSeconds: v })} />
                 </div>
+
+                {(ex.mode ?? "weight_reps") !== "time" && (
+                  <div className="rounded-xl bg-secondary/60 p-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold">Pyramid sets</p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">
+                          Different reps per set — e.g. 10, 8, 6.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => togglePyramid(ex)}
+                        aria-pressed={!!ex.repsPerSet}
+                        className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider transition-base ${
+                          ex.repsPerSet
+                            ? "bg-primary text-primary-foreground shadow-glow"
+                            : "bg-background border border-border text-muted-foreground"
+                        }`}
+                      >
+                        {ex.repsPerSet ? "On" : "Off"}
+                      </button>
+                    </div>
+                    {ex.repsPerSet && (
+                      <div className="mt-3 grid grid-cols-4 gap-1.5">
+                        {Array.from({ length: ex.sets }).map((_, i) => (
+                          <PyramidCell
+                            key={i}
+                            index={i}
+                            value={ex.repsPerSet?.[i] ?? ex.reps}
+                            onChange={v => setRepAt(ex, i, v)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <p className="text-[10px] text-muted-foreground px-1">
                   {(ex.mode ?? "weight_reps") === "weight_reps" && "You'll log weight × reps for each set (e.g. Bench Press)."}
                   {ex.mode === "reps" && "Bodyweight — you'll log reps only (e.g. Dips, Pull-ups)."}
