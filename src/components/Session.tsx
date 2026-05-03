@@ -403,8 +403,8 @@ export const Session = ({ workoutId, onExit }: Props) => {
         {phase === "lifting" && (
           <div className="mt-6 flex-1 flex flex-col">
             <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card flex-1 flex flex-col items-center justify-center">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-primary/70 animate-pulse">
-                • Lifting in progress
+              <p className="text-sm font-bold tracking-wide text-primary animate-pulse text-center px-2">
+                Putting in work — leveling up! 💪
               </p>
               <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
               <p className="font-mono-timer text-7xl font-bold mt-2">
@@ -417,7 +417,12 @@ export const Session = ({ workoutId, onExit }: Props) => {
                 </p>
               ) : (
                 <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">
-                  {current!.reps} <span className="text-muted-foreground text-xl">reps</span>
+                  {repsForSet(setIdx)} <span className="text-muted-foreground text-xl">reps</span>
+                </p>
+              )}
+              {current!.repsPerSet && (current!.mode ?? "weight_reps") !== "time" && (
+                <p className="mt-3 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Pyramid: {current!.repsPerSet.join(" · ")}
                 </p>
               )}
             </div>
