@@ -76,7 +76,7 @@ export const Records = ({ onBack }: Props) => {
     for (const { key, sets } of topByExercise) {
       lines.push(displayName[key] ?? key);
       sets.forEach((set, i) => {
-        lines.push(`${i + 1}. ${formatSet(set, unit)}`);
+        lines.push(`${i === 0 ? "🏆" : `${i + 1}.`} ${formatSet(set, unit)}`);
       });
       lines.push("");
     }
@@ -92,7 +92,7 @@ export const Records = ({ onBack }: Props) => {
     const name = displayName[key] ?? key;
     const lines = [
       `🏆 ${name} — Top Records`,
-      ...sets.map((set, i) => `${i + 1}. ${formatSet(set, unit)}`),
+      ...sets.map((set, i) => `${i === 0 ? "🏆" : `${i + 1}.`} ${formatSet(set, unit)}`),
     ];
     try {
       await navigator.clipboard.writeText(lines.join("\n"));
@@ -142,7 +142,9 @@ export const Records = ({ onBack }: Props) => {
                   <ol className="mt-2 space-y-1">
                     {sets.map((set, i) => (
                       <li key={i} className="flex items-center gap-3 text-sm">
-                        <span className="font-mono-timer text-xs font-bold text-primary w-4 text-center shrink-0">{i + 1}.</span>
+                        <span className="w-5 text-center shrink-0 font-mono-timer text-xs font-bold text-primary">
+                          {i === 0 ? "🏆" : `${i + 1}.`}
+                        </span>
                         {mode === "weight_reps" && (
                           <>
                             <span className="font-mono-timer font-bold text-foreground">{set.weight}{unit}</span>

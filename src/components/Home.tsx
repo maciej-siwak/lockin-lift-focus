@@ -35,9 +35,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       }
     >
       <section className="pt-6 flex items-center gap-3">
-        <div className="w-12 h-12 rounded-2xl bg-primary/15 border border-primary/30 flex items-center justify-center shadow-glow shrink-0">
-          <img src={logoUrl} alt="Lock In logo" width={32} height={32} className="w-8 h-8" />
-        </div>
+        <img src={logoUrl} alt="Lock In logo" width={48} height={48} className="w-12 h-12 shrink-0 drop-shadow-[0_0_12px_hsl(var(--primary)/0.45)]" />
         <div className="min-w-0">
           <h1 className="text-3xl font-extrabold tracking-tight leading-none">
             LOCK <span className="text-primary">IN</span>
