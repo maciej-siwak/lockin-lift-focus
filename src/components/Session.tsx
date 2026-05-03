@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Lock, Check, SkipForward, X, Plus, Minus, Shuffle, ArrowRight } from "lucide-react";
+import { Lock, Check, SkipForward, X, Plus, Minus, Shuffle, ArrowRight, Eye } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { PinPad } from "./PinPad";
@@ -37,7 +37,20 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const wakeLockRef = useRef<any>(null);
   const lastBeepRef = useRef(-1);
 
+  // Focus tracking
+  const [focusBreaks, setFocusBreaks] = useState(0);
+  const [awayMs, setAwayMs] = useState(0);
+  const awayStartRef = useRef<number | null>(null);
+
   const current = workout?.exercises[exIdx];
+
+  // Reps for current set in current exercise (supports pyramid)
+  const repsForSet = (idx: number): number => {
+    if (!current) return 0;
+    const arr = current.repsPerSet;
+    if (arr && arr[idx] != null) return arr[idx];
+    return current.reps;
+  };
 
   // Wake lock
   useEffect(() => {
@@ -65,6 +78,22 @@ export const Session = ({ workoutId, onExit }: Props) => {
       document.removeEventListener("visibilitychange", onVis);
       try { wakeLockRef.current?.release?.(); } catch {}
     };
+  }, []);
+
+  // Focus break tracking — count app/tab backgrounding during a session
+  useEffect(() => {
+    const onVis = () => {
+      if (document.visibilityState === "hidden") {
+        awayStartRef.current = Date.now();
+        setFocusBreaks(n => n + 1);
+      } else if (document.visibilityState === "visible" && awayStartRef.current) {
+        const delta = Date.now() - awayStartRef.current;
+        awayStartRef.current = null;
+        setAwayMs(ms => ms + delta);
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
   // Warn before navigating away
@@ -145,7 +174,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
       const seed: SetLog[] = Array.from({ length: current.sets }).map((_, i) => ({
         setIndex: i,
         weight: mode === "weight_reps" ? last : 0,
-        reps: mode === "time" ? 0 : current.reps,
+        reps: mode === "time" ? 0 : repsForSet(i),
         seconds: mode === "time" ? (current.targetSeconds ?? 30) : undefined,
         completedAt: Date.now(),
       }));
