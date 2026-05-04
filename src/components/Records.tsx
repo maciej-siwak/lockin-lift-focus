@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Trophy, Share2, Dumbbell } from "lucide-react";
+import { ArrowLeft, Trophy, Share2, Dumbbell, Eye, Flame } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
@@ -27,6 +27,26 @@ export const Records = ({ onBack }: Props) => {
   const unit = useMemo(() => storage.getSettings().weightUnit, []);
 
   useEffect(() => { setSessions(storage.getSessions()); }, []);
+
+  // Focus stats: best (lowest focus breaks in a session) + current/best streak of 0-break sessions
+  const focusStats = useMemo(() => {
+    const withFocus = sessions.filter(s => s.focusBreaks != null);
+    if (withFocus.length === 0) return null;
+    const lowest = withFocus.reduce((min, s) => (s.focusBreaks! < min ? s.focusBreaks! : min), Infinity);
+    // sessions are stored newest-first; iterate chronologically for streaks
+    const chrono = [...withFocus].sort((a, b) => a.startedAt - b.startedAt);
+    let best = 0, run = 0, current = 0;
+    for (const s of chrono) {
+      if (s.focusBreaks === 0) { run++; if (run > best) best = run; }
+      else run = 0;
+    }
+    // current streak = trailing run from most recent
+    for (let i = chrono.length - 1; i >= 0; i--) {
+      if (chrono[i].focusBreaks === 0) current++;
+      else break;
+    }
+    return { lowest, best, current, totalTracked: withFocus.length };
+  }, [sessions]);
 
   const topByExercise = useMemo(() => {
     const map: Record<string, SetLog[]> = {};
@@ -115,6 +135,22 @@ export const Records = ({ onBack }: Props) => {
       }
     >
       <div className="pt-5">
+        {focusStats && (
+          <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card mb-4">
+            <div className="flex items-center gap-2">
+              <Eye className="w-4 h-4 text-primary" />
+              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Focus records</h3>
+            </div>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <FocusStat label="Fewest breaks" value={focusStats.lowest} />
+              <FocusStat label="Best streak" value={focusStats.best} icon={<Flame className="w-3 h-3" />} />
+              <FocusStat label="Current streak" value={focusStats.current} icon={<Flame className="w-3 h-3" />} />
+            </div>
+            <p className="mt-2 text-[10px] text-muted-foreground text-center">
+              Streak = consecutive sessions with 0 focus breaks
+            </p>
+          </section>
+        )}
         {topByExercise.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-8 text-center">
             <Dumbbell className="w-8 h-8 mx-auto text-muted-foreground" />
@@ -170,3 +206,12 @@ export const Records = ({ onBack }: Props) => {
     </AppShell>
   );
 };
+
+const FocusStat = ({ label, value, icon }: { label: string; value: number; icon?: React.ReactNode }) => (
+  <div className="rounded-xl bg-card border border-border p-2 text-center">
+    <p className="font-mono-timer text-2xl font-bold leading-none flex items-center justify-center gap-1">
+      {icon}{value}
+    </p>
+    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-1">{label}</p>
+  </div>
+);
