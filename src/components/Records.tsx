@@ -206,3 +206,12 @@ export const Records = ({ onBack }: Props) => {
     </AppShell>
   );
 };
+
+const FocusStat = ({ label, value, icon }: { label: string; value: number; icon?: React.ReactNode }) => (
+  <div className="rounded-xl bg-card border border-border p-2 text-center">
+    <p className="font-mono-timer text-2xl font-bold leading-none flex items-center justify-center gap-1">
+      {icon}{value}
+    </p>
+    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-1">{label}</p>
+  </div>
+);
