@@ -25,7 +25,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const [setIdx, setSetIdx] = useState(0); // sets completed for current exercise
   const [phase, setPhase] = useState<Phase>("picking");
   const [restLeft, setRestLeft] = useState(0);
-  const [readyLeft, setReadyLeft] = useState(5);
+  const [readyLeft, setReadyLeft] = useState(3);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   // pending logging state for an exercise just finished
@@ -116,7 +116,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
           if (settings.sound) beep(1320, 0.25, 0.25);
           if (settings.vibration) vibrate([100, 60, 200]);
           clearInterval(id);
-          setReadyLeft(5);
+          setReadyLeft(3);
           setPhase("ready");
           return 0;
         }
@@ -187,7 +187,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
   const skipRest = () => {
     setRestLeft(0);
-    setReadyLeft(5);
+    setReadyLeft(3);
     setPhase("ready");
   };
 
@@ -240,12 +240,15 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const pickExercise = (idx: number) => {
     setExIdx(idx);
     setSetIdx(0);
-    setReadyLeft(5);
+    setReadyLeft(3);
     setPhase("ready");
   };
 
   const requestExit = () => {
-    if (!confirm("End this session?")) return;
+    const msg = logs.length > 0
+      ? "End workout early?\n\nYour logged sets will be saved, but you'll lose your streak for this session."
+      : "End workout early?\n\nYou haven't logged any sets yet — nothing will be saved.";
+    if (!confirm(msg)) return;
     if (logs.length > 0) saveLogged(logs);
     toast("Session ended");
     onExit();
@@ -403,21 +406,21 @@ export const Session = ({ workoutId, onExit }: Props) => {
         {phase === "lifting" && (
           <div className="mt-6 flex-1 flex flex-col">
             <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card flex-1 flex flex-col items-center justify-center">
-              <p className="text-sm font-bold tracking-wide text-primary animate-pulse text-center px-2">
+              <p className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary animate-pulse text-center px-2 leading-tight">
                 Putting in work — leveling up! 💪
               </p>
-              <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
-              <p className="font-mono-timer text-7xl font-bold mt-2">
-                {setIdx + 1}<span className="text-muted-foreground text-3xl">/{current!.sets}</span>
+              <p className="mt-6 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
+              <p className="font-mono-timer text-4xl font-bold mt-1">
+                {setIdx + 1}<span className="text-muted-foreground text-xl">/{current!.sets}</span>
               </p>
-              <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Target</p>
+              <p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Target</p>
               {(current!.mode ?? "weight_reps") === "time" ? (
-                <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">
-                  {current!.targetSeconds ?? 30} <span className="text-muted-foreground text-xl">sec</span>
+                <p className="font-mono-timer text-3xl font-bold mt-1 text-primary">
+                  {current!.targetSeconds ?? 30} <span className="text-muted-foreground text-base">sec</span>
                 </p>
               ) : (
-                <p className="font-mono-timer text-5xl font-bold mt-1 text-primary">
-                  {repsForSet(setIdx)} <span className="text-muted-foreground text-xl">reps</span>
+                <p className="font-mono-timer text-3xl font-bold mt-1 text-primary">
+                  {repsForSet(setIdx)} <span className="text-muted-foreground text-base">reps</span>
                 </p>
               )}
               {current!.repsPerSet && (current!.mode ?? "weight_reps") !== "time" && (
