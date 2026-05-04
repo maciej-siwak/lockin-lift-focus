@@ -209,11 +209,11 @@ const NumField = ({
   const inc = () => onChange(Math.min(max, value + step));
   return (
     <div className="rounded-xl bg-secondary p-2 min-w-0">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center truncate">{label}</p>
-      <div className="flex items-center justify-between mt-1 gap-1">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">{label}</p>
+      <div className="flex items-center justify-between mt-1 gap-0.5">
         <button onClick={dec} className="w-6 h-6 rounded-full bg-background text-foreground font-bold text-sm shrink-0 flex items-center justify-center">−</button>
-        <span className="font-mono-timer font-bold text-base truncate">
-          {value}{suffix && <span className="text-muted-foreground text-xs ml-0.5">{suffix}</span>}
+        <span className="font-mono-timer font-bold text-sm min-w-0 text-center">
+          {value}{suffix && <span className="text-muted-foreground text-[10px] ml-0.5">{suffix}</span>}
         </span>
         <button onClick={inc} className="w-6 h-6 rounded-full bg-background text-foreground font-bold text-sm shrink-0 flex items-center justify-center">+</button>
       </div>
