@@ -88,6 +88,12 @@ export const History = ({ onBack }: Props) => {
                       <p className="text-xs text-muted-foreground mt-1">
                         {new Date(s.startedAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
                       </p>
+                      {s.focusBreaks != null && (
+                        <p className="text-[11px] mt-1">
+                          <span className="text-muted-foreground">Focus breaks: </span>
+                          <span className={`font-semibold ${s.focusBreaks === 0 ? "text-primary" : "text-foreground"}`}>{s.focusBreaks}</span>
+                        </p>
+                      )}
                       </div>
                     </button>
                     <div className="flex items-center shrink-0">
