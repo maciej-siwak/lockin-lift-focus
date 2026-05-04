@@ -4,7 +4,6 @@ import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { storage } from "@/lib/storage";
 import type { Workout } from "@/lib/types";
-import logoUrl from "@/assets/logo.png";
 
 interface Props {
   onNewWorkout: () => void;
@@ -34,21 +33,18 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         </button>
       }
     >
-      <section className="pt-6 flex items-center gap-3">
-        <img src={logoUrl} alt="Lock In logo" width={48} height={48} className="w-12 h-12 shrink-0 drop-shadow-[0_0_12px_hsl(var(--primary)/0.45)]" />
-        <div className="min-w-0">
-          <h1 className="text-3xl font-extrabold tracking-tight leading-none">
-            LOCK <span className="text-primary">IN</span>
-          </h1>
-          <p className="text-xs text-muted-foreground mt-1 tracking-[0.2em] uppercase">Focused Lifts</p>
-        </div>
+      <section className="pt-6">
+        <h1 className="text-3xl font-extrabold tracking-tight leading-none">
+          LOCK <span className="text-primary">IN</span>
+        </h1>
+        <p className="text-xs text-muted-foreground mt-1 tracking-[0.2em] uppercase">Focused Lifts</p>
       </section>
 
       <section className="pt-6">
         <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-primary/20 blur-3xl" />
           <p className="text-xs font-semibold text-primary tracking-[0.2em] uppercase">Today</p>
-          <h2 className="mt-2 text-3xl font-extrabold tracking-tight leading-tight">No distractions.<br/>Just lifts.</h2>
+          <h2 className="mt-2 text-xl font-extrabold tracking-tight leading-tight">No distractions.<br/>Just lifts.</h2>
           <p className="mt-3 text-sm text-muted-foreground">Build a plan, lock in, and train.</p>
           <Button onClick={onNewWorkout} className="mt-5 h-12 px-5 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
             <Plus className="w-4 h-4 mr-1.5" /> New workout
