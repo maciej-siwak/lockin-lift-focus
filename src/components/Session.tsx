@@ -548,6 +548,32 @@ const FocusChip = ({ count }: { count: number }) => (
   </span>
 );
 
+const ExitDialog = ({
+  open, onOpenChange, hasLogs, onConfirm,
+}: { open: boolean; onOpenChange: (v: boolean) => void; hasLogs: boolean; onConfirm: () => void }) => (
+  <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialogContent className="rounded-2xl border-border bg-card max-w-sm">
+      <AlertDialogHeader>
+        <AlertDialogTitle className="text-xl font-extrabold tracking-tight">End workout early?</AlertDialogTitle>
+        <AlertDialogDescription className="text-sm text-muted-foreground">
+          {hasLogs
+            ? "Your logged sets will be saved, but you'll lose your streak for this session."
+            : "You haven't logged any sets yet — nothing will be saved."}
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter className="gap-2">
+        <AlertDialogCancel className="rounded-xl">Keep going</AlertDialogCancel>
+        <AlertDialogAction
+          onClick={onConfirm}
+          className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
+        >
+          End session
+        </AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+);
+
 const LoggingPanel = ({
   unit, sets, setSets, onConfirm, restSeconds, mode,
 }: {
