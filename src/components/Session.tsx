@@ -6,6 +6,16 @@ import { storage, uid } from "@/lib/storage";
 import type { Workout, SessionLog, ExerciseLog, SetLog, ExerciseMode } from "@/lib/types";
 import { beep, vibrate } from "@/lib/feedback";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
 
 interface Props {
   workoutId: string;
@@ -39,6 +49,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const [focusBreaks, setFocusBreaks] = useState(0);
   const [awayMs, setAwayMs] = useState(0);
   const awayStartRef = useRef<number | null>(null);
+  const [exitOpen, setExitOpen] = useState(false);
 
   const current = workout?.exercises[exIdx];
 
@@ -245,10 +256,11 @@ export const Session = ({ workoutId, onExit }: Props) => {
   };
 
   const requestExit = () => {
-    const msg = logs.length > 0
-      ? "End workout early?\n\nYour logged sets will be saved, but you'll lose your streak for this session."
-      : "End workout early?\n\nYou haven't logged any sets yet — nothing will be saved.";
-    if (!confirm(msg)) return;
+    setExitOpen(true);
+  };
+
+  const confirmExit = () => {
+    setExitOpen(false);
     if (logs.length > 0) saveLogged(logs);
     toast("Session ended");
     onExit();
@@ -407,7 +419,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
           <div className="mt-6 flex-1 flex flex-col">
             <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card flex-1 flex flex-col items-center justify-center">
               <p className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary animate-pulse text-center px-2 leading-tight">
-                Putting in work — leveling up! 💪
+                Putting in work. Leveling up!
               </p>
               <p className="mt-6 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
               <p className="font-mono-timer text-4xl font-bold mt-1">
