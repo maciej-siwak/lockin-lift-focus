@@ -261,7 +261,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
   const confirmExit = () => {
     setExitOpen(false);
-    if (logs.length > 0) saveLogged(logs);
+    saveLogged(logs);
     toast("Session ended");
     onExit();
   };
@@ -557,8 +557,8 @@ const ExitDialog = ({
         <AlertDialogTitle className="text-xl font-extrabold tracking-tight">End workout early?</AlertDialogTitle>
         <AlertDialogDescription className="text-sm text-muted-foreground">
           {hasLogs
-            ? "Your logged sets will be saved, but you'll lose your streak for this session."
-            : "You haven't logged any sets yet — nothing will be saved."}
+            ? "Your session will be saved with the sets you've logged so far, but you'll lose your streak for this session."
+            : "Your session will still be saved to your history (with no sets logged) and counted toward your focus stats."}
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter className="gap-2">
