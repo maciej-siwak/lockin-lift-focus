@@ -367,6 +367,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
             </p>
           )}
         </div>
+        <ExitDialog open={exitOpen} onOpenChange={setExitOpen} hasLogs={logs.length > 0} onConfirm={confirmExit} />
       </AppShell>
     );
   }
@@ -501,6 +502,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
           />
         )}
       </div>
+      <ExitDialog open={exitOpen} onOpenChange={setExitOpen} hasLogs={logs.length > 0} onConfirm={confirmExit} />
     </AppShell>
   );
 };
