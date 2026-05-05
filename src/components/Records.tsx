@@ -32,7 +32,7 @@ export const Records = ({ onBack }: Props) => {
   const focusStats = useMemo(() => {
     const withFocus = sessions.filter(s => s.focusBreaks != null);
     if (withFocus.length === 0) return null;
-    const lowest = withFocus.reduce((min, s) => (s.focusBreaks! < min ? s.focusBreaks! : min), Infinity);
+    const fullFocusCount = withFocus.filter(s => s.focusBreaks === 0).length;
     // sessions are stored newest-first; iterate chronologically for streaks
     const chrono = [...withFocus].sort((a, b) => a.startedAt - b.startedAt);
     let best = 0, run = 0, current = 0;
@@ -45,7 +45,7 @@ export const Records = ({ onBack }: Props) => {
       if (chrono[i].focusBreaks === 0) current++;
       else break;
     }
-    return { lowest, best, current, totalTracked: withFocus.length };
+    return { fullFocusCount, best, current, totalTracked: withFocus.length };
   }, [sessions]);
 
   const topByExercise = useMemo(() => {
@@ -108,6 +108,23 @@ export const Records = ({ onBack }: Props) => {
     }
   };
 
+  const shareFocus = async () => {
+    if (!focusStats) return;
+    const lines = [
+      `🎯 Focus records — Lock In`,
+      ``,
+      `Full focus sessions: ${focusStats.fullFocusCount}`,
+      `Best streak: ${focusStats.best}`,
+      `Current streak: ${focusStats.current}`,
+    ];
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      toast("Focus records copied");
+    } catch {
+      toast("Could not copy");
+    }
+  };
+
   const shareExercise = async (key: string, sets: SetLog[]) => {
     const name = displayName[key] ?? key;
     const lines = [
@@ -137,17 +154,26 @@ export const Records = ({ onBack }: Props) => {
       <div className="pt-5">
         {focusStats && (
           <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card mb-4">
-            <div className="flex items-center gap-2">
-              <Eye className="w-4 h-4 text-primary" />
-              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Focus records</h3>
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Eye className="w-4 h-4 text-primary" />
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Focus records</h3>
+              </div>
+              <button
+                onClick={shareFocus}
+                aria-label="Share focus records"
+                className="p-1.5 -mr-1 text-muted-foreground hover:text-primary transition-base"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2">
-              <FocusStat label="Fewest breaks" value={focusStats.lowest} />
+              <FocusStat label="Full focus" value={focusStats.fullFocusCount} icon={<Eye className="w-3 h-3" />} />
               <FocusStat label="Best streak" value={focusStats.best} icon={<Flame className="w-3 h-3" />} />
               <FocusStat label="Current streak" value={focusStats.current} icon={<Flame className="w-3 h-3" />} />
             </div>
             <p className="mt-2 text-[10px] text-muted-foreground text-center">
-              Streak = consecutive sessions with 0 focus breaks
+              Full focus = sessions with 0 breaks. Streak = consecutive ones.
             </p>
           </section>
         )}
@@ -179,7 +205,7 @@ export const Records = ({ onBack }: Props) => {
                     {sets.map((set, i) => (
                       <li key={i} className="flex items-center gap-3 text-sm">
                         <span className="w-5 text-center shrink-0 font-mono-timer text-xs font-bold text-primary">
-                          {i === 0 ? "🏆" : `${i + 1}.`}
+                          {i + 1}.
                         </span>
                         {mode === "weight_reps" && (
                           <>
