@@ -33,14 +33,16 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         </button>
       }
     >
-      <section className="pt-6">
+      <section className="pt-6 text-center">
         <h1 className="text-3xl font-extrabold tracking-tight leading-none">
           LOCK <span className="text-primary">IN</span>
         </h1>
         <p className="text-xs text-muted-foreground mt-1 tracking-[0.2em] uppercase">Focused Lifts</p>
       </section>
 
-      <section className="pt-6">
+      {/* Build plan */}
+      <section className="mt-8">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 px-1">Build plan</h3>
         <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-primary/20 blur-3xl" />
           <p className="text-xs font-semibold text-primary tracking-[0.2em] uppercase">Today</p>
@@ -52,6 +54,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         </div>
       </section>
 
+      {/* Your workouts */}
       <section className="mt-8">
         <div className="flex items-center justify-between mb-3 px-1">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Your workouts</h3>
@@ -96,31 +99,35 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         )}
       </section>
 
-      <section className="mt-6 space-y-3">
-        <button
-          onClick={onOpenRecords}
-          className="w-full rounded-2xl bg-card border border-border p-4 flex items-center gap-3 text-left transition-base hover:bg-secondary"
-        >
-          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center text-primary">
-            <Trophy className="w-5 h-5" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-semibold">Personal records</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Top 3 lifts per exercise.</p>
-          </div>
-        </button>
-        <button
-          onClick={onOpenHistory}
-          className="w-full rounded-2xl bg-card border border-border p-4 flex items-center gap-3 text-left transition-base hover:bg-secondary"
-        >
-          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center text-primary">
-            <HistoryIcon className="w-5 h-5" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-semibold">Lifting history</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Review your past sessions and lifts.</p>
-          </div>
-        </button>
+      {/* History */}
+      <section className="mt-8">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 px-1">History</h3>
+        <div className="space-y-3">
+          <button
+            onClick={onOpenRecords}
+            className="w-full rounded-2xl bg-card border border-border p-4 flex items-center gap-3 text-left transition-base hover:bg-secondary"
+          >
+            <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center text-primary">
+              <Trophy className="w-5 h-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold">Personal records</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Top 3 lifts per exercise.</p>
+            </div>
+          </button>
+          <button
+            onClick={onOpenHistory}
+            className="w-full rounded-2xl bg-card border border-border p-4 flex items-center gap-3 text-left transition-base hover:bg-secondary"
+          >
+            <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center text-primary">
+              <HistoryIcon className="w-5 h-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold">Lifting history</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Review your past sessions and lifts.</p>
+            </div>
+          </button>
+        </div>
       </section>
     </AppShell>
   );
