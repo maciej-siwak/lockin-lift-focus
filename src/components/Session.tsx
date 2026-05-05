@@ -537,7 +537,7 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
 const FocusChip = ({ count }: { count: number }) => (
   <span
     title="Times you left the app during this workout"
-    className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider border border-warning/40 bg-warning/10 text-warning"
+    className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider border ${count > 0 ? "border-warning/40 bg-warning/10 text-warning" : "border-border bg-muted text-muted-foreground"}`}
   >
     <Eye className="w-3 h-3" />
     Focus breaks: {count}
@@ -552,7 +552,7 @@ const ExitDialog = ({
       <AlertDialogHeader>
         <AlertDialogTitle className="text-xl font-extrabold tracking-tight">End workout early?</AlertDialogTitle>
         <AlertDialogDescription className="text-sm text-muted-foreground">
-          Don't worry — your progress so far {hasLogs ? "(including all logged sets)" : ""} will be saved to your history and counted toward your focus stats. You can always come back and start fresh.
+          Finish and log the exercise to save your progress and weight. If you exit early, only the exercise will be recorded.
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter className="gap-2">
