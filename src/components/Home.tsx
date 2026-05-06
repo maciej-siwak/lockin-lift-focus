@@ -37,7 +37,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       <section className="pt-6 flex flex-col items-center">
         <div className="relative flex items-center justify-center">
           <div className="absolute inset-0 -m-6 rounded-full bg-primary/15 blur-2xl" aria-hidden />
-          <LockInLogo size={72} className="relative text-primary" />
+          <LockInLogo size={56} className="relative text-primary" />
         </div>
         <h1 className="mt-3 text-2xl font-extrabold tracking-tight leading-none">
           LOCK <span className="text-primary">IN</span>
