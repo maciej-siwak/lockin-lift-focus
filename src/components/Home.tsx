@@ -4,6 +4,7 @@ import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { storage } from "@/lib/storage";
 import type { Workout } from "@/lib/types";
+import lockInLogo from "@/assets/lockin-logo.png";
 
 interface Props {
   onNewWorkout: () => void;
@@ -33,11 +34,19 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         </button>
       }
     >
-      <section className="pt-6 text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight leading-none">
-          LOCK <span className="text-primary">IN</span>
-        </h1>
-        <p className="text-xs text-muted-foreground mt-1 tracking-[0.2em] uppercase">Focused Lifts</p>
+      <section className="pt-4 flex flex-col items-center">
+        <div className="relative">
+          <div className="absolute inset-0 rounded-full bg-primary/20 blur-2xl" aria-hidden />
+          <img
+            src={lockInLogo}
+            alt="Lock In — Focused Lifts"
+            width={160}
+            height={160}
+            decoding="async"
+            fetchPriority="high"
+            className="relative w-40 h-40 object-contain drop-shadow-[0_0_24px_hsl(var(--primary)/0.35)]"
+          />
+        </div>
       </section>
 
       {/* Build plan */}
