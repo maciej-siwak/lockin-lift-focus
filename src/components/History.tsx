@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2 } from "lucide-react";
 import { AppShell } from "./AppShell";
-import { FocusBreaksBadge } from "./FocusBreaksBadge";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
@@ -58,7 +57,6 @@ export const History = ({ onBack }: Props) => {
     <AppShell
       title="Lifting history"
       left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
-      right={<FocusBreaksBadge />}
     >
       <div className="pt-5">
         {sessions.length === 0 ? (
