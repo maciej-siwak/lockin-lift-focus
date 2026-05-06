@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, Plus, Trash2, Check } from "lucide-react";
 import { AppShell } from "./AppShell";
-import { FocusBreaksBadge } from "./FocusBreaksBadge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { storage, uid } from "@/lib/storage";
@@ -89,12 +88,7 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
     <AppShell
       title={workoutId ? "Edit workout" : "New workout"}
       left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
-      right={
-        <div className="flex items-center gap-1">
-          <FocusBreaksBadge />
-          <button onClick={save} aria-label="Save" className="p-2 -mr-2 text-primary"><Check className="w-5 h-5" /></button>
-        </div>
-      }
+      right={<button onClick={save} aria-label="Save" className="p-2 -mr-2 text-primary"><Check className="w-5 h-5" /></button>}
     >
       <div className="pt-5 space-y-5">
         <div>

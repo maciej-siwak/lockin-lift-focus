@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Trophy, Share2, Dumbbell, Eye, Flame } from "lucide-react";
 import { AppShell } from "./AppShell";
-import { FocusBreaksBadge } from "./FocusBreaksBadge";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
@@ -146,13 +145,10 @@ export const Records = ({ onBack }: Props) => {
       left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
       right={
         topByExercise.length > 0 ? (
-          <div className="flex items-center gap-1">
-            <FocusBreaksBadge />
-            <button onClick={sharePRs} aria-label="Share records" className="p-2 -mr-2 text-muted-foreground hover:text-primary transition-base">
-              <Share2 className="w-5 h-5" />
-            </button>
-          </div>
-        ) : <FocusBreaksBadge />
+          <button onClick={sharePRs} aria-label="Share records" className="p-2 -mr-2 text-muted-foreground hover:text-primary transition-base">
+            <Share2 className="w-5 h-5" />
+          </button>
+        ) : undefined
       }
     >
       <div className="pt-5">
