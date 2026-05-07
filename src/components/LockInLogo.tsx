@@ -13,12 +13,14 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
     <style>{`
       @keyframes lockin-second { to { transform: rotate(360deg); } }
       @keyframes lockin-minute { to { transform: rotate(360deg); } }
-      @keyframes lockin-glow { 0%,100% { opacity: .55; } 50% { opacity: .9; } }
+      @keyframes lockin-hour { to { transform: rotate(360deg); } }
+      @keyframes lockin-glow { 0%,100% { opacity: .5; transform: scale(1); } 50% { opacity: .85; transform: scale(1.04); } }
       .lockin-second { transform-origin: 32px 32px; animation: lockin-second 60s linear infinite; }
       .lockin-minute { transform-origin: 32px 32px; animation: lockin-minute 1800s linear infinite; }
-      .lockin-glow { animation: lockin-glow 4s ease-in-out infinite; transform-origin: 32px 32px; }
+      .lockin-hour { transform-origin: 32px 32px; animation: lockin-hour 21600s linear infinite; }
+      .lockin-glow { animation: lockin-glow 5s ease-in-out infinite; transform-origin: 32px 32px; }
       @media (prefers-reduced-motion: reduce) {
-        .lockin-second, .lockin-minute, .lockin-glow { animation: none; }
+        .lockin-second, .lockin-minute, .lockin-hour, .lockin-glow { animation: none; }
       }
     `}</style>
     <defs>
@@ -50,14 +52,18 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
         return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={i % 3 === 0 ? 2.25 : 1} />;
       })}
     </g>
-    {/* Slow rotating minute hand (very subtle) */}
-    <g className="lockin-minute" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.55">
-      <line x1="32" y1="32" x2="32" y2="-4" strokeWidth="1.5" />
+    {/* Hour hand - thicker, short */}
+    <g className="lockin-hour" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.7" style={{ transform: "rotate(40deg)", transformOrigin: "32px 32px" }}>
+      <line x1="32" y1="34" x2="32" y2="14" strokeWidth="2.5" />
+    </g>
+    {/* Minute hand */}
+    <g className="lockin-minute" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.6" style={{ transform: "rotate(-25deg)", transformOrigin: "32px 32px" }}>
+      <line x1="32" y1="34" x2="32" y2="-2" strokeWidth="1.75" />
     </g>
     {/* Sweeping second hand */}
-    <g className="lockin-second" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.75">
-      <line x1="32" y1="36" x2="32" y2="-9" strokeWidth="1" />
-      <circle cx="32" cy="32" r="1.6" fill="hsl(var(--primary))" />
+    <g className="lockin-second" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.85">
+      <line x1="32" y1="36" x2="32" y2="-7" strokeWidth="1" />
+      <circle cx="32" cy="32" r="1.8" fill="hsl(var(--primary))" />
     </g>
     {/* Shackle */}
     <path
