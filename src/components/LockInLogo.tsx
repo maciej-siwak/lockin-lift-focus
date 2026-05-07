@@ -3,7 +3,7 @@ interface Props { className?: string; size?: number }
 export const LockInLogo = ({ className, size = 56 }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="-10 -10 84 84"
+    viewBox="-18 -18 100 100"
     width={size}
     height={size}
     fill="none"
@@ -13,39 +13,56 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
     <style>{`
       @keyframes lockin-second { to { transform: rotate(360deg); } }
       @keyframes lockin-minute { to { transform: rotate(360deg); } }
+      @keyframes lockin-glow { 0%,100% { opacity: .55; } 50% { opacity: .9; } }
       .lockin-second { transform-origin: 32px 32px; animation: lockin-second 60s linear infinite; }
       .lockin-minute { transform-origin: 32px 32px; animation: lockin-minute 1800s linear infinite; }
+      .lockin-glow { animation: lockin-glow 4s ease-in-out infinite; transform-origin: 32px 32px; }
       @media (prefers-reduced-motion: reduce) {
-        .lockin-second, .lockin-minute { animation: none; }
+        .lockin-second, .lockin-minute, .lockin-glow { animation: none; }
       }
     `}</style>
+    <defs>
+      <radialGradient id="lockin-face" cx="50%" cy="40%" r="65%">
+        <stop offset="0%" stopColor="hsl(var(--primary) / 0.18)" />
+        <stop offset="70%" stopColor="hsl(var(--primary) / 0.04)" />
+        <stop offset="100%" stopColor="hsl(var(--primary) / 0)" />
+      </radialGradient>
+      <linearGradient id="lockin-body" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="hsl(var(--primary))" />
+        <stop offset="100%" stopColor="hsl(140 80% 45%)" />
+      </linearGradient>
+    </defs>
+    {/* Soft halo */}
+    <circle cx="32" cy="32" r="44" fill="url(#lockin-face)" className="lockin-glow" />
     {/* Analog clock behind the lock */}
-    <g stroke="currentColor" strokeLinecap="round" opacity="0.55">
-      <circle cx="32" cy="32" r="36" strokeWidth="1.5" fill="none" />
+    <g stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.7">
+      <circle cx="32" cy="32" r="42" strokeWidth="1.25" fill="none" opacity="0.35" />
+      <circle cx="32" cy="32" r="40" strokeWidth="1.75" fill="none" />
       {/* hour ticks */}
       {Array.from({ length: 12 }).map((_, i) => {
         const a = (i * Math.PI) / 6;
-        const outer = 34;
-        const inner = i % 3 === 0 ? 28 : 31;
+        const outer = 38;
+        const inner = i % 3 === 0 ? 31 : 34.5;
         const x1 = 32 + Math.sin(a) * outer;
         const y1 = 32 - Math.cos(a) * outer;
         const x2 = 32 + Math.sin(a) * inner;
         const y2 = 32 - Math.cos(a) * inner;
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={i % 3 === 0 ? 2 : 1} />;
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={i % 3 === 0 ? 2.25 : 1} />;
       })}
     </g>
     {/* Slow rotating minute hand (very subtle) */}
-    <g className="lockin-minute" stroke="currentColor" strokeLinecap="round" opacity="0.45">
-      <line x1="32" y1="32" x2="32" y2="8" strokeWidth="1.25" />
+    <g className="lockin-minute" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.55">
+      <line x1="32" y1="32" x2="32" y2="3" strokeWidth="1.5" />
     </g>
     {/* Sweeping second hand */}
-    <g className="lockin-second" stroke="currentColor" strokeLinecap="round" opacity="0.6">
-      <line x1="32" y1="34" x2="32" y2="4" strokeWidth="0.9" />
+    <g className="lockin-second" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.75">
+      <line x1="32" y1="35" x2="32" y2="-1" strokeWidth="1" />
+      <circle cx="32" cy="32" r="1.6" fill="hsl(var(--primary))" />
     </g>
     {/* Shackle */}
     <path
       d="M20 28v-7a12 12 0 0 1 24 0v7"
-      stroke="currentColor"
+      stroke="hsl(var(--primary))"
       strokeWidth="4.5"
       strokeLinecap="round"
     />
@@ -56,7 +73,7 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
       width="38"
       height="30"
       rx="6"
-      fill="currentColor"
+      fill="url(#lockin-body)"
     />
     {/* Barbell across the body */}
     <g stroke="hsl(var(--primary-foreground))" strokeLinecap="round">
