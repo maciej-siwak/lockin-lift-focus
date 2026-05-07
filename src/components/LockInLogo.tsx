@@ -52,13 +52,17 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
         return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={i % 3 === 0 ? 2.25 : 1} />;
       })}
     </g>
-    {/* Hour hand - thicker, short */}
-    <g className="lockin-hour" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.7" style={{ transform: "rotate(40deg)", transformOrigin: "32px 32px" }}>
-      <line x1="32" y1="34" x2="32" y2="14" strokeWidth="2.5" />
+    {/* Hour hand - thicker, short, starts at ~10 o'clock */}
+    <g style={{ transform: "rotate(-60deg)", transformOrigin: "32px 32px" }}>
+      <g className="lockin-hour" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.7">
+        <line x1="32" y1="34" x2="32" y2="14" strokeWidth="2.5" />
+      </g>
     </g>
-    {/* Minute hand */}
-    <g className="lockin-minute" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.6" style={{ transform: "rotate(-25deg)", transformOrigin: "32px 32px" }}>
-      <line x1="32" y1="34" x2="32" y2="-2" strokeWidth="1.75" />
+    {/* Minute hand - starts at ~2 o'clock */}
+    <g style={{ transform: "rotate(60deg)", transformOrigin: "32px 32px" }}>
+      <g className="lockin-minute" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.6">
+        <line x1="32" y1="34" x2="32" y2="-2" strokeWidth="1.75" />
+      </g>
     </g>
     {/* Sweeping second hand */}
     <g className="lockin-second" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.85">
