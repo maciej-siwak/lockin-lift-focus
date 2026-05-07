@@ -3,7 +3,7 @@ interface Props { className?: string; size?: number }
 export const LockInLogo = ({ className, size = 56 }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="-18 -18 100 100"
+    viewBox="-26 -26 116 116"
     width={size}
     height={size}
     fill="none"
@@ -33,16 +33,16 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
       </linearGradient>
     </defs>
     {/* Soft halo */}
-    <circle cx="32" cy="32" r="44" fill="url(#lockin-face)" className="lockin-glow" />
+      <circle cx="32" cy="32" r="52" fill="url(#lockin-face)" className="lockin-glow" />
     {/* Analog clock behind the lock */}
     <g stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.7">
-      <circle cx="32" cy="32" r="42" strokeWidth="1.25" fill="none" opacity="0.35" />
-      <circle cx="32" cy="32" r="40" strokeWidth="1.75" fill="none" />
+      <circle cx="32" cy="32" r="50" strokeWidth="1.25" fill="none" opacity="0.35" />
+      <circle cx="32" cy="32" r="48" strokeWidth="1.75" fill="none" />
       {/* hour ticks */}
       {Array.from({ length: 12 }).map((_, i) => {
         const a = (i * Math.PI) / 6;
-        const outer = 38;
-        const inner = i % 3 === 0 ? 31 : 34.5;
+        const outer = 46;
+        const inner = i % 3 === 0 ? 38 : 42;
         const x1 = 32 + Math.sin(a) * outer;
         const y1 = 32 - Math.cos(a) * outer;
         const x2 = 32 + Math.sin(a) * inner;
@@ -52,11 +52,11 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
     </g>
     {/* Slow rotating minute hand (very subtle) */}
     <g className="lockin-minute" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.55">
-      <line x1="32" y1="32" x2="32" y2="3" strokeWidth="1.5" />
+      <line x1="32" y1="32" x2="32" y2="-4" strokeWidth="1.5" />
     </g>
     {/* Sweeping second hand */}
     <g className="lockin-second" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.75">
-      <line x1="32" y1="35" x2="32" y2="-1" strokeWidth="1" />
+      <line x1="32" y1="36" x2="32" y2="-9" strokeWidth="1" />
       <circle cx="32" cy="32" r="1.6" fill="hsl(var(--primary))" />
     </g>
     {/* Shackle */}
