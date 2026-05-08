@@ -170,7 +170,12 @@ export const Records = ({ onBack }: Props) => {
             <div className="mt-3 grid grid-cols-3 gap-2">
               <FocusStat label="Full focus" value={focusStats.fullFocusCount} icon={<Eye className="w-3 h-3" />} />
               <FocusStat label="Best streak" value={focusStats.best} icon={<Flame className="w-3 h-3" />} />
-              <FocusStat label="Current streak" value={focusStats.current} icon={<Flame className="w-3 h-3" />} />
+              <FocusStat
+                label="Current streak"
+                value={focusStats.current}
+                icon={<Flame className="w-3 h-3" />}
+                tone={focusStats.current > 10 ? "gold" : focusStats.current > 5 ? "orange" : undefined}
+              />
             </div>
             <p className="mt-2 text-[10px] text-muted-foreground text-center">
               Full focus = sessions with 0 breaks. Streak = consecutive ones.
@@ -233,11 +238,35 @@ export const Records = ({ onBack }: Props) => {
   );
 };
 
-const FocusStat = ({ label, value, icon }: { label: string; value: number; icon?: React.ReactNode }) => (
-  <div className="rounded-xl bg-card border border-border p-2 text-center">
-    <p className="font-mono-timer text-2xl font-bold leading-none flex items-center justify-center gap-1">
-      {icon}{value}
-    </p>
-    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-1">{label}</p>
-  </div>
-);
+const FocusStat = ({
+  label,
+  value,
+  icon,
+  tone,
+}: {
+  label: string;
+  value: number;
+  icon?: React.ReactNode;
+  tone?: "orange" | "gold";
+}) => {
+  const toneClass =
+    tone === "gold"
+      ? "text-[hsl(45_95%_58%)] drop-shadow-[0_0_8px_hsl(45_95%_58%/0.55)]"
+      : tone === "orange"
+      ? "text-[hsl(22_95%_58%)] drop-shadow-[0_0_8px_hsl(22_95%_58%/0.45)]"
+      : "";
+  const borderClass =
+    tone === "gold"
+      ? "border-[hsl(45_95%_58%/0.5)]"
+      : tone === "orange"
+      ? "border-[hsl(22_95%_58%/0.5)]"
+      : "border-border";
+  return (
+    <div className={`rounded-xl bg-card border ${borderClass} p-2 text-center transition-base`}>
+      <p className={`font-mono-timer text-2xl font-bold leading-none flex items-center justify-center gap-1 ${toneClass}`}>
+        {icon}{value}
+      </p>
+      <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-1">{label}</p>
+    </div>
+  );
+};
