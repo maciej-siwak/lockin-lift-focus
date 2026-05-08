@@ -86,18 +86,18 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
       fill="url(#lockin-body)"
     />
     {/* Barbell across the body */}
-    <g stroke="hsl(var(--primary-foreground))" strokeLinecap="round">
+    <g stroke="hsl(var(--primary-foreground) / 0.78)" strokeLinecap="round">
       {/* bar */}
-      <line x1="20" y1="43" x2="44" y2="43" strokeWidth="2.5" />
+      <line x1="21" y1="43" x2="43" y2="43" strokeWidth="2" />
       {/* inner plates */}
-      <line x1="22" y1="37" x2="22" y2="49" strokeWidth="5" />
-      <line x1="42" y1="37" x2="42" y2="49" strokeWidth="5" />
+      <line x1="23" y1="38" x2="23" y2="48" strokeWidth="4.25" />
+      <line x1="41" y1="38" x2="41" y2="48" strokeWidth="4.25" />
       {/* outer plates */}
-      <line x1="18" y1="39" x2="18" y2="47" strokeWidth="4" />
-      <line x1="46" y1="39" x2="46" y2="47" strokeWidth="4" />
+      <line x1="19" y1="40" x2="19" y2="46" strokeWidth="3.25" />
+      <line x1="45" y1="40" x2="45" y2="46" strokeWidth="3.25" />
       {/* end caps */}
-      <line x1="15" y1="41.5" x2="15" y2="44.5" strokeWidth="2.5" />
-      <line x1="49" y1="41.5" x2="49" y2="44.5" strokeWidth="2.5" />
+      <line x1="16" y1="41.75" x2="16" y2="44.25" strokeWidth="2" />
+      <line x1="48" y1="41.75" x2="48" y2="44.25" strokeWidth="2" />
     </g>
   </svg>
 );
