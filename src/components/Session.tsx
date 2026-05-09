@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Lock, Check, SkipForward, X, Plus, Minus, Shuffle, ArrowRight, Eye } from "lucide-react";
+import { Lock, Check, SkipForward, X, Plus, Minus, Shuffle, ArrowRight, Eye, Play, Pause, RotateCcw } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { storage, uid } from "@/lib/storage";
@@ -51,7 +51,47 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const awayStartRef = useRef<number | null>(null);
   const [exitOpen, setExitOpen] = useState(false);
 
+  // Countdown timer for time-based exercises (during lifting phase)
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const lastTimerBeepRef = useRef(-1);
+
   const current = workout?.exercises[exIdx];
+  const currentMode: ExerciseMode = current?.mode ?? "weight_reps";
+  const targetSeconds = current?.targetSeconds ?? 30;
+
+  // Reset countdown whenever we enter a new lifting set for a time-based exercise
+  useEffect(() => {
+    if (phase === "lifting" && currentMode === "time") {
+      setTimeLeft(targetSeconds);
+      setTimerRunning(false);
+      lastTimerBeepRef.current = -1;
+    }
+  }, [phase, exIdx, setIdx, currentMode, targetSeconds]);
+
+  // Tick the countdown
+  useEffect(() => {
+    if (!timerRunning || phase !== "lifting") return;
+    const id = setInterval(() => {
+      setTimeLeft(prev => {
+        const next = prev - 1;
+        if (next <= 5 && next > 0 && next !== lastTimerBeepRef.current) {
+          lastTimerBeepRef.current = next;
+          if (settings.sound) beep(880, 0.08, 0.18);
+          if (settings.vibration) vibrate(40);
+        }
+        if (next <= 0) {
+          if (settings.sound) beep(1320, 0.25, 0.25);
+          if (settings.vibration) vibrate([100, 60, 200]);
+          clearInterval(id);
+          setTimerRunning(false);
+          return 0;
+        }
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(id);
+  }, [timerRunning, phase, settings]);
 
   // Reps for current set in current exercise (supports pyramid)
   const repsForSet = (idx: number): number => {
@@ -426,17 +466,61 @@ export const Session = ({ workoutId, onExit }: Props) => {
               <p className="font-mono-timer text-4xl font-bold mt-1">
                 {setIdx + 1}<span className="text-muted-foreground text-xl">/{current!.sets}</span>
               </p>
-              <p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Target</p>
-              {(current!.mode ?? "weight_reps") === "time" ? (
-                <p className="font-mono-timer text-3xl font-bold mt-1 text-primary">
-                  {current!.targetSeconds ?? 30} <span className="text-muted-foreground text-base">sec</span>
-                </p>
+              {currentMode === "time" ? (
+                <>
+                  <p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {timerRunning ? "Time left" : timeLeft === 0 ? "Time's up" : "Target"}
+                  </p>
+                  <div className="relative mt-1">
+                    {timerRunning && timeLeft <= 5 && timeLeft > 0 && (
+                      <span className="absolute inset-0 rounded-full bg-primary/30 animate-pulse-ring" />
+                    )}
+                    <p
+                      key={timeLeft}
+                      className={`relative font-mono-timer font-extrabold tracking-tighter ${
+                        timerRunning && timeLeft <= 5 && timeLeft > 0
+                          ? "text-primary text-6xl animate-count-pop"
+                          : timeLeft === 0
+                            ? "text-primary text-6xl"
+                            : "text-primary text-5xl"
+                      }`}
+                    >
+                      {formatTime(timeLeft)}
+                      <span className="text-muted-foreground text-base ml-1 font-mono-timer">sec</span>
+                    </p>
+                  </div>
+                  <div className="mt-5 flex items-center gap-2">
+                    {timeLeft > 0 ? (
+                      <Button
+                        onClick={() => setTimerRunning(r => !r)}
+                        className="h-11 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-5"
+                      >
+                        {timerRunning ? (
+                          <><Pause className="w-4 h-4 mr-1.5" /> Pause</>
+                        ) : (
+                          <><Play className="w-4 h-4 mr-1.5" /> {timeLeft === targetSeconds ? "Start" : "Resume"}</>
+                        )}
+                      </Button>
+                    ) : null}
+                    <Button
+                      variant="outline"
+                      onClick={() => { setTimerRunning(false); setTimeLeft(targetSeconds); lastTimerBeepRef.current = -1; }}
+                      className="h-11 rounded-xl border-border bg-secondary text-foreground font-semibold px-3"
+                      aria-label="Reset timer"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </>
               ) : (
+                <>
+                <p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Target</p>
                 <p className="font-mono-timer text-3xl font-bold mt-1 text-primary">
                   {repsForSet(setIdx)} <span className="text-muted-foreground text-base">reps</span>
                 </p>
+                </>
               )}
-              {current!.repsPerSet && (current!.mode ?? "weight_reps") !== "time" && (
+              {current!.repsPerSet && currentMode !== "time" && (
                 <p className="mt-3 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                   Pyramid: {current!.repsPerSet.join(" · ")}
                 </p>
