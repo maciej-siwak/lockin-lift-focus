@@ -64,7 +64,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
   useEffect(() => {
     if (phase === "lifting" && currentMode === "time") {
       setTimeLeft(targetSeconds);
-      setTimerRunning(false);
+      setTimerRunning(true);
       lastTimerBeepRef.current = -1;
     }
   }, [phase, exIdx, setIdx, currentMode, targetSeconds]);
@@ -469,7 +469,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
               {currentMode === "time" ? (
                 <>
                   <p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                    {timerRunning ? "Time left" : timeLeft === 0 ? "Time's up" : "Target"}
+                    {timeLeft === 0 ? "Time's up" : "Time left"}
                   </p>
                   <div className="relative mt-1">
                     {timerRunning && timeLeft <= 5 && timeLeft > 0 && (
@@ -488,28 +488,6 @@ export const Session = ({ workoutId, onExit }: Props) => {
                       {formatTime(timeLeft)}
                       <span className="text-muted-foreground text-base ml-1 font-mono-timer">sec</span>
                     </p>
-                  </div>
-                  <div className="mt-5 flex items-center gap-2">
-                    {timeLeft > 0 ? (
-                      <Button
-                        onClick={() => setTimerRunning(r => !r)}
-                        className="h-11 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-5"
-                      >
-                        {timerRunning ? (
-                          <><Pause className="w-4 h-4 mr-1.5" /> Pause</>
-                        ) : (
-                          <><Play className="w-4 h-4 mr-1.5" /> {timeLeft === targetSeconds ? "Start" : "Resume"}</>
-                        )}
-                      </Button>
-                    ) : null}
-                    <Button
-                      variant="outline"
-                      onClick={() => { setTimerRunning(false); setTimeLeft(targetSeconds); lastTimerBeepRef.current = -1; }}
-                      className="h-11 rounded-xl border-border bg-secondary text-foreground font-semibold px-3"
-                      aria-label="Reset timer"
-                    >
-                      <RotateCcw className="w-4 h-4" />
-                    </Button>
                   </div>
                 </>
               ) : (
