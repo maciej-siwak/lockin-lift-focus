@@ -72,17 +72,7 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
       })}
     </g>
 
-    {/* Clock hands */}
-    <g style={{ transform: "rotate(-60deg)", transformOrigin: "32px 32px" }}>
-      <g className="lockin-hour" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.85">
-        <line x1="32" y1="34" x2="32" y2="20" strokeWidth="2.4" />
-      </g>
-    </g>
-    <g style={{ transform: "rotate(60deg)", transformOrigin: "32px 32px" }}>
-      <g className="lockin-minute" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.7">
-        <line x1="32" y1="34" x2="32" y2="14" strokeWidth="1.6" />
-      </g>
-    </g>
+    {/* Sweeping second hand only */}
     <g className="lockin-second" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.9">
       <line x1="32" y1="36" x2="32" y2="12" strokeWidth="0.8" />
     </g>
