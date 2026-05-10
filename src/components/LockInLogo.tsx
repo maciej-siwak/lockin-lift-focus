@@ -3,7 +3,7 @@ interface Props { className?: string; size?: number }
 export const LockInLogo = ({ className, size = 56 }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="-26 -26 116 116"
+    viewBox="-8 -16 80 88"
     width={size}
     height={size}
     fill="none"
@@ -14,90 +14,96 @@ export const LockInLogo = ({ className, size = 56 }: Props) => (
       @keyframes lockin-second { to { transform: rotate(360deg); } }
       @keyframes lockin-minute { to { transform: rotate(360deg); } }
       @keyframes lockin-hour { to { transform: rotate(360deg); } }
-      @keyframes lockin-glow { 0%,100% { opacity: .5; transform: scale(1); } 50% { opacity: .85; transform: scale(1.04); } }
       .lockin-second { transform-origin: 32px 32px; animation: lockin-second 60s linear infinite; }
       .lockin-minute { transform-origin: 32px 32px; animation: lockin-minute 1800s linear infinite; }
       .lockin-hour { transform-origin: 32px 32px; animation: lockin-hour 21600s linear infinite; }
-      .lockin-glow { animation: lockin-glow 5s ease-in-out infinite; transform-origin: 32px 32px; }
       @media (prefers-reduced-motion: reduce) {
-        .lockin-second, .lockin-minute, .lockin-hour, .lockin-glow { animation: none; }
+        .lockin-second, .lockin-minute, .lockin-hour { animation: none; }
       }
     `}</style>
     <defs>
-      <radialGradient id="lockin-face" cx="50%" cy="40%" r="65%">
-        <stop offset="0%" stopColor="hsl(var(--primary) / 0.18)" />
-        <stop offset="70%" stopColor="hsl(var(--primary) / 0.04)" />
-        <stop offset="100%" stopColor="hsl(var(--primary) / 0)" />
+      <radialGradient id="lockin-face" cx="50%" cy="38%" r="70%">
+        <stop offset="0%" stopColor="hsl(var(--card))" />
+        <stop offset="100%" stopColor="hsl(0 0% 3%)" />
       </radialGradient>
-      <linearGradient id="lockin-body" x1="0" y1="0" x2="0" y2="1">
+      <linearGradient id="lockin-bezel" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stopColor="hsl(var(--primary))" />
-        <stop offset="100%" stopColor="hsl(140 80% 45%)" />
+        <stop offset="100%" stopColor="hsl(var(--primary) / 0.65)" />
       </linearGradient>
     </defs>
-    {/* Soft halo */}
-      <circle cx="32" cy="32" r="52" fill="url(#lockin-face)" className="lockin-glow" />
-    {/* Analog clock behind the lock */}
-    <g stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.7">
-      <circle cx="32" cy="32" r="50" strokeWidth="1.25" fill="none" opacity="0.35" />
-      <circle cx="32" cy="32" r="48" strokeWidth="1.75" fill="none" />
-      {/* hour ticks */}
+
+    {/* Shackle — sits behind the case, becomes the watch's hinge / lock loop */}
+    <path
+      d="M20 14V9a12 12 0 0 1 24 0v5"
+      stroke="hsl(var(--primary))"
+      strokeWidth="4.25"
+      strokeLinecap="round"
+      fill="none"
+      opacity="0.95"
+    />
+
+    {/* Watch case (outer bezel) — also the lock body */}
+    <circle cx="32" cy="32" r="27" fill="url(#lockin-bezel)" />
+    {/* Inner case ring */}
+    <circle cx="32" cy="32" r="24.5" fill="hsl(0 0% 3%)" />
+    {/* Watch face */}
+    <circle cx="32" cy="32" r="22.5" fill="url(#lockin-face)" />
+    {/* Subtle inner highlight */}
+    <circle cx="32" cy="32" r="22.5" fill="none" stroke="hsl(var(--primary) / 0.35)" strokeWidth="0.6" />
+
+    {/* Hour ticks on the face */}
+    <g stroke="hsl(var(--primary))" strokeLinecap="round">
       {Array.from({ length: 12 }).map((_, i) => {
         const a = (i * Math.PI) / 6;
-        const outer = 46;
-        const inner = i % 3 === 0 ? 38 : 42;
+        const outer = 21;
+        const inner = i % 3 === 0 ? 17 : 19;
         const x1 = 32 + Math.sin(a) * outer;
         const y1 = 32 - Math.cos(a) * outer;
         const x2 = 32 + Math.sin(a) * inner;
         const y2 = 32 - Math.cos(a) * inner;
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={i % 3 === 0 ? 2.25 : 1} />;
+        return (
+          <line
+            key={i}
+            x1={x1} y1={y1} x2={x2} y2={y2}
+            strokeWidth={i % 3 === 0 ? 1.6 : 0.8}
+            opacity={i % 3 === 0 ? 0.95 : 0.55}
+          />
+        );
       })}
     </g>
-    {/* Hour hand - thicker, short, starts at ~10 o'clock */}
+
+    {/* Clock hands */}
     <g style={{ transform: "rotate(-60deg)", transformOrigin: "32px 32px" }}>
-      <g className="lockin-hour" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.7">
-        <line x1="32" y1="34" x2="32" y2="14" strokeWidth="2.5" />
+      <g className="lockin-hour" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.85">
+        <line x1="32" y1="34" x2="32" y2="20" strokeWidth="2.4" />
       </g>
     </g>
-    {/* Minute hand - starts at ~2 o'clock */}
     <g style={{ transform: "rotate(60deg)", transformOrigin: "32px 32px" }}>
-      <g className="lockin-minute" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.6">
-        <line x1="32" y1="34" x2="32" y2="-2" strokeWidth="1.75" />
+      <g className="lockin-minute" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.7">
+        <line x1="32" y1="34" x2="32" y2="14" strokeWidth="1.6" />
       </g>
     </g>
-    {/* Sweeping second hand */}
-    <g className="lockin-second" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.85">
-      <line x1="32" y1="36" x2="32" y2="-7" strokeWidth="1" />
-      <circle cx="32" cy="32" r="1.8" fill="hsl(var(--primary))" />
+    <g className="lockin-second" stroke="hsl(var(--primary))" strokeLinecap="round" opacity="0.9">
+      <line x1="32" y1="36" x2="32" y2="12" strokeWidth="0.8" />
     </g>
-    {/* Shackle */}
-    <path
-      d="M20 28v-7a12 12 0 0 1 24 0v7"
-      stroke="hsl(var(--primary))"
-      strokeWidth="4.5"
-      strokeLinecap="round"
-    />
-    {/* Lock body */}
-    <rect
-      x="13"
-      y="28"
-      width="38"
-      height="30"
-      rx="6"
-      fill="url(#lockin-body)"
-    />
-    {/* Barbell across the body */}
-    <g stroke="hsl(var(--primary-foreground) / 0.78)" strokeLinecap="round">
+
+    {/* Barbell across the watch face — the heart of the mark */}
+    <g stroke="hsl(var(--primary))" strokeLinecap="round">
       {/* bar */}
-      <line x1="21" y1="43" x2="43" y2="43" strokeWidth="2" />
+      <line x1="22" y1="32" x2="42" y2="32" strokeWidth="1.6" opacity="0.95" />
       {/* inner plates */}
-      <line x1="23" y1="38" x2="23" y2="48" strokeWidth="4.25" />
-      <line x1="41" y1="38" x2="41" y2="48" strokeWidth="4.25" />
+      <line x1="24" y1="28" x2="24" y2="36" strokeWidth="3.6" />
+      <line x1="40" y1="28" x2="40" y2="36" strokeWidth="3.6" />
       {/* outer plates */}
-      <line x1="19" y1="40" x2="19" y2="46" strokeWidth="3.25" />
-      <line x1="45" y1="40" x2="45" y2="46" strokeWidth="3.25" />
+      <line x1="20" y1="29.5" x2="20" y2="34.5" strokeWidth="2.8" />
+      <line x1="44" y1="29.5" x2="44" y2="34.5" strokeWidth="2.8" />
       {/* end caps */}
-      <line x1="16" y1="41.75" x2="16" y2="44.25" strokeWidth="2" />
-      <line x1="48" y1="41.75" x2="48" y2="44.25" strokeWidth="2" />
+      <line x1="17.5" y1="31" x2="17.5" y2="33" strokeWidth="1.6" />
+      <line x1="46.5" y1="31" x2="46.5" y2="33" strokeWidth="1.6" />
     </g>
+
+    {/* Center pin over the barbell — like a clock pivot / lock keyhole stud */}
+    <circle cx="32" cy="32" r="1.6" fill="hsl(var(--primary))" />
+    <circle cx="32" cy="32" r="0.7" fill="hsl(0 0% 3%)" />
   </svg>
 );

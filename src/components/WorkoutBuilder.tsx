@@ -38,16 +38,20 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
   const remove = (id: string) => setExercises(list => list.filter(e => e.id !== id));
 
   const togglePyramid = (ex: ExerciseTemplate) => {
+    const isTime = (ex.mode ?? "weight_reps") === "time";
+    const base = isTime ? (ex.targetSeconds ?? 30) : ex.reps;
     if (ex.repsPerSet) {
       update(ex.id, { repsPerSet: undefined });
     } else {
-      update(ex.id, { repsPerSet: Array.from({ length: ex.sets }).map(() => ex.reps) });
+      update(ex.id, { repsPerSet: Array.from({ length: ex.sets }).map(() => base) });
     }
   };
 
   const setSetCount = (ex: ExerciseTemplate, sets: number) => {
+    const isTime = (ex.mode ?? "weight_reps") === "time";
+    const base = isTime ? (ex.targetSeconds ?? 30) : ex.reps;
     if (ex.repsPerSet) {
-      const next = Array.from({ length: sets }).map((_, i) => ex.repsPerSet?.[i] ?? ex.reps);
+      const next = Array.from({ length: sets }).map((_, i) => ex.repsPerSet?.[i] ?? base);
       update(ex.id, { sets, repsPerSet: next });
     } else {
       update(ex.id, { sets });
@@ -55,7 +59,9 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
   };
 
   const setRepAt = (ex: ExerciseTemplate, idx: number, v: number) => {
-    const arr = (ex.repsPerSet ?? Array.from({ length: ex.sets }).map(() => ex.reps)).slice();
+    const isTime = (ex.mode ?? "weight_reps") === "time";
+    const base = isTime ? (ex.targetSeconds ?? 30) : ex.reps;
+    const arr = (ex.repsPerSet ?? Array.from({ length: ex.sets }).map(() => base)).slice();
     arr[idx] = v;
     update(ex.id, { repsPerSet: arr });
   };
@@ -64,8 +70,10 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
     const cleaned = exercises.map(e => {
       const trimmed = { ...e, name: e.name.trim() };
       if (trimmed.repsPerSet) {
+        const isTime = (trimmed.mode ?? "weight_reps") === "time";
+        const base = isTime ? (trimmed.targetSeconds ?? 30) : trimmed.reps;
         trimmed.repsPerSet = trimmed.repsPerSet.slice(0, trimmed.sets);
-        while (trimmed.repsPerSet.length < trimmed.sets) trimmed.repsPerSet.push(trimmed.reps);
+        while (trimmed.repsPerSet.length < trimmed.sets) trimmed.repsPerSet.push(base);
       }
       return trimmed;
     }).filter(e => e.name);
@@ -127,7 +135,15 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                 <div className="grid grid-cols-3 gap-2">
                   <NumField label="Sets" value={ex.sets} min={1} max={20} onChange={v => setSetCount(ex, v)} />
                   {(ex.mode ?? "weight_reps") === "time" ? (
-                    <NumField label="Time" suffix="s" step={5} value={ex.targetSeconds ?? 30} min={5} max={1800} onChange={v => update(ex.id, { targetSeconds: v })} />
+                    <NumField
+                      label={ex.repsPerSet ? "Base time" : "Time"}
+                      suffix="s"
+                      step={5}
+                      value={ex.targetSeconds ?? 30}
+                      min={5}
+                      max={1800}
+                      onChange={v => update(ex.id, { targetSeconds: v })}
+                    />
                   ) : (
                     <NumField
                       label={ex.repsPerSet ? "Base reps" : "Reps"}
@@ -140,13 +156,17 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                   <NumField label="Rest" suffix="s" step={15} value={ex.restSeconds} min={15} max={600} onChange={v => update(ex.id, { restSeconds: v })} />
                 </div>
 
-                {(ex.mode ?? "weight_reps") !== "time" && (
+                {(() => {
+                  const isTime = (ex.mode ?? "weight_reps") === "time";
+                  return (
                   <div className="rounded-xl bg-secondary/60 p-3">
                     <div className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
                         <p className="text-xs font-semibold">Pyramid sets</p>
                         <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">
-                          Different reps per set — e.g. 10, 8, 6.
+                          {isTime
+                            ? "Different time per set — e.g. 30s, 25s, 20s."
+                            : "Different reps per set — e.g. 10, 8, 6."}
                         </p>
                       </div>
                       <button
@@ -168,14 +188,19 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                           <PyramidCell
                             key={i}
                             index={i}
-                            value={ex.repsPerSet?.[i] ?? ex.reps}
+                            value={ex.repsPerSet?.[i] ?? (isTime ? (ex.targetSeconds ?? 30) : ex.reps)}
                             onChange={v => setRepAt(ex, i, v)}
+                            min={isTime ? 5 : 1}
+                            max={isTime ? 1800 : 50}
+                            step={isTime ? 5 : 1}
+                            suffix={isTime ? "s" : undefined}
                           />
                         ))}
                       </div>
                     )}
                   </div>
-                )}
+                  );
+                })()}
                 <p className="text-[10px] text-muted-foreground px-1">
                   {(ex.mode ?? "weight_reps") === "weight_reps" && "You'll log weight × reps for each set (e.g. Bench Press)."}
                   {ex.mode === "reps" && "Bodyweight — you'll log reps only (e.g. Dips, Pull-ups)."}
@@ -222,21 +247,23 @@ const NumField = ({
 };
 
 const PyramidCell = ({
-  index, value, onChange,
-}: { index: number; value: number; onChange: (v: number) => void }) => {
+  index, value, onChange, min = 1, max = 50, step = 1, suffix,
+}: { index: number; value: number; onChange: (v: number) => void; min?: number; max?: number; step?: number; suffix?: string }) => {
   return (
     <div className="rounded-lg bg-background border border-border p-1.5">
       <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground text-center">Set {index + 1}</p>
       <div className="flex items-center justify-between mt-0.5 gap-0.5">
         <button
           type="button"
-          onClick={() => onChange(Math.max(1, value - 1))}
+          onClick={() => onChange(Math.max(min, value - step))}
           className="w-5 h-5 rounded-full bg-secondary text-foreground font-bold text-xs shrink-0 flex items-center justify-center"
         >−</button>
-        <span className="font-mono-timer font-bold text-sm">{value}</span>
+        <span className="font-mono-timer font-bold text-sm">
+          {value}{suffix && <span className="text-muted-foreground text-[9px] ml-0.5">{suffix}</span>}
+        </span>
         <button
           type="button"
-          onClick={() => onChange(Math.min(50, value + 1))}
+          onClick={() => onChange(Math.min(max, value + step))}
           className="w-5 h-5 rounded-full bg-secondary text-foreground font-bold text-xs shrink-0 flex items-center justify-center"
         >+</button>
       </div>
