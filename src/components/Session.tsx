@@ -504,9 +504,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
                 </p>
                 </>
               )}
-              {current!.repsPerSet && currentMode !== "time" && (
+              {current!.repsPerSet && (
                 <p className="mt-3 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Pyramid: {current!.repsPerSet.join(" · ")}
+                  Pyramid: {current!.repsPerSet.join(" · ")}{currentMode === "time" ? "s" : ""}
                 </p>
               )}
             </div>
