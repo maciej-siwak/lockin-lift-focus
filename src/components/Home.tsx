@@ -37,8 +37,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       {/* Hero — logo + wordmark */}
       <section className="pt-8 pb-2 flex flex-col items-center animate-fade-in">
         <div className="relative flex items-center justify-center">
-          <div className="absolute inset-0 -m-10 rounded-full bg-primary/20 blur-3xl" aria-hidden />
-          <LockInLogo size={120} className="relative text-primary drop-shadow-[0_4px_24px_hsl(var(--primary)/0.35)]" />
+          <LockInLogo size={120} className="relative text-primary" />
         </div>
         <h1 className="mt-4 text-4xl font-black tracking-tight leading-none">
           LOCK <span className="text-primary">IN</span>
