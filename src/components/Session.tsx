@@ -58,7 +58,11 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
   const current = workout?.exercises[exIdx];
   const currentMode: ExerciseMode = current?.mode ?? "weight_reps";
-  const targetSeconds = current?.targetSeconds ?? 30;
+  const baseTargetSeconds = current?.targetSeconds ?? 30;
+  const targetSeconds =
+    currentMode === "time" && current?.repsPerSet?.[setIdx] != null
+      ? current.repsPerSet[setIdx]
+      : baseTargetSeconds;
 
   // Reset countdown whenever we enter a new lifting set for a time-based exercise
   useEffect(() => {
@@ -224,7 +228,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
         setIndex: i,
         weight: mode === "weight_reps" ? last : 0,
         reps: mode === "time" ? 0 : repsForSet(i),
-        seconds: mode === "time" ? (current.targetSeconds ?? 30) : undefined,
+        seconds: mode === "time"
+          ? (current.repsPerSet?.[i] ?? current.targetSeconds ?? 30)
+          : undefined,
         completedAt: Date.now(),
       }));
       setPendingSets(seed);
