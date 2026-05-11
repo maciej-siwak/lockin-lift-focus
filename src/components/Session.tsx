@@ -474,10 +474,10 @@ export const Session = ({ workoutId, onExit }: Props) => {
               </p>
               {currentMode === "time" ? (
                 <>
-                  <p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  <p className="mt-8 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     {timeLeft === 0 ? "Time's up" : "Time left"}
                   </p>
-                  <div className="relative mt-1">
+                  <div className="relative mt-3 mb-4">
                     {timerRunning && timeLeft <= 5 && timeLeft > 0 && (
                       <span className="absolute inset-0 rounded-full bg-primary/30 animate-pulse-ring" />
                     )}
@@ -485,14 +485,14 @@ export const Session = ({ workoutId, onExit }: Props) => {
                       key={timeLeft}
                       className={`relative font-mono-timer font-extrabold tracking-tighter ${
                         timerRunning && timeLeft <= 5 && timeLeft > 0
-                          ? "text-primary text-6xl animate-count-pop"
+                          ? "text-primary text-8xl animate-count-pop"
                           : timeLeft === 0
-                            ? "text-primary text-6xl"
-                            : "text-primary text-5xl"
+                            ? "text-primary text-8xl"
+                            : "text-primary text-7xl"
                       }`}
                     >
                       {formatTime(timeLeft)}
-                      <span className="text-muted-foreground text-base ml-1 font-mono-timer">sec</span>
+                      <span className="text-muted-foreground text-xl ml-2 font-mono-timer">sec</span>
                     </p>
                   </div>
                 </>
