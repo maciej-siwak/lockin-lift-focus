@@ -11,9 +11,9 @@ interface AppShellProps {
 
 export const AppShell = ({ title, subtitle, left, right, children, immersive }: AppShellProps) => {
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="min-h-screen bg-ambient text-foreground flex flex-col">
       {!immersive && (
-        <header className="sticky top-0 z-20 bg-background/80 backdrop-blur-md border-b border-border">
+        <header className="sticky top-0 z-20 bg-background/70 backdrop-blur-xl border-b hairline">
           <div className="mx-auto max-w-md px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-3 flex items-center gap-3">
             <div className="min-w-10 flex justify-start shrink-0">{left}</div>
             <div className="flex-1 text-center min-w-0">

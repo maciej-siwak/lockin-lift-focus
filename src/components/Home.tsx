@@ -37,14 +37,14 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       }
     >
       {/* Hero — logo + wordmark */}
-      <section className="pt-8 pb-2 flex flex-col items-center animate-fade-in">
+      <section className="pt-10 pb-2 flex flex-col items-center animate-fade-in">
         <div className="relative flex items-center justify-center">
-          <LockInLogo size={120} className="relative text-primary" />
+          <LockInLogo size={128} className="relative text-primary drop-shadow-[0_0_30px_hsl(var(--primary)/0.35)]" />
         </div>
-        <h1 className="mt-4 text-4xl font-black tracking-tight leading-none">
+        <h1 className="mt-5 text-[2.75rem] font-black tracking-tight leading-none">
           LOCK <span className="text-primary">IN</span>
         </h1>
-        <p className="mt-2 text-[11px] text-muted-foreground tracking-[0.35em] uppercase font-medium">{t("home.tagline")}</p>
+        <p className="mt-2.5 text-[11px] text-muted-foreground tracking-[0.4em] uppercase font-semibold">{t("home.tagline")}</p>
       </section>
 
       {/* Today CTA — glowing outlined card */}

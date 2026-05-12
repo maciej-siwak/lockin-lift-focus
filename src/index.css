@@ -119,6 +119,25 @@ All colors MUST be HSL.
   .shadow-card { box-shadow: var(--shadow-card); }
   .transition-base { transition: all var(--transition-base); }
 
+  /* Ambient atmosphere — subtle radial wash used behind app shell */
+  .bg-ambient {
+    background:
+      radial-gradient(1200px 600px at 50% -10%, hsl(80 95% 55% / 0.10), transparent 60%),
+      radial-gradient(800px 500px at 90% 110%, hsl(140 80% 50% / 0.06), transparent 60%),
+      hsl(var(--background));
+  }
+
+  /* Glass surface — frosted card on top of ambient bg */
+  .glass-card {
+    background: linear-gradient(180deg, hsl(0 0% 100% / 0.025), hsl(0 0% 100% / 0.01));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid hsl(0 0% 100% / 0.06);
+  }
+
+  /* Hairline divider tuned for dark surfaces */
+  .hairline { border-color: hsl(0 0% 100% / 0.06); }
+
   @keyframes pulse-ring {
     0% { transform: scale(1); opacity: 1; }
     100% { transform: scale(1.4); opacity: 0; }
@@ -131,4 +150,17 @@ All colors MUST be HSL.
     100% { transform: scale(1); opacity: 1; }
   }
   .animate-count-pop { animation: count-pop 0.4s ease-out; }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .text-shimmer {
+    background: linear-gradient(90deg, hsl(var(--foreground)) 0%, hsl(var(--primary)) 50%, hsl(var(--foreground)) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 4s ease-in-out infinite;
+  }
 }
