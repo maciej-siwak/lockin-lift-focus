@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Trophy, Share2, Dumbbell, Eye, Flame, Sparkles } from "lucide-react";
+import { ArrowLeft, Trophy, Share2, Dumbbell, Eye, Flame } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
@@ -185,14 +185,9 @@ export const Records = ({ onBack }: Props) => {
           </section>
         )}
         {topByExercise.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-border/80 p-10 text-center bg-card/40">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center">
-              <Sparkles className="w-7 h-7 text-primary" />
-            </div>
-            <p className="mt-4 text-base font-semibold">{t("records.empty")}</p>
-            <p className="mt-1.5 text-xs text-muted-foreground max-w-[16rem] mx-auto leading-relaxed">
-              Your top 3 lifts per exercise will appear here as you train.
-            </p>
+          <div className="rounded-2xl border border-dashed border-border p-8 text-center">
+            <Dumbbell className="w-8 h-8 mx-auto text-muted-foreground" />
+            <p className="mt-3 text-sm text-muted-foreground">{t("records.empty")}</p>
           </div>
         ) : (
           <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card">

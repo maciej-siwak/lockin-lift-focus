@@ -399,18 +399,15 @@ export const Session = ({ workoutId, onExit }: Props) => {
               <li key={e.id}>
                 <button
                   onClick={() => pickExercise(i)}
-                  className="group w-full rounded-2xl bg-card border border-border p-4 flex items-center gap-3 text-left transition-base hover:bg-secondary hover:border-primary/50 hover:shadow-glow"
+                  className="w-full rounded-2xl bg-card border border-border p-4 flex items-center gap-3 text-left transition-base hover:bg-secondary hover:border-primary/40"
                 >
-                  <div className="w-10 h-10 shrink-0 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-mono-timer font-bold text-sm">
-                    {i + 1}
-                  </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold truncate">{e.name}</p>
-                    <p className="text-xs text-muted-foreground mt-1 font-mono-timer">
-                      {e.sets} {t("session.setsLabel")} · {e.repsPerSet ? e.repsPerSet.join("/") + (((e.mode ?? "weight_reps") === "time") ? "s" : "") : (((e.mode ?? "weight_reps") === "time") ? `${e.targetSeconds ?? 30}s` : `${e.reps} ${t("session.repsLabel")}`)} · {e.restSeconds}s
+                    <p className="font-semibold truncate">{e.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {e.sets} {t("session.setsLabel")} · {e.repsPerSet ? e.repsPerSet.join("/") + " " + t("session.repsLabel") : `${e.reps} ${t("session.repsLabel")}`} · {e.restSeconds}s {t("session.restLabel")}
                     </p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-primary shrink-0 transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRight className="w-5 h-5 text-primary shrink-0" />
                 </button>
               </li>
             ))}

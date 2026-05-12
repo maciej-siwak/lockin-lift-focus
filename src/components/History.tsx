@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2, Calendar } from "lucide-react";
+import { ArrowLeft, Dumbbell, Trash2, ChevronDown, ChevronUp, Share2 } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
@@ -62,14 +62,9 @@ export const History = ({ onBack }: Props) => {
     >
       <div className="pt-5">
         {sessions.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-border/80 p-10 text-center bg-card/40">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center">
-              <Calendar className="w-7 h-7 text-primary" />
-            </div>
-            <p className="mt-4 text-base font-semibold">{t("history.empty")}</p>
-            <p className="mt-1.5 text-xs text-muted-foreground max-w-[16rem] mx-auto leading-relaxed">
-              Every locked-in session shows up here with sets, volume and focus score.
-            </p>
+          <div className="rounded-2xl border border-dashed border-border p-8 text-center">
+            <Dumbbell className="w-8 h-8 mx-auto text-muted-foreground" />
+            <p className="mt-3 text-sm text-muted-foreground">{t("history.empty")}</p>
           </div>
         ) : (
           <ul className="space-y-3">
@@ -80,7 +75,7 @@ export const History = ({ onBack }: Props) => {
               );
               const isOpen = !!expanded[s.id];
               return (
-                <li key={s.id} className="rounded-2xl bg-card border border-border p-4 shadow-card transition-base hover:border-primary/30">
+                <li key={s.id} className="rounded-2xl bg-card border border-border p-4 shadow-card">
                   <div className="flex items-start justify-between gap-3">
                     <button
                       onClick={() => toggle(s.id)}

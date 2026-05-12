@@ -102,30 +102,29 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
     >
       <div className="pt-5 space-y-5">
         <div>
-          <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground px-1">{t("builder.workoutName")}</label>
+          <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("builder.workoutName")}</label>
           <Input
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder={t("builder.workoutNamePh")}
-            className="mt-2 h-14 text-base font-semibold bg-card border-border rounded-2xl shadow-card focus-visible:ring-primary/40"
+            className="mt-2 h-12 text-base bg-card border-border rounded-xl"
           />
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-2 px-1">
-            <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t("builder.exercises")}</label>
-            <span className="text-[10px] tabular-nums text-muted-foreground">{exercises.length}</span>
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("builder.exercises")}</label>
           </div>
           <ul className="space-y-3">
             {exercises.map((ex, i) => (
-              <li key={ex.id} className="rounded-2xl bg-card border border-border p-4 space-y-3 shadow-card transition-base hover:border-primary/30">
+              <li key={ex.id} className="rounded-2xl bg-card border border-border p-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold w-7 h-7 rounded-full bg-primary/15 text-primary flex items-center justify-center font-mono-timer">{i + 1}</span>
+                  <span className="text-xs font-bold w-6 h-6 rounded-full bg-secondary text-foreground flex items-center justify-center">{i + 1}</span>
                   <Input
                     value={ex.name}
                     onChange={e => update(ex.id, { name: e.target.value })}
                     placeholder={t("builder.exerciseNamePh")}
-                    className="flex-1 h-11 bg-secondary/60 border-0 rounded-xl text-sm font-semibold focus-visible:ring-primary/40"
+                    className="flex-1 h-11 bg-secondary border-0 rounded-lg"
                   />
                   <button onClick={() => remove(ex.id)} aria-label={t("builder.remove")} className="p-2 text-muted-foreground hover:text-destructive transition-base">
                     <Trash2 className="w-4 h-4" />
@@ -216,7 +215,7 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
           <Button
             variant="outline"
             onClick={() => setExercises(list => [...list, newExercise(settings.defaultRestSeconds)])}
-            className="w-full mt-3 h-12 rounded-2xl border-dashed border-border/80 bg-transparent text-muted-foreground hover:text-foreground hover:bg-secondary/60 hover:border-primary/40 transition-base"
+            className="w-full mt-3 h-12 rounded-2xl border-dashed border-border bg-transparent text-foreground hover:bg-secondary"
           >
             <Plus className="w-4 h-4 mr-1.5" /> {t("builder.addExercise")}
           </Button>
@@ -236,14 +235,14 @@ const NumField = ({
   const dec = () => onChange(Math.max(min, value - step));
   const inc = () => onChange(Math.min(max, value + step));
   return (
-    <div className="rounded-2xl bg-secondary/60 border border-border p-2.5 min-w-0">
-      <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-muted-foreground text-center">{label}</p>
-      <div className="flex items-center justify-between mt-1.5 gap-1">
-        <button onClick={dec} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-base shrink-0 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-base">−</button>
-        <span className="font-mono-timer font-extrabold text-base min-w-0 text-center text-foreground">
-          {value}{suffix && <span className="text-muted-foreground text-[10px] ml-0.5 font-normal">{suffix}</span>}
+    <div className="rounded-xl bg-secondary p-2 min-w-0">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">{label}</p>
+      <div className="flex items-center justify-between mt-1 gap-0.5">
+        <button onClick={dec} className="w-6 h-6 rounded-full bg-background text-foreground font-bold text-sm shrink-0 flex items-center justify-center">−</button>
+        <span className="font-mono-timer font-bold text-sm min-w-0 text-center">
+          {value}{suffix && <span className="text-muted-foreground text-[10px] ml-0.5">{suffix}</span>}
         </span>
-        <button onClick={inc} className="w-7 h-7 rounded-full bg-background text-foreground font-bold text-base shrink-0 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-base">+</button>
+        <button onClick={inc} className="w-6 h-6 rounded-full bg-background text-foreground font-bold text-sm shrink-0 flex items-center justify-center">+</button>
       </div>
     </div>
   );
