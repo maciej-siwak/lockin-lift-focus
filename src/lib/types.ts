@@ -57,5 +57,5 @@ export interface Settings {
   sound: boolean;
   vibration: boolean;
   weightUnit: "kg" | "lb";
-  language?: "en" | "es" | "pt" | "de" | "ja" | "ko";
+  language?: "en" | "es" | "pt" | "de" | "ja" | "ko" | "pl" | "bg";
 }
