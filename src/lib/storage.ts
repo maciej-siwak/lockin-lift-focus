@@ -27,6 +27,7 @@ export const defaultSettings: Settings = {
   sound: true,
   vibration: true,
   weightUnit: "kg",
+  language: "en",
 };
 
 export const storage = {
