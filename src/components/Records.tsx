@@ -4,6 +4,7 @@ import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
+import { useT } from "@/lib/i18n";
 
 type ExMode = "weight_reps" | "reps" | "time";
 
@@ -23,6 +24,7 @@ const formatSet = (s: SetLog, unit: string): string => {
 interface Props { onBack: () => void; }
 
 export const Records = ({ onBack }: Props) => {
+  const t = useT();
   const [sessions, setSessions] = useState<SessionLog[]>([]);
   const unit = useMemo(() => storage.getSettings().weightUnit, []);
 
@@ -89,7 +91,7 @@ export const Records = ({ onBack }: Props) => {
 
   const sharePRs = async () => {
     if (topByExercise.length === 0) {
-      toast("No records yet");
+      toast(t("records.noRecords"));
       return;
     }
     const lines: string[] = [`🏆 Top Records — Lock In`, ""];
@@ -102,9 +104,9 @@ export const Records = ({ onBack }: Props) => {
     }
     try {
       await navigator.clipboard.writeText(lines.join("\n").trimEnd());
-      toast("Records copied to clipboard");
+      toast(t("records.copied"));
     } catch {
-      toast("Could not copy");
+      toast(t("common.copyFail"));
     }
   };
 
@@ -119,9 +121,9 @@ export const Records = ({ onBack }: Props) => {
     ];
     try {
       await navigator.clipboard.writeText(lines.join("\n"));
-      toast("Focus records copied");
+      toast(t("records.focusCopied"));
     } catch {
-      toast("Could not copy");
+      toast(t("common.copyFail"));
     }
   };
 
@@ -133,19 +135,19 @@ export const Records = ({ onBack }: Props) => {
     ];
     try {
       await navigator.clipboard.writeText(lines.join("\n"));
-      toast(`${name} copied`);
+      toast(t("records.exCopied", { name }));
     } catch {
-      toast("Could not copy");
+      toast(t("common.copyFail"));
     }
   };
 
   return (
     <AppShell
-      title="Personal records"
-      left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
+      title={t("records.title")}
+      left={<button onClick={onBack} aria-label={t("common.back")} className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
       right={
         topByExercise.length > 0 ? (
-          <button onClick={sharePRs} aria-label="Share records" className="p-2 -mr-2 text-muted-foreground hover:text-primary transition-base">
+          <button onClick={sharePRs} aria-label={t("records.shareRecords")} className="p-2 -mr-2 text-muted-foreground hover:text-primary transition-base">
             <Share2 className="w-5 h-5" />
           </button>
         ) : undefined
@@ -157,41 +159,41 @@ export const Records = ({ onBack }: Props) => {
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4 text-primary" />
-                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Focus records</h3>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{t("records.focusRecords")}</h3>
               </div>
               <button
                 onClick={shareFocus}
-                aria-label="Share focus records"
+                aria-label={t("records.focusRecords")}
                 className="p-1.5 -mr-1 text-muted-foreground hover:text-primary transition-base"
               >
                 <Share2 className="w-4 h-4" />
               </button>
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2">
-              <FocusStat label="Full focus" value={focusStats.fullFocusCount} icon={<Eye className="w-3 h-3" />} />
-              <FocusStat label="Best streak" value={focusStats.best} icon={<Flame className="w-3 h-3" />} />
+              <FocusStat label={t("records.fullFocus")} value={focusStats.fullFocusCount} icon={<Eye className="w-3 h-3" />} />
+              <FocusStat label={t("records.bestStreak")} value={focusStats.best} icon={<Flame className="w-3 h-3" />} />
               <FocusStat
-                label="Current streak"
+                label={t("records.currentStreak")}
                 value={focusStats.current}
                 icon={<Flame className="w-3 h-3" />}
                 tone={focusStats.current > 10 ? "gold" : focusStats.current > 5 ? "orange" : undefined}
               />
             </div>
             <p className="mt-2 text-[10px] text-muted-foreground text-center">
-              Full focus = sessions with 0 breaks. Streak = consecutive ones.
+              {t("records.streakDesc")}
             </p>
           </section>
         )}
         {topByExercise.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-8 text-center">
             <Dumbbell className="w-8 h-8 mx-auto text-muted-foreground" />
-            <p className="mt-3 text-sm text-muted-foreground">No records yet. Log a session to start tracking PRs.</p>
+            <p className="mt-3 text-sm text-muted-foreground">{t("records.empty")}</p>
           </div>
         ) : (
           <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card">
             <div className="flex items-center gap-2">
               <Trophy className="w-4 h-4 text-primary" />
-              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Top 3 per exercise</h3>
+              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{t("records.top3")}</h3>
             </div>
             <ul className="mt-3 space-y-3">
               {topByExercise.map(({ key, mode, sets }) => (
@@ -200,7 +202,7 @@ export const Records = ({ onBack }: Props) => {
                     <p className="text-sm font-semibold truncate flex-1">{displayName[key] ?? key}</p>
                     <button
                       onClick={() => shareExercise(key, sets)}
-                      aria-label={`Share ${displayName[key] ?? key} records`}
+                      aria-label={t("common.share")}
                       className="p-1.5 -mr-1 text-muted-foreground hover:text-primary transition-base shrink-0"
                     >
                       <Share2 className="w-4 h-4" />
@@ -216,11 +218,11 @@ export const Records = ({ onBack }: Props) => {
                           <>
                             <span className="font-mono-timer font-bold text-foreground">{set.weight}{unit}</span>
                             <span className="text-muted-foreground">×</span>
-                            <span className="font-mono-timer text-foreground">{set.reps} reps</span>
+                            <span className="font-mono-timer text-foreground">{set.reps} {t("session.repsLabel")}</span>
                           </>
                         )}
                         {mode === "reps" && (
-                          <span className="font-mono-timer font-bold text-foreground">{set.reps} reps</span>
+                          <span className="font-mono-timer font-bold text-foreground">{set.reps} {t("session.repsLabel")}</span>
                         )}
                         {mode === "time" && (
                           <span className="font-mono-timer font-bold text-foreground">{set.seconds}s</span>
