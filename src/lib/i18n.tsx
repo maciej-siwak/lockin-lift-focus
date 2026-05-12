@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { storage } from "./storage";
 
-export type Lang = "en" | "es" | "pt" | "de" | "ja" | "ko";
+export type Lang = "en" | "es" | "pt" | "de" | "ja" | "ko" | "pl" | "bg";
 
 export const LANGUAGES: Array<{ code: Lang; label: string; native: string }> = [
   { code: "en", label: "English", native: "English" },
@@ -10,6 +10,8 @@ export const LANGUAGES: Array<{ code: Lang; label: string; native: string }> = [
   { code: "de", label: "German", native: "Deutsch" },
   { code: "ja", label: "Japanese", native: "日本語" },
   { code: "ko", label: "Korean", native: "한국어" },
+  { code: "pl", label: "Polish", native: "Polski" },
+  { code: "bg", label: "Bulgarian", native: "Български" },
 ];
 
 type Dict = Record<string, string>;
