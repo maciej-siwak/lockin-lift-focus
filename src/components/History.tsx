@@ -4,6 +4,7 @@ import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
+import { useT } from "@/lib/i18n";
 
 const formatSet = (s: SetLog, unit: string): string => {
   if ((s.seconds ?? 0) > 0 && s.weight === 0 && s.reps === 0) return `${s.seconds}s`;
@@ -14,6 +15,7 @@ const formatSet = (s: SetLog, unit: string): string => {
 interface Props { onBack: () => void; }
 
 export const History = ({ onBack }: Props) => {
+  const t = useT();
   const [sessions, setSessions] = useState<SessionLog[]>([]);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const unit = useMemo(() => storage.getSettings().weightUnit, []);
@@ -47,22 +49,22 @@ export const History = ({ onBack }: Props) => {
     const text = lines.join("\n");
     try {
       await navigator.clipboard.writeText(text);
-      toast("Copied to clipboard");
+      toast(t("common.copyOk"));
     } catch {
-      toast("Could not copy");
+      toast(t("common.copyFail"));
     }
   };
 
   return (
     <AppShell
-      title="Lifting history"
-      left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
+      title={t("history.title")}
+      left={<button onClick={onBack} aria-label={t("common.back")} className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
     >
       <div className="pt-5">
         {sessions.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-8 text-center">
             <Dumbbell className="w-8 h-8 mx-auto text-muted-foreground" />
-            <p className="mt-3 text-sm text-muted-foreground">No sessions logged yet.</p>
+            <p className="mt-3 text-sm text-muted-foreground">{t("history.empty")}</p>
           </div>
         ) : (
           <ul className="space-y-3">
@@ -90,17 +92,17 @@ export const History = ({ onBack }: Props) => {
                       </p>
                       {s.focusBreaks != null && (
                         <p className="text-[11px] mt-1">
-                          <span className="text-muted-foreground">Focus breaks: </span>
+                          <span className="text-muted-foreground">{t("session.focusBreaks", { n: "" }).replace(/\s*$/, "")}</span>
                           <span className={`font-semibold ${s.focusBreaks === 0 ? "text-primary" : "text-foreground"}`}>{s.focusBreaks}</span>
                         </p>
                       )}
                       </div>
                     </button>
                     <div className="flex items-center shrink-0">
-                      <button onClick={() => share(s)} aria-label="Share" className="p-2 text-muted-foreground hover:text-primary transition-base">
+                      <button onClick={() => share(s)} aria-label={t("common.share")} className="p-2 text-muted-foreground hover:text-primary transition-base">
                         <Share2 className="w-4 h-4" />
                       </button>
-                      <button onClick={() => remove(s.id)} aria-label="Delete" className="p-2 text-muted-foreground hover:text-destructive transition-base">
+                      <button onClick={() => remove(s.id)} aria-label={t("common.delete")} className="p-2 text-muted-foreground hover:text-destructive transition-base">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
@@ -108,20 +110,20 @@ export const History = ({ onBack }: Props) => {
                   {isOpen && (
                     <>
                       <div className="mt-3 grid grid-cols-3 gap-2">
-                        <Mini label="Exercises" value={s.exercises.length} />
-                        <Mini label="Sets" value={totalSets} />
-                        <Mini label={`Vol ${unit}`} value={Math.round(totalVol)} />
+                        <Mini label={t("history.exercises")} value={s.exercises.length} />
+                        <Mini label={t("history.sets")} value={totalSets} />
+                        <Mini label={t("history.vol", { unit })} value={Math.round(totalVol)} />
                       </div>
                       {(s.focusScore != null || s.focusBreaks != null) && (
                         <div className="mt-2 flex items-center justify-between rounded-xl bg-secondary/50 px-3 py-2 text-[11px]">
                           <span className="text-muted-foreground">
-                            Focus breaks: <span className="text-foreground font-semibold">{s.focusBreaks ?? 0}</span>
+                            {t("session.focusBreaks", { n: "" }).replace(/\s*$/, "")}<span className="text-foreground font-semibold">{s.focusBreaks ?? 0}</span>
                           </span>
                           {s.focusScore != null && (
                             <span className={`font-bold uppercase tracking-wider ${
                               s.focusScore >= 85 ? "text-primary" : s.focusScore >= 60 ? "text-foreground" : "text-muted-foreground"
                             }`}>
-                              {s.focusScore}/100 · {s.focusScore >= 85 ? "Locked In" : s.focusScore >= 60 ? "Focused" : "Distracted"}
+                              {s.focusScore}/100 · {s.focusScore >= 85 ? t("session.lockedInLabel") : s.focusScore >= 60 ? t("session.focused") : t("session.distracted")}
                             </span>
                           )}
                         </div>

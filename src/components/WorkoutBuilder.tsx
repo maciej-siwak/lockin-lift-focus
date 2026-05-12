@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { storage, uid } from "@/lib/storage";
 import type { Workout, ExerciseTemplate, ExerciseMode } from "@/lib/types";
 import { toast } from "sonner";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   workoutId?: string;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
+  const t = useT();
   const settings = storage.getSettings();
   const [name, setName] = useState("Push Day");
   const [exercises, setExercises] = useState<ExerciseTemplate[]>([]);
@@ -77,8 +79,8 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
       }
       return trimmed;
     }).filter(e => e.name);
-    if (!name.trim()) return toast.error("Name your workout");
-    if (cleaned.length === 0) return toast.error("Add at least one exercise");
+    if (!name.trim()) return toast.error(t("builder.errName"));
+    if (cleaned.length === 0) return toast.error(t("builder.errExercise"));
     const all = storage.getWorkouts();
     if (workoutId) {
       const idx = all.findIndex(w => w.id === workoutId);
@@ -88,30 +90,30 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
       all.unshift(w);
     }
     storage.saveWorkouts(all);
-    toast.success("Workout saved");
+    toast.success(t("builder.savedToast"));
     onSaved();
   };
 
   return (
     <AppShell
-      title={workoutId ? "Edit workout" : "New workout"}
-      left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
-      right={<button onClick={save} aria-label="Save" className="p-2 -mr-2 text-primary"><Check className="w-5 h-5" /></button>}
+      title={workoutId ? t("builder.editTitle") : t("builder.newTitle")}
+      left={<button onClick={onBack} aria-label={t("common.back")} className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
+      right={<button onClick={save} aria-label={t("common.save")} className="p-2 -mr-2 text-primary"><Check className="w-5 h-5" /></button>}
     >
       <div className="pt-5 space-y-5">
         <div>
-          <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Workout name</label>
+          <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("builder.workoutName")}</label>
           <Input
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="e.g. Push Day"
+            placeholder={t("builder.workoutNamePh")}
             className="mt-2 h-12 text-base bg-card border-border rounded-xl"
           />
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-2 px-1">
-            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Exercises</label>
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("builder.exercises")}</label>
           </div>
           <ul className="space-y-3">
             {exercises.map((ex, i) => (
@@ -121,22 +123,23 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                   <Input
                     value={ex.name}
                     onChange={e => update(ex.id, { name: e.target.value })}
-                    placeholder="Exercise name (e.g. Bench Press)"
+                    placeholder={t("builder.exerciseNamePh")}
                     className="flex-1 h-11 bg-secondary border-0 rounded-lg"
                   />
-                  <button onClick={() => remove(ex.id)} aria-label="Remove" className="p-2 text-muted-foreground hover:text-destructive transition-base">
+                  <button onClick={() => remove(ex.id)} aria-label={t("builder.remove")} className="p-2 text-muted-foreground hover:text-destructive transition-base">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
                 <ModeToggle
                   value={ex.mode ?? "weight_reps"}
                   onChange={m => update(ex.id, { mode: m })}
+                  t={t}
                 />
                 <div className="grid grid-cols-3 gap-2">
-                  <NumField label="Sets" value={ex.sets} min={1} max={20} onChange={v => setSetCount(ex, v)} />
+                  <NumField label={t("builder.sets")} value={ex.sets} min={1} max={20} onChange={v => setSetCount(ex, v)} />
                   {(ex.mode ?? "weight_reps") === "time" ? (
                     <NumField
-                      label={ex.repsPerSet ? "Base time" : "Time"}
+                      label={ex.repsPerSet ? t("builder.baseTime") : t("builder.time")}
                       suffix="s"
                       step={5}
                       value={ex.targetSeconds ?? 30}
@@ -146,14 +149,14 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                     />
                   ) : (
                     <NumField
-                      label={ex.repsPerSet ? "Base reps" : "Reps"}
+                      label={ex.repsPerSet ? t("builder.baseReps") : t("builder.reps")}
                       value={ex.reps}
                       min={1}
                       max={50}
                       onChange={v => update(ex.id, { reps: v })}
                     />
                   )}
-                  <NumField label="Rest" suffix="s" step={15} value={ex.restSeconds} min={15} max={600} onChange={v => update(ex.id, { restSeconds: v })} />
+                  <NumField label={t("builder.rest")} suffix="s" step={15} value={ex.restSeconds} min={15} max={600} onChange={v => update(ex.id, { restSeconds: v })} />
                 </div>
 
                 {(() => {
@@ -162,11 +165,9 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                   <div className="rounded-xl bg-secondary/60 p-3">
                     <div className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
-                        <p className="text-xs font-semibold">Pyramid sets</p>
+                        <p className="text-xs font-semibold">{t("builder.pyramid")}</p>
                         <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">
-                          {isTime
-                            ? "Different time per set — e.g. 30s, 25s, 20s."
-                            : "Different reps per set — e.g. 10, 8, 6."}
+                          {isTime ? t("builder.pyramidDescTime") : t("builder.pyramidDescReps")}
                         </p>
                       </div>
                       <button
@@ -179,7 +180,7 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                             : "bg-background border border-border text-muted-foreground"
                         }`}
                       >
-                        {ex.repsPerSet ? "On" : "Off"}
+                        {ex.repsPerSet ? t("builder.on") : t("builder.off")}
                       </button>
                     </div>
                     {ex.repsPerSet && (
@@ -194,6 +195,7 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                             max={isTime ? 1800 : 50}
                             step={isTime ? 5 : 1}
                             suffix={isTime ? "s" : undefined}
+                            label={t("builder.set")}
                           />
                         ))}
                       </div>
@@ -202,9 +204,9 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                   );
                 })()}
                 <p className="text-[10px] text-muted-foreground px-1">
-                  {(ex.mode ?? "weight_reps") === "weight_reps" && "You'll log weight × reps for each set (e.g. Bench Press)."}
-                  {ex.mode === "reps" && "Bodyweight — you'll log reps only (e.g. Dips, Pull-ups)."}
-                  {ex.mode === "time" && "Timed hold — you'll log seconds per set (e.g. Battle Ropes, Plank)."}
+                  {(ex.mode ?? "weight_reps") === "weight_reps" && t("builder.descWeight")}
+                  {ex.mode === "reps" && t("builder.descReps")}
+                  {ex.mode === "time" && t("builder.descTime")}
                 </p>
               </li>
             ))}
@@ -215,12 +217,12 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
             onClick={() => setExercises(list => [...list, newExercise(settings.defaultRestSeconds)])}
             className="w-full mt-3 h-12 rounded-2xl border-dashed border-border bg-transparent text-foreground hover:bg-secondary"
           >
-            <Plus className="w-4 h-4 mr-1.5" /> Add exercise
+            <Plus className="w-4 h-4 mr-1.5" /> {t("builder.addExercise")}
           </Button>
         </div>
 
         <Button onClick={save} className="w-full h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-base shadow-glow">
-          Save workout
+          {t("builder.saveWorkout")}
         </Button>
       </div>
     </AppShell>
@@ -247,11 +249,11 @@ const NumField = ({
 };
 
 const PyramidCell = ({
-  index, value, onChange, min = 1, max = 50, step = 1, suffix,
-}: { index: number; value: number; onChange: (v: number) => void; min?: number; max?: number; step?: number; suffix?: string }) => {
+  index, value, onChange, min = 1, max = 50, step = 1, suffix, label = "Set",
+}: { index: number; value: number; onChange: (v: number) => void; min?: number; max?: number; step?: number; suffix?: string; label?: string }) => {
   return (
     <div className="rounded-lg bg-background border border-border p-1.5">
-      <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground text-center">Set {index + 1}</p>
+      <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground text-center">{label} {index + 1}</p>
       <div className="flex items-center justify-between mt-0.5 gap-0.5">
         <button
           type="button"
@@ -271,11 +273,11 @@ const PyramidCell = ({
   );
 };
 
-const ModeToggle = ({ value, onChange }: { value: ExerciseMode; onChange: (m: ExerciseMode) => void }) => {
+const ModeToggle = ({ value, onChange, t }: { value: ExerciseMode; onChange: (m: ExerciseMode) => void; t: (k: string) => string }) => {
   const opts: Array<{ id: ExerciseMode; label: string; hint: string }> = [
-    { id: "weight_reps", label: "Weight × Reps", hint: "Bench, Squat" },
-    { id: "reps", label: "Reps only", hint: "Dips, Pull-ups" },
-    { id: "time", label: "Time", hint: "Plank, Ropes" },
+    { id: "weight_reps", label: t("builder.modeWeight"), hint: t("builder.modeWeightHint") },
+    { id: "reps", label: t("builder.modeReps"), hint: t("builder.modeRepsHint") },
+    { id: "time", label: t("builder.modeTime"), hint: t("builder.modeTimeHint") },
   ];
   return (
     <div className="rounded-xl bg-secondary p-1 grid grid-cols-3 gap-1">

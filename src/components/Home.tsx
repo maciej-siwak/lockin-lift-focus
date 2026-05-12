@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { storage } from "@/lib/storage";
 import type { Workout } from "@/lib/types";
 import { LockInLogo } from "./LockInLogo";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   onNewWorkout: () => void;
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettings, onOpenHistory, onOpenRecords }: Props) => {
+  const t = useT();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
   useEffect(() => { setWorkouts(storage.getWorkouts()); }, []);
@@ -29,7 +31,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
   return (
     <AppShell
       right={
-        <button onClick={onOpenSettings} aria-label="Settings" className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
+        <button onClick={onOpenSettings} aria-label={t("home.settings")} className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
           <SettingsIcon className="w-5 h-5" />
         </button>
       }
@@ -42,7 +44,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         <h1 className="mt-4 text-4xl font-black tracking-tight leading-none">
           LOCK <span className="text-primary">IN</span>
         </h1>
-        <p className="mt-2 text-[11px] text-muted-foreground tracking-[0.35em] uppercase font-medium">Focused Lifts</p>
+        <p className="mt-2 text-[11px] text-muted-foreground tracking-[0.35em] uppercase font-medium">{t("home.tagline")}</p>
       </section>
 
       {/* Today CTA — glowing outlined card */}
@@ -54,15 +56,15 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
               <Target className="w-5 h-5" strokeWidth={2.5} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-bold text-primary tracking-[0.25em] uppercase">Today</p>
-              <h2 className="mt-1 text-lg font-extrabold tracking-tight leading-snug">No distractions. Just lifts.</h2>
+              <p className="text-[10px] font-bold text-primary tracking-[0.25em] uppercase">{t("home.today")}</p>
+              <h2 className="mt-1 text-lg font-extrabold tracking-tight leading-snug">{t("home.todayHeadline")}</h2>
             </div>
           </div>
           <Button
             onClick={onNewWorkout}
             className="relative mt-4 w-full h-12 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold shadow-glow"
           >
-            <Plus className="w-4 h-4 mr-1.5" strokeWidth={3} /> New workout
+            <Plus className="w-4 h-4 mr-1.5" strokeWidth={3} /> {t("home.newWorkout")}
           </Button>
         </div>
       </section>
@@ -70,14 +72,14 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       {/* Your workouts */}
       <section className="mt-8 animate-fade-in">
         <div className="flex items-center justify-between mb-3 px-1">
-          <h3 className="text-base font-bold tracking-tight">Your workouts</h3>
+          <h3 className="text-base font-bold tracking-tight">{t("home.yourWorkouts")}</h3>
           <span className="text-xs text-muted-foreground tabular-nums">{workouts.length}</span>
         </div>
 
         {workouts.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-8 text-center">
             <Dumbbell className="w-8 h-8 mx-auto text-muted-foreground" />
-            <p className="mt-3 text-sm text-muted-foreground">No workouts yet.</p>
+            <p className="mt-3 text-sm text-muted-foreground">{t("home.noWorkouts")}</p>
           </div>
         ) : (
           <ul className="space-y-3">
@@ -92,24 +94,24 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
                     <div className="min-w-0 flex-1">
                       <h4 className="font-bold truncate leading-tight">{w.name}</h4>
                       <p className="text-xs text-muted-foreground mt-1 truncate">
-                        {w.exercises.length} exercise{w.exercises.length !== 1 ? "s" : ""} · {totalSets} set{totalSets !== 1 ? "s" : ""}
+                        {t(w.exercises.length === 1 ? "home.exercise_one" : "home.exercise_other", { n: w.exercises.length })} · {t(totalSets === 1 ? "home.set_one" : "home.set_other", { n: totalSets })}
                       </p>
                     </div>
                     <button
                       onClick={() => onStartWorkout(w.id)}
                       disabled={w.exercises.length === 0}
-                      aria-label="Lock in"
+                      aria-label={t("home.lockIn")}
                       className="shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-glow transition-base hover:scale-105 active:scale-95 disabled:opacity-40 disabled:hover:scale-100"
                     >
                       <Play className="w-5 h-5 fill-current ml-0.5" />
                     </button>
                   </div>
                   <div className="mt-3 pt-3 border-t border-border/60 flex items-center justify-end gap-1">
-                    <button onClick={() => onEditWorkout(w.id)} aria-label="Edit" className="px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-base inline-flex items-center gap-1.5">
-                      <Pencil className="w-3.5 h-3.5" /> Edit
+                    <button onClick={() => onEditWorkout(w.id)} aria-label={t("common.edit")} className="px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-base inline-flex items-center gap-1.5">
+                      <Pencil className="w-3.5 h-3.5" /> {t("common.edit")}
                     </button>
-                    <button onClick={() => removeWorkout(w.id)} aria-label="Delete" className="px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-destructive transition-base inline-flex items-center gap-1.5">
-                      <Trash2 className="w-3.5 h-3.5" /> Delete
+                    <button onClick={() => removeWorkout(w.id)} aria-label={t("common.delete")} className="px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-destructive transition-base inline-flex items-center gap-1.5">
+                      <Trash2 className="w-3.5 h-3.5" /> {t("common.delete")}
                     </button>
                   </div>
                 </li>
@@ -121,7 +123,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
 
       {/* History */}
       <section className="mt-8 mb-4 animate-fade-in">
-        <h3 className="text-base font-bold tracking-tight mb-3 px-1">Progress</h3>
+        <h3 className="text-base font-bold tracking-tight mb-3 px-1">{t("home.progress")}</h3>
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={onOpenRecords}
@@ -131,8 +133,8 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
               <Trophy className="w-5 h-5" />
             </div>
             <div className="min-w-0">
-              <p className="font-bold text-sm">Records</p>
-              <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Top 3 lifts per exercise</p>
+              <p className="font-bold text-sm">{t("home.records")}</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{t("home.recordsDesc")}</p>
             </div>
           </button>
           <button
@@ -143,8 +145,8 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
               <HistoryIcon className="w-5 h-5" />
             </div>
             <div className="min-w-0">
-              <p className="font-bold text-sm">History</p>
-              <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Past sessions & lifts</p>
+              <p className="font-bold text-sm">{t("home.history")}</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{t("home.historyDesc")}</p>
             </div>
           </button>
         </div>

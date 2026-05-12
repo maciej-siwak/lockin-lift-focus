@@ -2,31 +2,52 @@ import { useState } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { storage } from "@/lib/storage";
 import { toast } from "sonner";
+import { LANGUAGES, useI18n, type Lang } from "@/lib/i18n";
 
 interface Props { onBack: () => void; }
 
 export const SettingsScreen = ({ onBack }: Props) => {
+  const { t, lang, setLang } = useI18n();
   const [s, setS] = useState(storage.getSettings());
 
   const save = () => {
-    storage.saveSettings(s);
-    toast.success("Settings saved");
+    storage.saveSettings({ ...s, language: lang });
+    toast.success(t("settings.saved"));
     onBack();
+  };
+
+  const onLangChange = (code: Lang) => {
+    setLang(code);
+    setS(prev => ({ ...prev, language: code }));
   };
 
   return (
     <AppShell
-      title="Settings"
-      left={<button onClick={onBack} aria-label="Back" className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
-      right={<button onClick={save} aria-label="Save" className="p-2 -mr-2 text-primary"><Check className="w-5 h-5" /></button>}
+      title={t("settings.title")}
+      left={<button onClick={onBack} aria-label={t("common.back")} className="p-2 -ml-2"><ArrowLeft className="w-5 h-5" /></button>}
+      right={<button onClick={save} aria-label={t("common.save")} className="p-2 -mr-2 text-primary"><Check className="w-5 h-5" /></button>}
     >
       <div className="pt-5 space-y-5">
         <Card>
-          <Label>Default rest</Label>
+          <Label>{t("settings.language")}</Label>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {LANGUAGES.map(l => (
+              <button
+                key={l.code}
+                onClick={() => onLangChange(l.code)}
+                className={`h-11 rounded-xl font-semibold text-sm transition-base px-3 ${lang === l.code ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}
+              >
+                {l.native}
+              </button>
+            ))}
+          </div>
+        </Card>
+
+        <Card>
+          <Label>{t("settings.defaultRest")}</Label>
           <div className="mt-3 grid grid-cols-4 gap-2">
             {[60, 90, 120, 180].map(v => (
               <button key={v} onClick={() => setS({ ...s, defaultRestSeconds: v })}
@@ -38,7 +59,7 @@ export const SettingsScreen = ({ onBack }: Props) => {
         </Card>
 
         <Card>
-          <Label>Weight unit</Label>
+          <Label>{t("settings.weightUnit")}</Label>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {(["kg","lb"] as const).map(v => (
               <button key={v} onClick={() => setS({ ...s, weightUnit: v })}
@@ -50,16 +71,16 @@ export const SettingsScreen = ({ onBack }: Props) => {
         </Card>
 
         <Card>
-          <Row label="Countdown sound" desc="Beeps in the last 10 seconds of rest.">
+          <Row label={t("settings.sound")} desc={t("settings.soundDesc")}>
             <Switch checked={s.sound} onCheckedChange={v => setS({ ...s, sound: v })} />
           </Row>
           <div className="border-t border-border my-3" />
-          <Row label="Vibration" desc="Pulses on countdown and set log.">
+          <Row label={t("settings.vibration")} desc={t("settings.vibrationDesc")}>
             <Switch checked={s.vibration} onCheckedChange={v => setS({ ...s, vibration: v })} />
           </Row>
         </Card>
 
-        <Button onClick={save} className="w-full h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold">Save</Button>
+        <Button onClick={save} className="w-full h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{t("common.save")}</Button>
       </div>
     </AppShell>
   );

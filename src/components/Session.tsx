@@ -6,6 +6,7 @@ import { storage, uid } from "@/lib/storage";
 import type { Workout, SessionLog, ExerciseLog, SetLog, ExerciseMode } from "@/lib/types";
 import { beep, vibrate } from "@/lib/feedback";
 import { toast } from "sonner";
+import { useT } from "@/lib/i18n";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -25,6 +26,7 @@ interface Props {
 type Phase = "picking" | "lifting" | "resting" | "ready" | "logging" | "done";
 
 export const Session = ({ workoutId, onExit }: Props) => {
+  const t = useT();
   const settings = useMemo(() => storage.getSettings(), []);
   const workout = useMemo<Workout | undefined>(
     () => storage.getWorkouts().find(w => w.id === workoutId),
@@ -202,8 +204,8 @@ export const Session = ({ workoutId, onExit }: Props) => {
     return (
       <div className="min-h-screen flex items-center justify-center p-6 text-center">
         <div>
-          <p>Workout not found.</p>
-          <Button onClick={onExit} className="mt-4">Back</Button>
+          <p>{t("session.notFound")}</p>
+          <Button onClick={onExit} className="mt-4">{t("common.back")}</Button>
         </div>
       </div>
     );
@@ -308,7 +310,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const confirmExit = () => {
     setExitOpen(false);
     saveLogged(logs);
-    toast("Session ended");
+    toast(t("session.endedToast"));
     onExit();
   };
 
@@ -325,26 +327,30 @@ export const Session = ({ workoutId, onExit }: Props) => {
         <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center shadow-glow">
           <Check className="w-10 h-10 text-primary" />
         </div>
-        <h2 className="mt-6 text-3xl font-extrabold tracking-tight">Locked in. Done.</h2>
+        <h2 className="mt-6 text-3xl font-extrabold tracking-tight">{t("session.done")}</h2>
         <p className="mt-2 text-sm text-muted-foreground">{workout.name}</p>
         <div className="mt-8 grid grid-cols-3 gap-3 w-full max-w-xs">
-          <Stat label="Sets" value={setsLogged} />
-          <Stat label="Reps" value={totalReps} />
-          <Stat label={`Vol ${settings.weightUnit}`} value={Math.round(totalVolume)} />
+          <Stat label={t("history.sets")} value={setsLogged} />
+          <Stat label={t("session.repsLabel")} value={totalReps} />
+          <Stat label={t("history.vol", { unit: settings.weightUnit })} value={Math.round(totalVolume)} />
         </div>
         <div className="mt-4 w-full max-w-xs rounded-2xl bg-card border border-border p-4 text-left">
           <div className="flex items-baseline justify-between gap-3">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Focus score</p>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("session.focusScore")}</p>
               <p className={`mt-1 font-mono-timer text-3xl font-extrabold ${fl.tone}`}>{focusScore}<span className="text-muted-foreground text-base">/100</span></p>
             </div>
-            <span className={`text-xs font-bold uppercase tracking-wider ${fl.tone}`}>{fl.label}</span>
+            <span className={`text-xs font-bold uppercase tracking-wider ${fl.tone}`}>
+              {fl.label === "Locked In" ? t("session.lockedInLabel") : fl.label === "Focused" ? t("session.focused") : t("session.distracted")}
+            </span>
           </div>
           <p className="mt-2 text-[11px] text-muted-foreground">
-            Focus breaks: {focusBreaks}{totalAway > 0 ? ` · Away: ${Math.round(totalAway / 1000)}s` : ""}
+            {totalAway > 0
+              ? t("session.focusBreaksAway", { n: focusBreaks, s: Math.round(totalAway / 1000) })
+              : t("session.focusBreaks", { n: focusBreaks })}
           </p>
         </div>
-        <Button onClick={onExit} className="mt-10 w-full max-w-xs h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold">Finish</Button>
+        <Button onClick={onExit} className="mt-10 w-full max-w-xs h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{t("session.finish")}</Button>
       </div>
     );
   }
@@ -360,11 +366,11 @@ export const Session = ({ workoutId, onExit }: Props) => {
         <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
-              <Lock className="w-3.5 h-3.5" /> Locked in
+              <Lock className="w-3.5 h-3.5" /> {t("session.lockedIn")}
             </div>
             <div className="flex items-center gap-1">
-              <FocusChip count={focusBreaks} />
-              <button onClick={requestExit} aria-label="End session" className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
+              <FocusChip count={focusBreaks} t={t} />
+              <button onClick={requestExit} aria-label={t("session.endSession")} className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -378,13 +384,13 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
           <div className="mt-6">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              {isFirst ? "Pick your first lift" : "Pick your next lift"}
+              {isFirst ? t("session.pickFirst") : t("session.pickNext")}
             </p>
             <h2 className="mt-1 text-3xl font-extrabold tracking-tight leading-tight">
               {workout.name}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Machine busy? Tap any exercise — order is up to you.
+              {t("session.machineBusy")}
             </p>
           </div>
 
@@ -398,7 +404,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold truncate">{e.name}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {e.sets} sets · {e.repsPerSet ? e.repsPerSet.join("/") + " reps" : `${e.reps} reps`} · {e.restSeconds}s rest
+                      {e.sets} {t("session.setsLabel")} · {e.repsPerSet ? e.repsPerSet.join("/") + " " + t("session.repsLabel") : `${e.reps} ${t("session.repsLabel")}`} · {e.restSeconds}s {t("session.restLabel")}
                     </p>
                   </div>
                   <ArrowRight className="w-5 h-5 text-primary shrink-0" />
@@ -409,11 +415,11 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
           {completedIds.size > 0 && (
             <p className="mt-4 text-center text-xs text-muted-foreground">
-              {completedIds.size} of {workout.exercises.length} exercises done
+              {t("session.exDone", { done: completedIds.size, total: workout.exercises.length })}
             </p>
           )}
         </div>
-        <ExitDialog open={exitOpen} onOpenChange={setExitOpen} hasLogs={logs.length > 0} onConfirm={confirmExit} />
+        <ExitDialog open={exitOpen} onOpenChange={setExitOpen} hasLogs={logs.length > 0} onConfirm={confirmExit} t={t} />
       </AppShell>
     );
   }
@@ -424,11 +430,11 @@ export const Session = ({ workoutId, onExit }: Props) => {
         {/* Header bar */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
-            <Lock className="w-3.5 h-3.5" /> Locked in
+            <Lock className="w-3.5 h-3.5" /> {t("session.lockedIn")}
           </div>
           <div className="flex items-center gap-1">
-            <FocusChip count={focusBreaks} />
-            <button onClick={requestExit} aria-label="End session" className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
+            <FocusChip count={focusBreaks} t={t} />
+            <button onClick={requestExit} aria-label={t("session.endSession")} className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -446,17 +452,17 @@ export const Session = ({ workoutId, onExit }: Props) => {
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {completedIds.size + 1} / {workout.exercises.length} · {workout.exercises.length - completedIds.size - (phase === "logging" ? 1 : 0)} left
+                {t("session.exProgress", { cur: completedIds.size + 1, total: workout.exercises.length, left: workout.exercises.length - completedIds.size - (phase === "logging" ? 1 : 0) })}
               </p>
               <h2 className="mt-1 text-3xl font-extrabold tracking-tight leading-tight">{current!.name}</h2>
             </div>
             {phase === "lifting" && setIdx === 0 && (
               <button
                 onClick={() => setPhase("picking")}
-                aria-label="Switch exercise"
+                aria-label={t("session.switch")}
                 className="shrink-0 inline-flex items-center gap-1 rounded-full bg-secondary border border-border px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground hover:border-primary/40 transition-base"
               >
-                <Shuffle className="w-3 h-3" /> Switch
+                <Shuffle className="w-3 h-3" /> {t("session.switch")}
               </button>
             )}
           </div>
@@ -466,16 +472,16 @@ export const Session = ({ workoutId, onExit }: Props) => {
           <div className="mt-6 flex-1 flex flex-col">
             <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card flex-1 flex flex-col items-center justify-center">
               <p className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary animate-pulse text-center px-2 leading-tight">
-                Putting in work. Leveling up!
+                {t("session.workMsg")}
               </p>
-              <p className="mt-6 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Set</p>
+              <p className="mt-6 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("session.set")}</p>
               <p className="font-mono-timer text-4xl font-bold mt-1">
                 {setIdx + 1}<span className="text-muted-foreground text-xl">/{current!.sets}</span>
               </p>
               {currentMode === "time" ? (
                 <>
                   <p className="mt-8 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    {timeLeft === 0 ? "Time's up" : "Time left"}
+                    {timeLeft === 0 ? t("session.timesUp") : t("session.timeLeft")}
                   </p>
                   <div className="relative mt-3 mb-4">
                     {timerRunning && timeLeft <= 5 && timeLeft > 0 && (
@@ -492,38 +498,38 @@ export const Session = ({ workoutId, onExit }: Props) => {
                       }`}
                     >
                       {formatTime(timeLeft)}
-                      <span className="text-muted-foreground text-xl ml-2 font-mono-timer">sec</span>
+                      <span className="text-muted-foreground text-xl ml-2 font-mono-timer">{t("session.sec")}</span>
                     </p>
                   </div>
                 </>
               ) : (
                 <>
-                <p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Target</p>
+                <p className="mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("session.target")}</p>
                 <p className="font-mono-timer text-3xl font-bold mt-1 text-primary">
-                  {repsForSet(setIdx)} <span className="text-muted-foreground text-base">reps</span>
+                  {repsForSet(setIdx)} <span className="text-muted-foreground text-base">{t("session.repsLabel")}</span>
                 </p>
                 </>
               )}
               {current!.repsPerSet && (
                 <p className="mt-3 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Pyramid: {current!.repsPerSet.join(" · ")}{currentMode === "time" ? "s" : ""}
+                  {t("session.pyramid")}: {current!.repsPerSet.join(" · ")}{currentMode === "time" ? "s" : ""}
                 </p>
               )}
             </div>
 
             <p className="mt-4 text-center text-sm text-muted-foreground px-4">
-              After you finish your set, press <span className="text-foreground font-semibold">Start Rest</span> to recover for the next lift.
+              {t("session.afterSet", { action: t("session.startRest") })}
             </p>
 
             <Button onClick={completeSet} className="mt-5 w-full h-16 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-extrabold text-lg shadow-glow">
-              <Check className="w-5 h-5 mr-2" /> Start Rest
+              <Check className="w-5 h-5 mr-2" /> {t("session.startRest")}
             </Button>
           </div>
         )}
 
         {phase === "resting" && (
           <div className="mt-6 flex-1 flex flex-col items-center justify-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Rest</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("session.rest")}</p>
             <div className="relative mt-4">
               {restLeft <= 10 && (
                 <span className="absolute inset-0 rounded-full bg-primary/30 animate-pulse-ring" />
@@ -533,12 +539,12 @@ export const Session = ({ workoutId, onExit }: Props) => {
                 {formatTime(restLeft)}
               </div>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">Next: set {setIdx + 1} of {current!.sets}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{t("session.nextSet", { n: setIdx + 1, total: current!.sets })}</p>
 
             <div className="mt-10 grid grid-cols-2 gap-3 w-full">
-              <Button variant="outline" onClick={() => setRestLeft(r => r + 15)} className="h-14 rounded-2xl border-border bg-secondary text-foreground font-semibold">+15s</Button>
+              <Button variant="outline" onClick={() => setRestLeft(r => r + 15)} className="h-14 rounded-2xl border-border bg-secondary text-foreground font-semibold">{t("session.add15")}</Button>
               <Button onClick={skipRest} className="h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
-                <SkipForward className="w-4 h-4 mr-1.5" /> Skip rest
+                <SkipForward className="w-4 h-4 mr-1.5" /> {t("session.skipRest")}
               </Button>
             </div>
           </div>
@@ -547,15 +553,15 @@ export const Session = ({ workoutId, onExit }: Props) => {
         {phase === "ready" && (
           <div className="mt-6 flex-1 flex flex-col items-center justify-center text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              {completedSetsAcrossExercises === 0 && setIdx === 0 ? "Starting" : "Get up"}
+              {completedSetsAcrossExercises === 0 && setIdx === 0 ? t("session.starting") : t("session.getUp")}
             </p>
             <h2 className="mt-4 font-extrabold tracking-tight text-5xl leading-tight">
-              Ready,<br/>Set,<br/><span className="text-primary">Go!</span>
+              {t("session.readySetGo")}
             </h2>
             <p className="mt-8 font-mono-timer text-6xl font-bold text-primary animate-count-pop" key={readyLeft}>
               {readyLeft}
             </p>
-            <p className="mt-4 text-sm text-muted-foreground">Set {setIdx + 1} of {current!.sets} — {current!.name}</p>
+            <p className="mt-4 text-sm text-muted-foreground">{t("session.setOf", { n: setIdx + 1, total: current!.sets, name: current!.name })}</p>
           </div>
         )}
 
@@ -567,10 +573,11 @@ export const Session = ({ workoutId, onExit }: Props) => {
             onConfirm={confirmLogging}
             restSeconds={current!.restSeconds}
             mode={current!.mode ?? "weight_reps"}
+            t={t}
           />
         )}
       </div>
-      <ExitDialog open={exitOpen} onOpenChange={setExitOpen} hasLogs={logs.length > 0} onConfirm={confirmExit} />
+      <ExitDialog open={exitOpen} onOpenChange={setExitOpen} hasLogs={logs.length > 0} onConfirm={confirmExit} t={t} />
     </AppShell>
   );
 };
@@ -602,34 +609,34 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
   </div>
 );
 
-const FocusChip = ({ count }: { count: number }) => (
+const FocusChip = ({ count, t }: { count: number; t: (k: string, p?: Record<string, string | number>) => string }) => (
   <span
     title="Times you left the app during this workout"
     className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider border ${count > 0 ? "border-warning/40 bg-warning/10 text-warning" : "border-border bg-muted text-muted-foreground"}`}
   >
     <Eye className="w-3 h-3" />
-    Focus breaks: {count}
+    {t("session.focusBreaks", { n: count })}
   </span>
 );
 
 const ExitDialog = ({
-  open, onOpenChange, hasLogs, onConfirm,
-}: { open: boolean; onOpenChange: (v: boolean) => void; hasLogs: boolean; onConfirm: () => void }) => (
+  open, onOpenChange, hasLogs, onConfirm, t,
+}: { open: boolean; onOpenChange: (v: boolean) => void; hasLogs: boolean; onConfirm: () => void; t: (k: string) => string }) => (
   <AlertDialog open={open} onOpenChange={onOpenChange}>
     <AlertDialogContent className="rounded-2xl border-border bg-card max-w-sm">
       <AlertDialogHeader>
-        <AlertDialogTitle className="text-xl font-extrabold tracking-tight">End workout early?</AlertDialogTitle>
+        <AlertDialogTitle className="text-xl font-extrabold tracking-tight">{t("session.endTitle")}</AlertDialogTitle>
         <AlertDialogDescription className="text-sm text-muted-foreground">
-          Finish and log the exercise to save your progress and weight. If you exit early, only the exercise will be recorded.
+          {t("session.endDesc")}
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter className="gap-2">
-        <AlertDialogCancel className="rounded-xl">Keep going</AlertDialogCancel>
+        <AlertDialogCancel className="rounded-xl">{t("session.keepGoing")}</AlertDialogCancel>
         <AlertDialogAction
           onClick={onConfirm}
           className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
         >
-          End session
+          {t("session.endSession")}
         </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
@@ -637,7 +644,7 @@ const ExitDialog = ({
 );
 
 const LoggingPanel = ({
-  unit, sets, setSets, onConfirm, restSeconds, mode,
+  unit, sets, setSets, onConfirm, restSeconds, mode, t,
 }: {
   unit: string;
   sets: SetLog[];
@@ -645,6 +652,7 @@ const LoggingPanel = ({
   onConfirm: () => void;
   restSeconds: number;
   mode: ExerciseMode;
+  t: (k: string, p?: Record<string, string | number>) => string;
 }) => {
   const update = (i: number, patch: Partial<SetLog>) =>
     setSets(prev => prev.map((s, idx) => idx === i ? { ...s, ...patch } : s));
@@ -668,11 +676,11 @@ const LoggingPanel = ({
     <div className="mt-5 flex-1 flex flex-col">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Log your sets</p>
-          <p className="text-sm text-muted-foreground mt-1">Enter your results while you recover for the next exercise.</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("session.logSets")}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t("session.logHint")}</p>
         </div>
         <div className="rounded-xl bg-secondary border border-border px-3 py-1.5 text-center shrink-0">
-          <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground leading-none">Recover</p>
+          <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground leading-none">{t("session.recover")}</p>
           <p className="font-mono-timer text-lg font-bold text-primary leading-tight mt-0.5">{timeStr}</p>
         </div>
       </div>
@@ -681,7 +689,7 @@ const LoggingPanel = ({
       {mode === "weight_reps" && (
         <div className="mt-4 rounded-2xl bg-card border border-border p-3">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">
-            Weight all sets ({unit})
+            {t("session.weightAll", { unit })}
           </p>
           <Stepper
             value={firstWeight}
@@ -691,7 +699,7 @@ const LoggingPanel = ({
             large
           />
           {!allSame && (
-            <p className="text-[10px] text-muted-foreground text-center mt-1">Per-set weights differ — tap a row to override.</p>
+            <p className="text-[10px] text-muted-foreground text-center mt-1">{t("session.differs")}</p>
           )}
         </div>
       )}
@@ -706,17 +714,17 @@ const LoggingPanel = ({
                 {mode === "weight_reps" && (
                   <>
                     <MiniStepper label={unit} value={s.weight} onChange={v => update(i, { weight: v })} step={2.5} decimals />
-                    <MiniStepper label="reps" value={s.reps} onChange={v => update(i, { reps: v })} step={1} />
+                    <MiniStepper label={t("session.repsLabel")} value={s.reps} onChange={v => update(i, { reps: v })} step={1} />
                   </>
                 )}
                 {mode === "reps" && (
                   <div className="col-span-2">
-                    <MiniStepper label="reps" value={s.reps} onChange={v => update(i, { reps: v })} step={1} />
+                    <MiniStepper label={t("session.repsLabel")} value={s.reps} onChange={v => update(i, { reps: v })} step={1} />
                   </div>
                 )}
                 {mode === "time" && (
                   <div className="col-span-2">
-                    <MiniStepper label="seconds" value={s.seconds ?? 0} onChange={v => update(i, { seconds: v })} step={5} />
+                    <MiniStepper label={t("session.seconds")} value={s.seconds ?? 0} onChange={v => update(i, { seconds: v })} step={5} />
                   </div>
                 )}
               </div>
@@ -726,7 +734,7 @@ const LoggingPanel = ({
       </ul>
 
       <Button onClick={onConfirm} className="mt-4 w-full h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-extrabold text-base shadow-glow">
-        <Check className="w-5 h-5 mr-2" /> Save & continue
+        <Check className="w-5 h-5 mr-2" /> {t("session.saveContinue")}
       </Button>
     </div>
   );
