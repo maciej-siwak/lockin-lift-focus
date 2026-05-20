@@ -23,7 +23,7 @@ interface Props {
   onExit: () => void;
 }
 
-type Phase = "picking" | "lifting" | "resting" | "ready" | "logging" | "done";
+type Phase = "picking" | "previewing" | "lifting" | "resting" | "ready" | "logging" | "done";
 
 export const Session = ({ workoutId, onExit }: Props) => {
   const t = useT();
@@ -36,6 +36,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const [exIdx, setExIdx] = useState(0);
   const [setIdx, setSetIdx] = useState(0); // sets completed for current exercise
   const [phase, setPhase] = useState<Phase>("picking");
+  const [previewIdx, setPreviewIdx] = useState<number | null>(null);
   const [restLeft, setRestLeft] = useState(0);
   const [readyLeft, setReadyLeft] = useState(3);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
