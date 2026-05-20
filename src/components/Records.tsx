@@ -151,6 +151,25 @@ export const Records = ({ onBack }: Props) => {
     }
   };
 
+  const shareHallOfFame = async () => {
+    if (hallOfFame.length === 0) return;
+    const lines: string[] = [`👑 Hall of Fame — Lock In`, ``];
+    for (const { key, mode, set } of hallOfFame) {
+      const name = displayName[key] ?? key;
+      const val =
+        mode === "time" ? `${set.seconds}s`
+        : mode === "reps" ? `${set.reps} reps`
+        : `${set.weight}${unit} × ${set.reps}`;
+      lines.push(`${name} — ${val}`);
+    }
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      toast(t("records.copied"));
+    } catch {
+      toast(t("common.copyFail"));
+    }
+  };
+
   const shareFocus = async () => {
     if (!focusStats) return;
     const lines = [
