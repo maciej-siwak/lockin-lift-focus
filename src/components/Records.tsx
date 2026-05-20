@@ -200,7 +200,7 @@ export const Records = ({ onBack }: Props) => {
             <div className="flex items-center gap-2">
               <Crown className="w-4 h-4 text-primary" />
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                #1 {t("records.top3").replace(/^Top\s*3\s*/i, "").replace(/^Top\s*3\s*на\s*/i, "на ").trim() || "per exercise"}
+                {t("records.hallOfFame")}
               </h3>
             </div>
             <ul className="mt-3 space-y-2">
