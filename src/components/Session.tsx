@@ -298,9 +298,16 @@ export const Session = ({ workoutId, onExit }: Props) => {
   };
 
   const pickExercise = (idx: number) => {
-    setExIdx(idx);
+    setPreviewIdx(idx);
+    setPhase("previewing");
+  };
+
+  const startFromPreview = () => {
+    if (previewIdx == null) return;
+    setExIdx(previewIdx);
     setSetIdx(0);
     setReadyLeft(3);
+    setPreviewIdx(null);
     setPhase("ready");
   };
 
