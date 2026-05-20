@@ -162,6 +162,7 @@ const en: Dict = {
   "records.focusCopied": "Focus records copied",
   "records.exCopied": "{name} copied",
   "records.shareRecords": "Share records",
+  "records.hallOfFame": "#1 per exercise",
 };
 
 const es: Dict = {
@@ -297,6 +298,7 @@ const es: Dict = {
   "records.focusCopied": "Récords de foco copiados",
   "records.exCopied": "{name} copiado",
   "records.shareRecords": "Compartir récords",
+  "records.hallOfFame": "#1 por ejercicio",
 };
 
 const pt: Dict = {
@@ -432,6 +434,7 @@ const pt: Dict = {
   "records.focusCopied": "Recordes de foco copiados",
   "records.exCopied": "{name} copiado",
   "records.shareRecords": "Compartilhar recordes",
+  "records.hallOfFame": "#1 por exercício",
 };
 
 const de: Dict = {
@@ -567,6 +570,7 @@ const de: Dict = {
   "records.focusCopied": "Fokus-Rekorde kopiert",
   "records.exCopied": "{name} kopiert",
   "records.shareRecords": "Rekorde teilen",
+  "records.hallOfFame": "#1 pro Übung",
 };
 
 const ja: Dict = {
@@ -702,6 +706,7 @@ const ja: Dict = {
   "records.focusCopied": "集中記録をコピー",
   "records.exCopied": "{name} をコピー",
   "records.shareRecords": "記録を共有",
+  "records.hallOfFame": "種目別 #1",
 };
 
 const ko: Dict = {
@@ -837,6 +842,7 @@ const ko: Dict = {
   "records.focusCopied": "집중 기록 복사됨",
   "records.exCopied": "{name} 복사됨",
   "records.shareRecords": "기록 공유",
+  "records.hallOfFame": "종목별 #1",
 };
 
 const pl: Dict = {
@@ -972,6 +978,7 @@ const pl: Dict = {
   "records.focusCopied": "Rekordy skupienia skopiowane",
   "records.exCopied": "{name} skopiowane",
   "records.shareRecords": "Udostępnij rekordy",
+  "records.hallOfFame": "#1 na ćwiczenie",
 };
 
 const bg: Dict = {
@@ -1107,6 +1114,7 @@ const bg: Dict = {
   "records.focusCopied": "Рекордите по фокус са копирани",
   "records.exCopied": "{name} копирано",
   "records.shareRecords": "Сподели рекордите",
+  "records.hallOfFame": "#1 на упражнение",
 };
 
 const DICTS: Record<Lang, Dict> = { en, es, pt, de, ja, ko, pl, bg };
