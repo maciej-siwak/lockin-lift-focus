@@ -718,6 +718,13 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
   </div>
 );
 
+const MiniStat = ({ label, value }: { label: string; value: string | number }) => (
+  <div className="rounded-xl bg-card border border-border p-2 text-center">
+    <p className="font-mono-timer text-lg font-bold leading-none">{value}</p>
+    <p className="text-[9px] uppercase tracking-wider text-muted-foreground mt-1">{label}</p>
+  </div>
+);
+
 const FocusChip = ({ count, t }: { count: number; t: (k: string, p?: Record<string, string | number>) => string }) => (
   <span
     title="Times you left the app during this workout"
