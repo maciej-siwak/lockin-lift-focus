@@ -23,7 +23,7 @@ interface Props {
   onExit: () => void;
 }
 
-type Phase = "picking" | "lifting" | "resting" | "ready" | "logging" | "done";
+type Phase = "picking" | "previewing" | "lifting" | "resting" | "ready" | "logging" | "done";
 
 export const Session = ({ workoutId, onExit }: Props) => {
   const t = useT();
@@ -36,6 +36,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
   const [exIdx, setExIdx] = useState(0);
   const [setIdx, setSetIdx] = useState(0); // sets completed for current exercise
   const [phase, setPhase] = useState<Phase>("picking");
+  const [previewIdx, setPreviewIdx] = useState<number | null>(null);
   const [restLeft, setRestLeft] = useState(0);
   const [readyLeft, setReadyLeft] = useState(3);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
@@ -297,9 +298,16 @@ export const Session = ({ workoutId, onExit }: Props) => {
   };
 
   const pickExercise = (idx: number) => {
-    setExIdx(idx);
+    setPreviewIdx(idx);
+    setPhase("previewing");
+  };
+
+  const startFromPreview = () => {
+    if (previewIdx == null) return;
+    setExIdx(previewIdx);
     setSetIdx(0);
     setReadyLeft(3);
+    setPreviewIdx(null);
     setPhase("ready");
   };
 
@@ -418,6 +426,107 @@ export const Session = ({ workoutId, onExit }: Props) => {
               {t("session.exDone", { done: completedIds.size, total: workout.exercises.length })}
             </p>
           )}
+        </div>
+        <ExitDialog open={exitOpen} onOpenChange={setExitOpen} hasLogs={logs.length > 0} onConfirm={confirmExit} t={t} />
+      </AppShell>
+    );
+  }
+
+  // Previewing screen — show last session's history for the picked exercise
+  if (phase === "previewing" && previewIdx != null) {
+    const picked = workout.exercises[previewIdx];
+    const nameKey = picked.name.toLowerCase();
+    const allSessions = storage.getSessions(); // newest first
+    let prev: { startedAt: number; sets: SetLog[] } | null = null;
+    for (const s of allSessions) {
+      if (s.id === sessionIdRef.current) continue;
+      const ex = s.exercises.find(e => e.exerciseName.toLowerCase() === nameKey);
+      if (ex && ex.sets.length) { prev = { startedAt: s.startedAt, sets: ex.sets }; break; }
+    }
+    const mode: ExerciseMode = picked.mode ?? "weight_reps";
+    const dateStr = prev ? new Date(prev.startedAt).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "";
+    const bestW = prev ? prev.sets.reduce((m, s) => Math.max(m, s.weight), 0) : 0;
+    const totalVol = prev ? prev.sets.reduce((m, s) => m + s.weight * s.reps, 0) : 0;
+    const totalReps = prev ? prev.sets.reduce((m, s) => m + s.reps, 0) : 0;
+    const totalSecs = prev ? prev.sets.reduce((m, s) => m + (s.seconds ?? 0), 0) : 0;
+    return (
+      <AppShell immersive>
+        <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
+              <Lock className="w-3.5 h-3.5" /> {t("session.lockedIn")}
+            </div>
+            <button onClick={requestExit} aria-label={t("session.endSession")} className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="mt-6">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Up next</p>
+            <h2 className="mt-1 text-3xl font-extrabold tracking-tight leading-tight">{picked.name}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {picked.sets} {t("session.setsLabel")} · {picked.repsPerSet ? picked.repsPerSet.join("/") + (mode === "time" ? "s" : " " + t("session.repsLabel")) : mode === "time" ? `${picked.targetSeconds ?? 30}s` : `${picked.reps} ${t("session.repsLabel")}`} · {picked.restSeconds}s {t("session.restLabel")}
+            </p>
+          </div>
+
+          <div className="mt-5 rounded-2xl bg-gradient-dark border border-border p-4 shadow-card flex-1 overflow-y-auto">
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Last session</h3>
+              {prev && <p className="text-[10px] text-muted-foreground">{dateStr}</p>}
+            </div>
+            {prev ? (
+              <>
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {mode === "weight_reps" && (
+                    <>
+                      <MiniStat label="Top" value={`${bestW}${settings.weightUnit}`} />
+                      <MiniStat label={t("history.sets")} value={prev.sets.length} />
+                      <MiniStat label="Vol" value={Math.round(totalVol)} />
+                    </>
+                  )}
+                  {mode === "reps" && (
+                    <>
+                      <MiniStat label={t("history.sets")} value={prev.sets.length} />
+                      <MiniStat label={t("session.repsLabel")} value={totalReps} />
+                      <MiniStat label="Best" value={Math.max(...prev.sets.map(s => s.reps))} />
+                    </>
+                  )}
+                  {mode === "time" && (
+                    <>
+                      <MiniStat label={t("history.sets")} value={prev.sets.length} />
+                      <MiniStat label="Total" value={`${totalSecs}s`} />
+                      <MiniStat label="Best" value={`${Math.max(...prev.sets.map(s => s.seconds ?? 0))}s`} />
+                    </>
+                  )}
+                </div>
+                <ul className="mt-4 space-y-1.5">
+                  {prev.sets.map((s, i) => (
+                    <li key={i} className="flex items-center justify-between gap-3 rounded-xl bg-card border border-border px-3 py-2 text-sm">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("session.set")} {i + 1}</span>
+                      <span className="font-mono-timer font-bold text-foreground">
+                        {mode === "time"
+                          ? `${s.seconds ?? 0}s`
+                          : mode === "reps"
+                          ? `${s.reps} ${t("session.repsLabel")}`
+                          : `${s.weight}${settings.weightUnit} × ${s.reps}`}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p className="mt-4 text-sm text-muted-foreground">No previous history for this lift yet. Set the bar.</p>
+            )}
+          </div>
+
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            <Button variant="outline" onClick={() => { setPreviewIdx(null); setPhase("picking"); }} className="h-14 rounded-2xl border-border bg-secondary text-foreground font-semibold">
+              {t("common.back")}
+            </Button>
+            <Button onClick={startFromPreview} className="h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-extrabold shadow-glow">
+              {t("session.starting")} <ArrowRight className="w-4 h-4 ml-1.5" />
+            </Button>
+          </div>
         </div>
         <ExitDialog open={exitOpen} onOpenChange={setExitOpen} hasLogs={logs.length > 0} onConfirm={confirmExit} t={t} />
       </AppShell>
@@ -606,6 +715,13 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
   <div className="rounded-2xl bg-card border border-border p-3">
     <p className="font-mono-timer text-2xl font-bold">{value}</p>
     <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">{label}</p>
+  </div>
+);
+
+const MiniStat = ({ label, value }: { label: string; value: string | number }) => (
+  <div className="rounded-xl bg-card border border-border p-2 text-center">
+    <p className="font-mono-timer text-lg font-bold leading-none">{value}</p>
+    <p className="text-[9px] uppercase tracking-wider text-muted-foreground mt-1">{label}</p>
   </div>
 );
 

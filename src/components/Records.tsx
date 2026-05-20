@@ -151,6 +151,25 @@ export const Records = ({ onBack }: Props) => {
     }
   };
 
+  const shareHallOfFame = async () => {
+    if (hallOfFame.length === 0) return;
+    const lines: string[] = [`👑 Hall of Fame — Lock In`, ``];
+    for (const { key, mode, set } of hallOfFame) {
+      const name = displayName[key] ?? key;
+      const val =
+        mode === "time" ? `${set.seconds}s`
+        : mode === "reps" ? `${set.reps} reps`
+        : `${set.weight}${unit} × ${set.reps}`;
+      lines.push(`${name} — ${val}`);
+    }
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      toast(t("records.copied"));
+    } catch {
+      toast(t("common.copyFail"));
+    }
+  };
+
   const shareFocus = async () => {
     if (!focusStats) return;
     const lines = [
@@ -197,11 +216,20 @@ export const Records = ({ onBack }: Props) => {
       <div className="pt-5">
         {hallOfFame.length > 0 && (
           <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card mb-4">
-            <div className="flex items-center gap-2">
-              <Crown className="w-4 h-4 text-primary" />
-              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                {t("records.hallOfFame")}
-              </h3>
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Crown className="w-4 h-4 text-primary" />
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                  {t("records.hallOfFame")}
+                </h3>
+              </div>
+              <button
+                onClick={shareHallOfFame}
+                aria-label={t("records.hallOfFame")}
+                className="p-1.5 -mr-1 text-muted-foreground hover:text-primary transition-base"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
             </div>
             <ul className="mt-3 space-y-2">
               {hallOfFame.map(({ key, mode, set, brokenInLatest }) => {
