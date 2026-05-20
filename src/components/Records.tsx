@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Trophy, Share2, Dumbbell, Eye, Flame } from "lucide-react";
+import { ArrowLeft, Trophy, Share2, Dumbbell, Eye, Flame, Crown } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
@@ -13,6 +13,22 @@ const setMode = (s: SetLog): ExMode => {
   if (s.weight === 0 && s.reps > 0) return "reps";
   return "weight_reps";
 };
+
+// Decide an exercise's dominant mode by preference: weight > reps > time.
+const pickMode = (sets: SetLog[]): ExMode => {
+  if (sets.some(s => s.weight > 0 && s.reps > 0)) return "weight_reps";
+  if (sets.some(s => s.weight === 0 && s.reps > 0)) return "reps";
+  return "time";
+};
+
+const metric = (s: SetLog, mode: ExMode): number => {
+  if (mode === "time") return s.seconds ?? 0;
+  if (mode === "reps") return s.reps;
+  return s.weight * 1000 + s.reps; // weight first, reps tiebreak
+};
+
+const sortSets = (sets: SetLog[], mode: ExMode) =>
+  [...sets].sort((a, b) => metric(b, mode) - metric(a, mode));
 
 const formatSet = (s: SetLog, unit: string): string => {
   const m = setMode(s);
@@ -51,34 +67,59 @@ export const Records = ({ onBack }: Props) => {
   }, [sessions]);
 
   const topByExercise = useMemo(() => {
-    const map: Record<string, SetLog[]> = {};
+    // For each exercise: collect all sets along with the session start time.
+    const map: Record<string, Array<{ set: SetLog; sessionStart: number }>> = {};
     for (const s of sessions) {
       for (const ex of s.exercises) {
         const key = ex.exerciseName.toLowerCase();
         if (!map[key]) map[key] = [];
         for (const set of ex.sets) {
-          if (set.weight > 0 && set.reps > 0) map[key].push(set);
-          else if (set.weight === 0 && set.reps > 0) map[key].push(set);
-          else if ((set.seconds ?? 0) > 0) map[key].push(set);
+          if ((set.weight > 0 && set.reps > 0) || (set.weight === 0 && set.reps > 0) || (set.seconds ?? 0) > 0) {
+            map[key].push({ set, sessionStart: s.startedAt });
+          }
         }
       }
     }
-    const out: Array<{ key: string; mode: ExMode; sets: SetLog[] }> = [];
-    for (const [key, sets] of Object.entries(map)) {
-      // Determine the dominant mode for this exercise (most recent set wins ties)
-      const mode = setMode(sets[sets.length - 1]);
-      const filtered = sets.filter(s => setMode(s) === mode);
-      const top = [...filtered]
-        .sort((a, b) => {
-          if (mode === "time") return (b.seconds ?? 0) - (a.seconds ?? 0);
-          if (mode === "reps") return b.reps - a.reps;
-          return (b.weight - a.weight) || (b.reps - a.reps);
-        })
-        .slice(0, 3);
-      if (top.length > 0) out.push({ key, mode, sets: top });
+    const out: Array<{ key: string; mode: ExMode; sets: SetLog[]; brokenInLatest: boolean }> = [];
+    for (const [key, entries] of Object.entries(map)) {
+      const allSets = entries.map(e => e.set);
+      const mode = pickMode(allSets);
+      const filtered = entries.filter(e => setMode(e.set) === mode);
+      const sorted = sortSets(filtered.map(e => e.set), mode);
+      // Dedupe by display value so two identical PRs don't both show.
+      const seen = new Set<string>();
+      const top: SetLog[] = [];
+      for (const set of sorted) {
+        const sig = mode === "time" ? `${set.seconds}` : mode === "reps" ? `${set.reps}` : `${set.weight}x${set.reps}`;
+        if (seen.has(sig)) continue;
+        seen.add(sig);
+        top.push(set);
+        if (top.length === 3) break;
+      }
+      if (top.length === 0) continue;
+
+      // PR-broken-in-latest detection: is the best set in the most recent session > prior best?
+      const latestStart = Math.max(...filtered.map(e => e.sessionStart));
+      const latestSets = filtered.filter(e => e.sessionStart === latestStart).map(e => e.set);
+      const priorSets = filtered.filter(e => e.sessionStart < latestStart).map(e => e.set);
+      const latestBest = Math.max(...latestSets.map(s => metric(s, mode)));
+      const priorBest = priorSets.length ? Math.max(...priorSets.map(s => metric(s, mode))) : -Infinity;
+      const brokenInLatest = priorSets.length > 0 && latestBest > priorBest;
+
+      out.push({ key, mode, sets: top, brokenInLatest });
     }
+    // Order list: PRs broken in latest session float to top, then by #1 metric desc.
+    out.sort((a, b) => {
+      if (a.brokenInLatest !== b.brokenInLatest) return a.brokenInLatest ? -1 : 1;
+      return 0;
+    });
     return out;
   }, [sessions]);
+
+  const hallOfFame = useMemo(
+    () => topByExercise.map(({ key, mode, sets, brokenInLatest }) => ({ key, mode, set: sets[0], brokenInLatest })),
+    [topByExercise]
+  );
 
   const displayName = useMemo(() => {
     const m: Record<string, string> = {};
@@ -154,6 +195,42 @@ export const Records = ({ onBack }: Props) => {
       }
     >
       <div className="pt-5">
+        {hallOfFame.length > 0 && (
+          <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card mb-4">
+            <div className="flex items-center gap-2">
+              <Crown className="w-4 h-4 text-primary" />
+              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                {t("records.hallOfFame")}
+              </h3>
+            </div>
+            <ul className="mt-3 space-y-2">
+              {hallOfFame.map(({ key, mode, set, brokenInLatest }) => {
+                const orange = brokenInLatest;
+                return (
+                  <li
+                    key={key}
+                    className={`flex items-center justify-between gap-3 rounded-xl border p-3 transition-base ${
+                      orange
+                        ? "bg-[hsl(22_95%_58%/0.08)] border-[hsl(22_95%_58%/0.5)] shadow-[0_0_24px_-8px_hsl(22_95%_58%/0.6)]"
+                        : "bg-card border-border"
+                    }`}
+                  >
+                    <p className="text-sm font-semibold truncate flex-1">{displayName[key] ?? key}</p>
+                    <span
+                      className={`font-mono-timer text-sm font-bold shrink-0 ${
+                        orange ? "text-[hsl(22_95%_58%)] drop-shadow-[0_0_8px_hsl(22_95%_58%/0.55)]" : "text-foreground"
+                      }`}
+                    >
+                      {mode === "weight_reps" && `${set.weight}${unit} × ${set.reps}`}
+                      {mode === "reps" && `${set.reps} ${t("session.repsLabel")}`}
+                      {mode === "time" && `${set.seconds}s`}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
         {focusStats && (
           <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card mb-4">
             <div className="flex items-center justify-between gap-2">
@@ -196,8 +273,15 @@ export const Records = ({ onBack }: Props) => {
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{t("records.top3")}</h3>
             </div>
             <ul className="mt-3 space-y-3">
-              {topByExercise.map(({ key, mode, sets }) => (
-                <li key={key} className="rounded-xl bg-card border border-border p-3">
+              {topByExercise.map(({ key, mode, sets, brokenInLatest }) => (
+                <li
+                  key={key}
+                  className={`rounded-xl border p-3 transition-base ${
+                    brokenInLatest
+                      ? "bg-[hsl(22_95%_58%/0.06)] border-[hsl(22_95%_58%/0.5)]"
+                      : "bg-card border-border"
+                  }`}
+                >
                   <div className="flex items-center justify-between gap-2">
                     <p className="text-sm font-semibold truncate flex-1">{displayName[key] ?? key}</p>
                     <button
