@@ -306,7 +306,7 @@ export const Records = ({ onBack }: Props) => {
                   key={key}
                   className={`rounded-xl border p-3 transition-base ${
                     brokenInLatest
-                      ? "bg-[hsl(22_95%_58%/0.06)] border-[hsl(22_95%_58%/0.5)]"
+                      ? "bg-[hsl(45_95%_58%/0.06)] border-[hsl(45_95%_58%/0.5)]"
                       : "bg-card border-border"
                   }`}
                 >
