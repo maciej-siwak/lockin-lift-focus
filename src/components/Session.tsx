@@ -462,7 +462,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
           </div>
 
           <div className="mt-6">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Up next</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("preview.upNext")}</p>
             <h2 className="mt-1 text-3xl font-extrabold tracking-tight leading-tight">{picked.name}</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               {picked.sets} {t("session.setsLabel")} · {picked.repsPerSet ? picked.repsPerSet.join("/") + (mode === "time" ? "s" : " " + t("session.repsLabel")) : mode === "time" ? `${picked.targetSeconds ?? 30}s` : `${picked.reps} ${t("session.repsLabel")}`} · {picked.restSeconds}s {t("session.restLabel")}
@@ -471,7 +471,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
           <div className="mt-5 rounded-2xl bg-gradient-dark border border-border p-4 shadow-card flex-1 overflow-y-auto">
             <div className="flex items-center justify-between gap-2">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Last session</h3>
+              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{t("preview.lastSession")}</h3>
               {prev && <p className="text-[10px] text-muted-foreground">{dateStr}</p>}
             </div>
             {prev ? (
@@ -479,23 +479,23 @@ export const Session = ({ workoutId, onExit }: Props) => {
                 <div className="mt-3 grid grid-cols-3 gap-2">
                   {mode === "weight_reps" && (
                     <>
-                      <MiniStat label="Top" value={`${bestW}${settings.weightUnit}`} />
+                      <MiniStat label={t("preview.top")} value={`${bestW}${settings.weightUnit}`} />
                       <MiniStat label={t("history.sets")} value={prev.sets.length} />
-                      <MiniStat label="Vol" value={Math.round(totalVol)} />
+                      <MiniStat label={t("preview.vol")} value={Math.round(totalVol)} />
                     </>
                   )}
                   {mode === "reps" && (
                     <>
                       <MiniStat label={t("history.sets")} value={prev.sets.length} />
                       <MiniStat label={t("session.repsLabel")} value={totalReps} />
-                      <MiniStat label="Best" value={Math.max(...prev.sets.map(s => s.reps))} />
+                      <MiniStat label={t("preview.best")} value={Math.max(...prev.sets.map(s => s.reps))} />
                     </>
                   )}
                   {mode === "time" && (
                     <>
                       <MiniStat label={t("history.sets")} value={prev.sets.length} />
-                      <MiniStat label="Total" value={`${totalSecs}s`} />
-                      <MiniStat label="Best" value={`${Math.max(...prev.sets.map(s => s.seconds ?? 0))}s`} />
+                      <MiniStat label={t("preview.total")} value={`${totalSecs}s`} />
+                      <MiniStat label={t("preview.best")} value={`${Math.max(...prev.sets.map(s => s.seconds ?? 0))}s`} />
                     </>
                   )}
                 </div>
@@ -515,7 +515,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
                 </ul>
               </>
             ) : (
-              <p className="mt-4 text-sm text-muted-foreground">No previous history for this lift yet. Set the bar.</p>
+              <p className="mt-4 text-sm text-muted-foreground">{t("preview.noHistory")}</p>
             )}
           </div>
 
@@ -524,7 +524,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
               {t("common.back")}
             </Button>
             <Button onClick={startFromPreview} className="h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-extrabold shadow-glow">
-              {t("session.starting")} <ArrowRight className="w-4 h-4 ml-1.5" />
+              {t("preview.start")} <ArrowRight className="w-4 h-4 ml-1.5" />
             </Button>
           </div>
         </div>

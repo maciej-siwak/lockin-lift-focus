@@ -163,6 +163,14 @@ const en: Dict = {
   "records.exCopied": "{name} copied",
   "records.shareRecords": "Share records",
   "records.hallOfFame": "#1 per exercise",
+  "preview.upNext": "Up next",
+  "preview.lastSession": "Last session",
+  "preview.top": "Top",
+  "preview.vol": "Vol",
+  "preview.best": "Best",
+  "preview.total": "Total",
+  "preview.noHistory": "No previous history for this lift yet. Set the bar.",
+  "preview.start": "Start",
 };
 
 const es: Dict = {
@@ -299,6 +307,14 @@ const es: Dict = {
   "records.exCopied": "{name} copiado",
   "records.shareRecords": "Compartir récords",
   "records.hallOfFame": "#1 por ejercicio",
+  "preview.upNext": "A continuación",
+  "preview.lastSession": "Última sesión",
+  "preview.top": "Máx",
+  "preview.vol": "Vol",
+  "preview.best": "Mejor",
+  "preview.total": "Total",
+  "preview.noHistory": "Aún no hay historial para este ejercicio. Marca el listón.",
+  "preview.start": "Empezar",
 };
 
 const pt: Dict = {
@@ -435,6 +451,14 @@ const pt: Dict = {
   "records.exCopied": "{name} copiado",
   "records.shareRecords": "Compartilhar recordes",
   "records.hallOfFame": "#1 por exercício",
+  "preview.upNext": "A seguir",
+  "preview.lastSession": "Última sessão",
+  "preview.top": "Máx",
+  "preview.vol": "Vol",
+  "preview.best": "Melhor",
+  "preview.total": "Total",
+  "preview.noHistory": "Ainda sem histórico para este exercício. Defina o padrão.",
+  "preview.start": "Começar",
 };
 
 const de: Dict = {
@@ -571,6 +595,14 @@ const de: Dict = {
   "records.exCopied": "{name} kopiert",
   "records.shareRecords": "Rekorde teilen",
   "records.hallOfFame": "#1 pro Übung",
+  "preview.upNext": "Als Nächstes",
+  "preview.lastSession": "Letzte Einheit",
+  "preview.top": "Max",
+  "preview.vol": "Vol",
+  "preview.best": "Best",
+  "preview.total": "Gesamt",
+  "preview.noHistory": "Noch keine Historie für diese Übung. Setze die Messlatte.",
+  "preview.start": "Start",
 };
 
 const ja: Dict = {
@@ -707,6 +739,14 @@ const ja: Dict = {
   "records.exCopied": "{name} をコピー",
   "records.shareRecords": "記録を共有",
   "records.hallOfFame": "種目別 #1",
+  "preview.upNext": "次の種目",
+  "preview.lastSession": "前回のセッション",
+  "preview.top": "最大",
+  "preview.vol": "ボリューム",
+  "preview.best": "ベスト",
+  "preview.total": "合計",
+  "preview.noHistory": "この種目の履歴はまだありません。基準を作りましょう。",
+  "preview.start": "開始",
 };
 
 const ko: Dict = {
@@ -843,6 +883,14 @@ const ko: Dict = {
   "records.exCopied": "{name} 복사됨",
   "records.shareRecords": "기록 공유",
   "records.hallOfFame": "종목별 #1",
+  "preview.upNext": "다음 종목",
+  "preview.lastSession": "지난 세션",
+  "preview.top": "최고",
+  "preview.vol": "볼륨",
+  "preview.best": "베스트",
+  "preview.total": "합계",
+  "preview.noHistory": "이 운동의 기록이 아직 없습니다. 기준을 세워보세요.",
+  "preview.start": "시작",
 };
 
 const pl: Dict = {
@@ -979,6 +1027,14 @@ const pl: Dict = {
   "records.exCopied": "{name} skopiowane",
   "records.shareRecords": "Udostępnij rekordy",
   "records.hallOfFame": "#1 na ćwiczenie",
+  "preview.upNext": "Następnie",
+  "preview.lastSession": "Ostatnia sesja",
+  "preview.top": "Max",
+  "preview.vol": "Obj",
+  "preview.best": "Najlepszy",
+  "preview.total": "Razem",
+  "preview.noHistory": "Brak wcześniejszej historii dla tego ćwiczenia. Ustal poprzeczkę.",
+  "preview.start": "Start",
 };
 
 const bg: Dict = {
@@ -1115,6 +1171,14 @@ const bg: Dict = {
   "records.exCopied": "{name} копирано",
   "records.shareRecords": "Сподели рекордите",
   "records.hallOfFame": "#1 на упражнение",
+  "preview.upNext": "Следва",
+  "preview.lastSession": "Последна сесия",
+  "preview.top": "Макс",
+  "preview.vol": "Обем",
+  "preview.best": "Най-добро",
+  "preview.total": "Общо",
+  "preview.noHistory": "Все още няма история за това упражнение. Задай летвата.",
+  "preview.start": "Старт",
 };
 
 const DICTS: Record<Lang, Dict> = { en, es, pt, de, ja, ko, pl, bg };
