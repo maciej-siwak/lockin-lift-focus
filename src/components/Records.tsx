@@ -233,20 +233,20 @@ export const Records = ({ onBack }: Props) => {
             </div>
             <ul className="mt-3 space-y-2">
               {hallOfFame.map(({ key, mode, set, brokenInLatest }) => {
-                const orange = brokenInLatest;
+                const gold = brokenInLatest;
                 return (
                   <li
                     key={key}
                     className={`flex items-center justify-between gap-3 rounded-xl border p-3 transition-base ${
-                      orange
-                        ? "bg-[hsl(22_95%_58%/0.08)] border-[hsl(22_95%_58%/0.5)] shadow-[0_0_24px_-8px_hsl(22_95%_58%/0.6)]"
+                      gold
+                        ? "bg-[hsl(45_95%_58%/0.08)] border-[hsl(45_95%_58%/0.5)] shadow-[0_0_24px_-8px_hsl(45_95%_58%/0.6)]"
                         : "bg-card border-border"
                     }`}
                   >
                     <p className="text-sm font-semibold truncate flex-1">{displayName[key] ?? key}</p>
                     <span
                       className={`font-mono-timer text-sm font-bold shrink-0 ${
-                        orange ? "text-[hsl(22_95%_58%)] drop-shadow-[0_0_8px_hsl(22_95%_58%/0.55)]" : "text-foreground"
+                        gold ? "text-[hsl(45_95%_58%)] drop-shadow-[0_0_8px_hsl(45_95%_58%/0.55)]" : "text-foreground"
                       }`}
                     >
                       {mode === "weight_reps" && `${set.weight}${unit} × ${set.reps}`}
@@ -306,7 +306,7 @@ export const Records = ({ onBack }: Props) => {
                   key={key}
                   className={`rounded-xl border p-3 transition-base ${
                     brokenInLatest
-                      ? "bg-[hsl(22_95%_58%/0.06)] border-[hsl(22_95%_58%/0.5)]"
+                      ? "bg-[hsl(45_95%_58%/0.06)] border-[hsl(45_95%_58%/0.5)]"
                       : "bg-card border-border"
                   }`}
                 >
