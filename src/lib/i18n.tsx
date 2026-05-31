@@ -22,6 +22,7 @@ const en: Dict = {
   "common.save": "Save",
   "common.delete": "Delete",
   "common.edit": "Edit",
+  "common.cancel": "Cancel",
   "common.copyOk": "Copied to clipboard",
   "common.copyFail": "Could not copy",
   "common.share": "Share",
