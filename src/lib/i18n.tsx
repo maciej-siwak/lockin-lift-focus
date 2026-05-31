@@ -56,6 +56,12 @@ const en: Dict = {
   "settings.vibration": "Vibration",
   "settings.vibrationDesc": "Pulses on countdown and set log.",
   "settings.language": "Language",
+  "settings.resetApp": "Reset app",
+  "settings.resetDesc": "Erase all data and restore defaults.",
+  "settings.resetConfirmTitle": "Reset app?",
+  "settings.resetConfirmDesc": "This deletes all workouts, sessions, records and settings. This cannot be undone.",
+  "settings.resetConfirmCta": "Reset",
+  "settings.resetDone": "App reset",
 
   // builder
   "builder.editTitle": "Edit workout",
