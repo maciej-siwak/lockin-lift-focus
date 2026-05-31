@@ -1,11 +1,22 @@
 import { useState } from "react";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, Trash2 } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { storage } from "@/lib/storage";
 import { toast } from "sonner";
 import { LANGUAGES, useI18n, type Lang } from "@/lib/i18n";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Props { onBack: () => void; }
 
@@ -22,6 +33,18 @@ export const SettingsScreen = ({ onBack }: Props) => {
   const onLangChange = (code: Lang) => {
     setLang(code);
     setS(prev => ({ ...prev, language: code }));
+  };
+
+  const resetApp = () => {
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+    } catch {
+      /* no-op */
+    }
+    toast.success(t("settings.resetDone"));
+    // Hard reload to fully reinitialise app state
+    setTimeout(() => window.location.reload(), 150);
   };
 
   return (
@@ -81,6 +104,34 @@ export const SettingsScreen = ({ onBack }: Props) => {
         </Card>
 
         <Button onClick={save} className="w-full h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{t("common.save")}</Button>
+
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button
+              className="w-full h-14 rounded-2xl border border-destructive/40 bg-destructive/10 text-destructive font-bold flex items-center justify-center gap-2 transition-base hover:bg-destructive/15"
+            >
+              <Trash2 className="w-4 h-4" />
+              {t("settings.resetApp")}
+            </button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t("settings.resetConfirmTitle")}</AlertDialogTitle>
+              <AlertDialogDescription>{t("settings.resetConfirmDesc")}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={resetApp}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                {t("settings.resetConfirmCta")}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <p className="text-xs text-muted-foreground text-center">{t("settings.resetDesc")}</p>
       </div>
     </AppShell>
   );
