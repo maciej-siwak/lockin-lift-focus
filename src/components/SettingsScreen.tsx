@@ -108,7 +108,13 @@ export const SettingsScreen = ({ onBack }: Props) => {
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <button
-              className="w-full h-14 rounded-2xl border border-destructive/40 bg-destructive/10 text-destructive font-bold flex items-center justify-center gap-2 transition-base hover:bg-destructive/15"
+              className="w-full h-14 rounded-2xl border font-bold flex items-center justify-center gap-2 transition-base"
+              style={{
+                borderColor: "hsl(28 100% 55% / 0.5)",
+                backgroundColor: "hsl(28 100% 55% / 0.1)",
+                color: "hsl(28 100% 60%)",
+                boxShadow: "0 0 24px hsl(28 100% 55% / 0.45)",
+              }}
             >
               <Trash2 className="w-4 h-4" />
               {t("settings.resetApp")}
@@ -123,7 +129,8 @@ export const SettingsScreen = ({ onBack }: Props) => {
               <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
               <AlertDialogAction
                 onClick={resetApp}
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                className="text-white"
+                style={{ backgroundColor: "hsl(28 100% 55%)" }}
               >
                 {t("settings.resetConfirmCta")}
               </AlertDialogAction>
