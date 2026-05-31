@@ -371,7 +371,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
     const isFirst = completedIds.size === 0;
     return (
       <AppShell immersive>
-        <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
+        <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[calc(env(safe-area-inset-bottom)+2.5rem)]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
               <Lock className="w-3.5 h-3.5" /> {t("session.lockedIn")}
@@ -451,7 +451,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
     const totalSecs = prev ? prev.sets.reduce((m, s) => m + (s.seconds ?? 0), 0) : 0;
     return (
       <AppShell immersive>
-        <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
+        <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[calc(env(safe-area-inset-bottom)+2.5rem)]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
               <Lock className="w-3.5 h-3.5" /> {t("session.lockedIn")}
@@ -535,7 +535,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
   return (
     <AppShell immersive>
-      <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1.5rem)]">
+      <div className="flex-1 flex flex-col px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[calc(env(safe-area-inset-bottom)+2.5rem)]">
         {/* Header bar */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-semibold text-primary tracking-[0.2em] uppercase">
