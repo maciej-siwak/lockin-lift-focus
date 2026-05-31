@@ -30,8 +30,32 @@ export const defaultSettings: Settings = {
   language: "en",
 };
 
+const buildDefaultWorkouts = (): Workout[] => [
+  {
+    id: uid(),
+    name: "Full Body Compound",
+    createdAt: Date.now(),
+    exercises: [
+      { id: uid(), name: "Barbell Back Squat", sets: 4, reps: 6, restSeconds: 120, mode: "weight_reps" },
+      { id: uid(), name: "Bench Press", sets: 4, reps: 6, restSeconds: 120, mode: "weight_reps" },
+      { id: uid(), name: "Deadlift", sets: 3, reps: 5, restSeconds: 150, mode: "weight_reps" },
+      { id: uid(), name: "Overhead Press", sets: 3, reps: 8, restSeconds: 90, mode: "weight_reps" },
+      { id: uid(), name: "Barbell Row", sets: 3, reps: 8, restSeconds: 90, mode: "weight_reps" },
+      { id: uid(), name: "Pull-Up", sets: 3, reps: 8, restSeconds: 90, mode: "reps" },
+      { id: uid(), name: "Plank", sets: 3, reps: 0, restSeconds: 60, mode: "time", targetSeconds: 45 },
+    ],
+  },
+];
+
 export const storage = {
-  getWorkouts: () => read<Workout[]>(KEYS.workouts, []),
+  getWorkouts: (): Workout[] => {
+    if (localStorage.getItem(KEYS.workouts) === null) {
+      const seeded = buildDefaultWorkouts();
+      write(KEYS.workouts, seeded);
+      return seeded;
+    }
+    return read<Workout[]>(KEYS.workouts, []);
+  },
   saveWorkouts: (w: Workout[]) => write(KEYS.workouts, w),
 
   getSessions: () => read<SessionLog[]>(KEYS.sessions, []),
