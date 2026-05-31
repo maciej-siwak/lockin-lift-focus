@@ -131,4 +131,16 @@ All colors MUST be HSL.
     100% { transform: scale(1); opacity: 1; }
   }
   .animate-count-pop { animation: count-pop 0.4s ease-out; }
+
+  @keyframes border-pulse {
+    0%, 100% {
+      border-color: hsl(140 70% 65% / 0.45);
+      box-shadow: 0 0 0 0 hsl(140 70% 65% / 0);
+    }
+    50% {
+      border-color: hsl(140 70% 70% / 0.95);
+      box-shadow: 0 0 32px 2px hsl(140 70% 65% / 0.45);
+    }
+  }
+  .animate-border-pulse { animation: border-pulse 2s ease-in-out infinite; }
 }

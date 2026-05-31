@@ -579,7 +579,7 @@ export const Session = ({ workoutId, onExit }: Props) => {
 
         {phase === "lifting" && (
           <div className="mt-6 flex-1 flex flex-col">
-            <div className="rounded-3xl bg-gradient-dark border border-border p-6 shadow-card flex-1 flex flex-col items-center justify-center">
+            <div className="rounded-3xl bg-gradient-dark border-2 animate-border-pulse p-6 shadow-card flex-1 flex flex-col items-center justify-center">
               <p className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary animate-pulse text-center px-2 leading-tight">
                 {t("session.workMsg")}
               </p>
