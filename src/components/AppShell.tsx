@@ -24,7 +24,7 @@ export const AppShell = ({ title, subtitle, left, right, children, immersive }: 
           </div>
         </header>
       )}
-      <main className={immersive ? "flex-1 flex flex-col" : "flex-1 mx-auto w-full max-w-md px-5 pb-[max(env(safe-area-inset-bottom),1.5rem)]"}>
+      <main className={immersive ? "flex-1 flex flex-col" : "flex-1 mx-auto w-full max-w-md px-5 pb-[calc(env(safe-area-inset-bottom)+2.5rem)]"}>
         {children}
       </main>
     </div>
