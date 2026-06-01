@@ -12,6 +12,8 @@ export interface ExerciseTemplate {
   targetSeconds?: number;
   /** Optional pyramid: per-set reps overrides. Length should equal `sets`. */
   repsPerSet?: number[];
+  /** Optional per-set weight overrides (weight_reps mode). Length should equal `sets`. */
+  weightPerSet?: number[];
 }
 
 export interface Workout {
