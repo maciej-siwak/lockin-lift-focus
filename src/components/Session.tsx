@@ -229,7 +229,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
       const mode: ExerciseMode = current.mode ?? "weight_reps";
       const seed: SetLog[] = Array.from({ length: current.sets }).map((_, i) => ({
         setIndex: i,
-        weight: mode === "weight_reps" ? last : 0,
+        weight: mode === "weight_reps"
+          ? (current.weightPerSet?.[i] ?? last)
+          : 0,
         reps: mode === "time" ? 0 : repsForSet(i),
         seconds: mode === "time"
           ? (current.repsPerSet?.[i] ?? current.targetSeconds ?? 30)
