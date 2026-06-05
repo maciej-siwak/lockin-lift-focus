@@ -227,17 +227,32 @@ export const Session = ({ workoutId, onExit }: Props) => {
       // Open logging screen
       const last = storage.getLastWeights()[current.name.toLowerCase()] ?? 0;
       const mode: ExerciseMode = current.mode ?? "weight_reps";
-      const seed: SetLog[] = Array.from({ length: current.sets }).map((_, i) => ({
-        setIndex: i,
-        weight: mode === "weight_reps"
-          ? (current.weightPerSet?.[i] ?? last)
-          : 0,
-        reps: mode === "time" ? 0 : repsForSet(i),
-        seconds: mode === "time"
-          ? (current.repsPerSet?.[i] ?? current.targetSeconds ?? 30)
-          : undefined,
-        completedAt: Date.now(),
-      }));
+      // Find this exercise's sets from the most recent prior session (smart prefill).
+      const nameKey = current.name.toLowerCase();
+      const prevSets: SetLog[] | undefined = (() => {
+        for (const s of storage.getSessions()) {
+          if (s.id === sessionIdRef.current) continue;
+          const ex = s.exercises.find(e => e.exerciseName.toLowerCase() === nameKey);
+          if (ex && ex.sets.length) return ex.sets;
+        }
+        return undefined;
+      })();
+      const seed: SetLog[] = Array.from({ length: current.sets }).map((_, i) => {
+        const prev = prevSets?.[i] ?? prevSets?.[prevSets.length - 1];
+        return {
+          setIndex: i,
+          weight: mode === "weight_reps"
+            ? (prev?.weight ?? current.weightPerSet?.[i] ?? last)
+            : 0,
+          reps: mode === "time"
+            ? 0
+            : (prev?.reps ?? repsForSet(i)),
+          seconds: mode === "time"
+            ? (prev?.seconds ?? current.repsPerSet?.[i] ?? current.targetSeconds ?? 30)
+            : undefined,
+          completedAt: Date.now(),
+        };
+      });
       setPendingSets(seed);
       setPhase("logging");
     } else {
