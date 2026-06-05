@@ -57,16 +57,17 @@ export const SettingsScreen = ({ onBack }: Props) => {
       <div className="pt-5 space-y-5">
         <Card>
           <Label>{t("settings.language")}</Label>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {LANGUAGES.map(l => (
-              <button
-                key={l.code}
-                onClick={() => onLangChange(l.code)}
-                className={`h-11 rounded-xl font-semibold text-sm transition-base px-3 ${lang === l.code ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}
-              >
-                {l.native}
-              </button>
-            ))}
+          <div className="mt-3">
+            <Select value={lang} onValueChange={(v) => onLangChange(v as Lang)}>
+              <SelectTrigger className="h-11 rounded-xl bg-secondary border-0 font-semibold text-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGES.map(l => (
+                  <SelectItem key={l.code} value={l.code}>{l.native}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </Card>
 
