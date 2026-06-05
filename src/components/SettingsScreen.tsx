@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { storage } from "@/lib/storage";
 import { toast } from "sonner";
 import { LANGUAGES, useI18n, type Lang } from "@/lib/i18n";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
