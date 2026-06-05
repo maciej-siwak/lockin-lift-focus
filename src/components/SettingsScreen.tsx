@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { storage } from "@/lib/storage";
 import { toast } from "sonner";
 import { LANGUAGES, useI18n, type Lang } from "@/lib/i18n";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -56,16 +57,17 @@ export const SettingsScreen = ({ onBack }: Props) => {
       <div className="pt-5 space-y-5">
         <Card>
           <Label>{t("settings.language")}</Label>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {LANGUAGES.map(l => (
-              <button
-                key={l.code}
-                onClick={() => onLangChange(l.code)}
-                className={`h-11 rounded-xl font-semibold text-sm transition-base px-3 ${lang === l.code ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}
-              >
-                {l.native}
-              </button>
-            ))}
+          <div className="mt-3">
+            <Select value={lang} onValueChange={(v) => onLangChange(v as Lang)}>
+              <SelectTrigger className="h-11 rounded-xl bg-secondary border-0 font-semibold text-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGES.map(l => (
+                  <SelectItem key={l.code} value={l.code}>{l.native}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </Card>
 
