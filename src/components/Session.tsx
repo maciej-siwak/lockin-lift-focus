@@ -742,15 +742,24 @@ const MiniStat = ({ label, value }: { label: string; value: string | number }) =
   </div>
 );
 
-const FocusChip = ({ count, t }: { count: number; t: (k: string, p?: Record<string, string | number>) => string }) => (
-  <span
-    title="Times you left the app during this workout"
-    className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider border ${count > 0 ? "border-warning/40 bg-warning/10 text-warning" : "border-border bg-muted text-muted-foreground"}`}
-  >
-    <Eye className="w-3 h-3" />
-    {t("session.focusBreaks", { n: count })}
-  </span>
-);
+const FocusChip = ({ count, t }: { count: number; t: (k: string, p?: Record<string, string | number>) => string }) => {
+  const tone =
+    count >= 6
+      ? "border-destructive/50 bg-destructive/15 text-destructive"
+      : count > 0
+        ? "border-warning/40 bg-warning/10 text-warning"
+        : "border-border bg-muted text-muted-foreground";
+  return (
+    <span
+      title="Times you left the app during this workout"
+      className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider border ${tone}`}
+    >
+      <Eye className="w-3 h-3" />
+      {t("session.focusBreaks", { n: count })}
+    </span>
+  );
+};
+
 
 const ExitDialog = ({
   open, onOpenChange, hasLogs, onConfirm, t,
