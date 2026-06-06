@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Trophy, Share2, Dumbbell, Eye, Flame, Crown } from "lucide-react";
+import { ArrowLeft, Trophy, Share2, Dumbbell, Eye, Flame, Crown, ChevronDown } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
 import { useT } from "@/lib/i18n";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 
 type ExMode = "weight_reps" | "reps" | "time";
 
@@ -300,10 +301,11 @@ export const Records = ({ onBack }: Props) => {
               <Trophy className="w-4 h-4 text-primary" />
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{t("records.top3")}</h3>
             </div>
-            <ul className="mt-3 space-y-3">
+            <div className="mt-3 space-y-3">
               {topByExercise.map(({ key, mode, sets, brokenInLatest }) => (
-                <li
+                <Collapsible
                   key={key}
+                  defaultOpen={false}
                   className={`rounded-xl border p-3 transition-base ${
                     brokenInLatest
                       ? "bg-[hsl(45_95%_58%/0.06)] border-[hsl(45_95%_58%/0.5)]"
@@ -311,7 +313,10 @@ export const Records = ({ onBack }: Props) => {
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-semibold truncate flex-1">{displayName[key] ?? key}</p>
+                    <CollapsibleTrigger className="group flex items-center gap-2 flex-1 text-left">
+                      <p className="text-sm font-semibold truncate">{displayName[key] ?? key}</p>
+                      <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                    </CollapsibleTrigger>
                     <button
                       onClick={() => shareExercise(key, sets)}
                       aria-label={t("common.share")}
@@ -320,31 +325,33 @@ export const Records = ({ onBack }: Props) => {
                       <Share2 className="w-4 h-4" />
                     </button>
                   </div>
-                  <ol className="mt-2 space-y-1">
-                    {sets.map((set, i) => (
-                      <li key={i} className="flex items-center gap-3 text-sm">
-                        <span className="w-5 text-center shrink-0 font-mono-timer text-xs font-bold text-primary">
-                          {i + 1}.
-                        </span>
-                        {mode === "weight_reps" && (
-                          <>
-                            <span className="font-mono-timer font-bold text-foreground">{set.weight}{unit}</span>
-                            <span className="text-muted-foreground">×</span>
-                            <span className="font-mono-timer text-foreground">{set.reps} {t("session.repsLabel")}</span>
-                          </>
-                        )}
-                        {mode === "reps" && (
-                          <span className="font-mono-timer font-bold text-foreground">{set.reps} {t("session.repsLabel")}</span>
-                        )}
-                        {mode === "time" && (
-                          <span className="font-mono-timer font-bold text-foreground">{set.seconds}s</span>
-                        )}
-                      </li>
-                    ))}
-                  </ol>
-                </li>
+                  <CollapsibleContent>
+                    <ol className="mt-2 space-y-1">
+                      {sets.map((set, i) => (
+                        <li key={i} className="flex items-center gap-3 text-sm">
+                          <span className="w-5 text-center shrink-0 font-mono-timer text-xs font-bold text-primary">
+                            {i + 1}.
+                          </span>
+                          {mode === "weight_reps" && (
+                            <>
+                              <span className="font-mono-timer font-bold text-foreground">{set.weight}{unit}</span>
+                              <span className="text-muted-foreground">×</span>
+                              <span className="font-mono-timer text-foreground">{set.reps} {t("session.repsLabel")}</span>
+                            </>
+                          )}
+                          {mode === "reps" && (
+                            <span className="font-mono-timer font-bold text-foreground">{set.reps} {t("session.repsLabel")}</span>
+                          )}
+                          {mode === "time" && (
+                            <span className="font-mono-timer font-bold text-foreground">{set.seconds}s</span>
+                          )}
+                        </li>
+                      ))}
+                    </ol>
+                  </CollapsibleContent>
+                </Collapsible>
               ))}
-            </ul>
+            </div>
           </section>
         )}
       </div>
