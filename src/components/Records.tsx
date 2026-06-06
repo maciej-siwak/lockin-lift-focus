@@ -214,6 +214,36 @@ export const Records = ({ onBack }: Props) => {
       }
     >
       <div className="pt-5">
+        {focusStats && (
+          <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card mb-4">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Eye className="w-4 h-4 text-primary" />
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{t("records.focusRecords")}</h3>
+              </div>
+              <button
+                onClick={shareFocus}
+                aria-label={t("records.focusRecords")}
+                className="p-1.5 -mr-1 text-muted-foreground hover:text-primary transition-base"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <FocusStat label={t("records.fullFocus")} value={focusStats.fullFocusCount} icon={<Eye className="w-3 h-3" />} />
+              <FocusStat label={t("records.bestStreak")} value={focusStats.best} icon={<Flame className="w-3 h-3" />} />
+              <FocusStat
+                label={t("records.currentStreak")}
+                value={focusStats.current}
+                icon={<Flame className="w-3 h-3" />}
+                tone={focusStats.current > 10 ? "gold" : focusStats.current > 5 ? "orange" : undefined}
+              />
+            </div>
+            <p className="mt-2 text-[10px] text-muted-foreground text-center">
+              {t("records.streakDesc")}
+            </p>
+          </section>
+        )}
         {hallOfFame.length > 0 && (
           <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card mb-4">
             <div className="flex items-center justify-between gap-2">
@@ -257,36 +287,6 @@ export const Records = ({ onBack }: Props) => {
                 );
               })}
             </ul>
-          </section>
-        )}
-        {focusStats && (
-          <section className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card mb-4">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <Eye className="w-4 h-4 text-primary" />
-                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{t("records.focusRecords")}</h3>
-              </div>
-              <button
-                onClick={shareFocus}
-                aria-label={t("records.focusRecords")}
-                className="p-1.5 -mr-1 text-muted-foreground hover:text-primary transition-base"
-              >
-                <Share2 className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="mt-3 grid grid-cols-3 gap-2">
-              <FocusStat label={t("records.fullFocus")} value={focusStats.fullFocusCount} icon={<Eye className="w-3 h-3" />} />
-              <FocusStat label={t("records.bestStreak")} value={focusStats.best} icon={<Flame className="w-3 h-3" />} />
-              <FocusStat
-                label={t("records.currentStreak")}
-                value={focusStats.current}
-                icon={<Flame className="w-3 h-3" />}
-                tone={focusStats.current > 10 ? "gold" : focusStats.current > 5 ? "orange" : undefined}
-              />
-            </div>
-            <p className="mt-2 text-[10px] text-muted-foreground text-center">
-              {t("records.streakDesc")}
-            </p>
           </section>
         )}
         {topByExercise.length === 0 ? (
