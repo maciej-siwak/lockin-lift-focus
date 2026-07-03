@@ -200,7 +200,6 @@ const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: 
         fill: HIGHLIGHT_FILL,
         filter: "url(#muscleBlurTight)",
         opacity: 0.65,
-        transform: `translate(${(cx ?? 0) * 0} 0)`,
       })}
     </g>
   ) : null;
