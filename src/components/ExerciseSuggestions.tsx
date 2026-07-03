@@ -269,9 +269,9 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
                     cx={510} cy={310} rx={50} ry={44} />
 
                   <Region part="chest" selected={selected} onSelect={setSelected}
-                    d="M 380 292 C 344 284 306 292 306 328 C 306 372 322 410 356 424 C 380 428 384 410 384 388 C 386 356 386 320 380 292 Z" />
+                    d="M 380 296 C 340 286 296 296 292 336 C 292 380 314 416 352 428 C 380 432 384 414 384 388 C 386 356 386 322 380 296 Z" />
                   <Region part="chest" selected={selected} onSelect={setSelected}
-                    d="M 388 292 C 424 284 462 292 462 328 C 462 372 446 410 412 424 C 388 428 384 410 384 388 C 382 356 382 320 388 292 Z" />
+                    d="M 388 296 C 428 286 472 296 476 336 C 476 380 454 416 416 428 C 388 432 384 414 384 388 C 382 356 382 322 388 296 Z" />
 
                   <Region part="abs" selected={selected} onSelect={setSelected}
                     d="M 320 448 C 356 456 412 456 448 448 C 460 512 460 600 444 660 C 412 676 356 676 324 660 C 308 600 308 512 320 448 Z" />
@@ -287,14 +287,14 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
                     cx={558} cy={600} rx={36} ry={90} />
 
                   <Region part="quads" selected={selected} onSelect={setSelected}
-                    cx={320} cy={900} rx={52} ry={110} />
+                    cx={322} cy={870} rx={50} ry={100} />
                   <Region part="quads" selected={selected} onSelect={setSelected}
-                    cx={452} cy={900} rx={52} ry={110} />
+                    cx={450} cy={870} rx={50} ry={100} />
 
                   <Region part="calves" selected={selected} onSelect={setSelected}
-                    cx={320} cy={1120} rx={34} ry={78} />
+                    cx={320} cy={1100} rx={32} ry={72} />
                   <Region part="calves" selected={selected} onSelect={setSelected}
-                    cx={452} cy={1120} rx={34} ry={78} />
+                    cx={452} cy={1100} rx={32} ry={72} />
                 </>
               ) : (
                 <>
