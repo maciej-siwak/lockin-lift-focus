@@ -2,6 +2,8 @@ import { useState, type KeyboardEvent } from "react";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import frontFigure from "@/assets/fitness-figure-front.png";
+import backFigure from "@/assets/fitness-figure-back.png";
 
 type BodyPart =
   | "chest"
@@ -147,13 +149,9 @@ const DATA: Record<BodyPart, { label: string; exercises: Exercise[] }> = {
 };
 
 const HIGHLIGHT = "hsl(var(--primary))";
-const BASE = "hsl(var(--primary) / 0.16)";
-const STROKE = "hsl(var(--primary) / 0.28)";
+const BASE = "transparent";
+const STROKE = "transparent";
 const ACTIVE_STROKE = "hsl(var(--primary))";
-const FIGURE_FILL = "hsl(var(--card))";
-const FIGURE_STROKE = "hsl(var(--border))";
-const DETAIL_STROKE = "hsl(var(--foreground) / 0.18)";
-const SEPARATOR = "hsl(var(--background) / 0.55)";
 
 interface RegionProps {
   part: BodyPart;
@@ -176,12 +174,13 @@ const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: 
   const props = {
     fill,
     stroke: active ? ACTIVE_STROKE : STROKE,
-    strokeWidth: active ? 1.55 : 0.85,
+    strokeWidth: active ? 3 : 0,
     vectorEffect: "non-scaling-stroke",
+    opacity: active ? 0.52 : 1,
     style: {
       cursor: "pointer",
-      filter: active ? "drop-shadow(0 0 7px hsl(var(--primary) / 0.6))" : "none",
-      transition: "fill 180ms ease, stroke 180ms ease, filter 180ms ease",
+      filter: active ? "drop-shadow(0 0 12px hsl(var(--primary) / 0.78))" : "none",
+      transition: "fill 180ms ease, stroke 180ms ease, filter 180ms ease, opacity 180ms ease",
     },
   } as const;
 
