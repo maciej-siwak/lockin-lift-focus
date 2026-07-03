@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
@@ -147,8 +147,13 @@ const DATA: Record<BodyPart, { label: string; exercises: Exercise[] }> = {
 };
 
 const HIGHLIGHT = "hsl(var(--primary))";
-const BASE = "hsl(var(--muted))";
-const STROKE = "hsl(var(--border))";
+const BASE = "hsl(var(--primary) / 0.16)";
+const STROKE = "hsl(var(--primary) / 0.28)";
+const ACTIVE_STROKE = "hsl(var(--primary))";
+const FIGURE_FILL = "hsl(var(--card))";
+const FIGURE_STROKE = "hsl(var(--border))";
+const DETAIL_STROKE = "hsl(var(--foreground) / 0.18)";
+const SEPARATOR = "hsl(var(--background) / 0.55)";
 
 interface RegionProps {
   part: BodyPart;
@@ -162,18 +167,43 @@ interface RegionProps {
 const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: RegionProps) => {
   const active = selected === part;
   const fill = active ? HIGHLIGHT : BASE;
+  const handleKeyDown = (event: KeyboardEvent<SVGGElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onSelect(part);
+    }
+  };
   const props = {
     fill,
-    stroke: STROKE,
-    strokeWidth: 1,
-    onClick: () => onSelect(part),
-    style: { cursor: "pointer", transition: "fill 200ms" },
-    className: active ? "drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]" : "",
+    stroke: active ? ACTIVE_STROKE : STROKE,
+    strokeWidth: active ? 1.55 : 0.85,
+    vectorEffect: "non-scaling-stroke",
+    style: {
+      cursor: "pointer",
+      filter: active ? "drop-shadow(0 0 7px hsl(var(--primary) / 0.6))" : "none",
+      transition: "fill 180ms ease, stroke 180ms ease, filter 180ms ease",
+    },
   } as const;
-  if (d) return <path d={d} {...props} />;
-  if (cx != null && cy != null && rx != null && ry != null) return <ellipse cx={cx} cy={cy} rx={rx} ry={ry} {...props} />;
-  if (x != null && y != null && w != null && h != null) return <rect x={x} y={y} width={w} height={h} rx={r ?? 4} {...props} />;
-  return null;
+
+  let shape = null;
+  if (d) shape = <path d={d} {...props} />;
+  if (cx != null && cy != null && rx != null && ry != null) shape = <ellipse cx={cx} cy={cy} rx={rx} ry={ry} {...props} />;
+  if (x != null && y != null && w != null && h != null) shape = <rect x={x} y={y} width={w} height={h} rx={r ?? 4} {...props} />;
+  if (!shape) return null;
+
+  return (
+    <g
+      role="button"
+      tabIndex={0}
+      aria-label={DATA[part].label}
+      onClick={() => onSelect(part)}
+      onKeyDown={handleKeyDown}
+      className="outline-none"
+    >
+      <title>{DATA[part].label}</title>
+      {shape}
+    </g>
+  );
 };
 
 interface Props { onBack: () => void; }
