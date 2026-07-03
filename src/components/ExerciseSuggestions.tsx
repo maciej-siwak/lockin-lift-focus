@@ -148,7 +148,7 @@ const DATA: Record<BodyPart, { label: string; exercises: Exercise[] }> = {
   },
 };
 
-const HIGHLIGHT_FILL = "hsl(var(--primary))";
+const HIGHLIGHT_FILL = "url(#muscleHighlight)";
 const HIT_FILL = "rgba(0,0,0,0.001)"; // invisible but hit-testable
 
 const FRONT_PARTS: BodyPart[] = ["chest", "shoulders", "biceps", "forearms", "abs", "quads", "calves"];
@@ -183,7 +183,7 @@ const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: 
   // Hit target: invisible but captures pointer events over full region.
   const hit = makeShape({
     fill: HIT_FILL,
-    style: { cursor: "pointer" },
+    style: { cursor: "pointer", pointerEvents: "all" },
   });
 
   // Highlight: layered green paint over the muscle. `screen` blend mode makes it feel
@@ -259,27 +259,36 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
 
         {/* Human figure */}
         <div className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card flex justify-center">
-          <div className="relative w-full max-w-[215px] aspect-[3/5]">
-            <img
-              src={view === "front" ? frontFigure : backFigure}
-              alt={`${view} anatomy figure`}
-              width={768}
-              height={1280}
-              className="absolute inset-0 h-full w-full object-contain select-none pointer-events-none drop-shadow-2xl"
-              loading="lazy"
-            />
-            <svg
-              viewBox="0 0 768 1280"
-              className="absolute inset-0 h-full w-full"
-              aria-label={`${view} body`}
+          <div className="relative w-full max-w-[215px] aspect-[3/5] overflow-hidden">
+            <div
+              className="absolute inset-0 transition-transform duration-300 ease-out"
+              style={{ transform: view === "back" ? "scale(1.3)" : "scale(1)", transformOrigin: "50% 50%" }}
             >
+              <img
+                src={view === "front" ? frontFigure : backFigure}
+                alt={`${view} anatomy figure`}
+                width={768}
+                height={1280}
+                className="absolute inset-0 h-full w-full object-contain select-none pointer-events-none drop-shadow-2xl"
+                loading="lazy"
+              />
+              <svg
+                viewBox="0 0 768 1280"
+                className="absolute inset-0 h-full w-full"
+                aria-label={`${view} body`}
+              >
               <defs>
                 <filter id="muscleGlow" x="-40%" y="-40%" width="180%" height="180%">
-                  <feGaussianBlur stdDeviation="18" />
+                  <feGaussianBlur stdDeviation="12" />
                 </filter>
                 <filter id="muscleCore" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="5" />
+                  <feGaussianBlur stdDeviation="3.5" />
                 </filter>
+                <radialGradient id="muscleHighlight" cx="50%" cy="45%" r="72%">
+                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="1" />
+                  <stop offset="58%" stopColor="hsl(var(--primary))" stopOpacity="0.82" />
+                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.28" />
+                </radialGradient>
               </defs>
               {view === "front" ? (
                 <>
@@ -319,49 +328,50 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
               ) : (
                 <>
                   <Region part="traps" selected={selected} onSelect={setSelected}
-                    d="M 384 340 C 356 348 334 372 328 402 C 348 418 372 428 384 460 C 396 428 420 418 440 402 C 434 372 412 348 384 340 Z" />
+                    d="M 384 292 C 362 312 342 340 326 368 C 344 384 368 394 384 426 C 400 394 424 384 442 368 C 426 340 406 312 384 292 Z" />
 
                   <Region part="shoulders" selected={selected} onSelect={setSelected}
-                    cx={306} cy={396} rx={38} ry={40} />
+                    d="M 292 350 C 256 360 238 390 246 426 C 262 446 300 444 324 420 C 334 390 324 358 292 350 Z" />
                   <Region part="shoulders" selected={selected} onSelect={setSelected}
-                    cx={462} cy={396} rx={38} ry={40} />
+                    d="M 476 350 C 512 360 530 390 522 426 C 506 446 468 444 444 420 C 434 390 444 358 476 350 Z" />
 
                   <Region part="upperBack" selected={selected} onSelect={setSelected}
-                    d="M 336 452 C 364 446 404 446 432 452 C 446 472 446 500 432 522 C 404 530 364 530 336 522 C 322 500 322 472 336 452 Z" />
+                    d="M 334 374 C 356 380 374 398 382 424 C 376 456 352 486 318 494 C 298 458 306 406 334 374 Z M 434 374 C 412 380 394 398 386 424 C 392 456 416 486 450 494 C 470 458 462 406 434 374 Z" />
 
                   <Region part="lats" selected={selected} onSelect={setSelected}
-                    d="M 328 442 C 306 452 292 484 296 522 C 298 552 312 578 340 588 C 358 590 372 574 374 552 C 376 512 376 476 372 452 C 362 440 344 438 328 442 Z" />
+                    d="M 326 398 C 300 408 282 444 276 492 C 270 540 286 586 316 612 C 338 618 350 596 354 560 C 358 514 354 462 344 426 C 340 410 334 400 326 398 Z" />
                   <Region part="lats" selected={selected} onSelect={setSelected}
-                    d="M 440 442 C 462 452 476 484 472 522 C 470 552 456 578 428 588 C 410 590 396 574 394 552 C 392 512 392 476 396 452 C 406 440 424 438 440 442 Z" />
+                    d="M 442 398 C 468 408 486 444 492 492 C 498 540 482 586 452 612 C 430 618 418 596 414 560 C 410 514 414 462 424 426 C 428 410 434 400 442 398 Z" />
 
                   <Region part="lowerBack" selected={selected} onSelect={setSelected}
-                    d="M 358 540 C 372 548 396 548 410 540 C 418 558 418 582 410 604 C 396 612 372 612 358 604 C 350 582 350 558 358 540 Z" />
+                    d="M 362 494 C 374 518 378 558 374 604 C 370 634 360 658 346 674 C 338 636 340 574 350 528 C 354 512 358 500 362 494 Z M 406 494 C 394 518 390 558 394 604 C 398 634 408 658 422 674 C 430 636 428 574 418 528 C 414 512 410 500 406 494 Z" />
 
                   <Region part="triceps" selected={selected} onSelect={setSelected}
-                    d="M 246 400 C 226 414 216 448 220 494 C 226 528 246 544 264 534 C 276 512 282 478 280 442 C 274 414 262 400 252 398 C 250 398 248 399 246 400 Z" />
+                    d="M 246 408 C 226 426 216 466 222 512 C 230 544 250 558 268 540 C 280 512 284 470 276 434 C 268 412 256 404 246 408 Z" />
                   <Region part="triceps" selected={selected} onSelect={setSelected}
-                    d="M 522 400 C 542 414 552 448 548 494 C 542 528 522 544 504 534 C 492 512 486 478 488 442 C 494 414 506 400 516 398 C 518 398 520 399 522 400 Z" />
+                    d="M 522 408 C 542 426 552 466 546 512 C 538 544 518 558 500 540 C 488 512 484 470 492 434 C 500 412 512 404 522 408 Z" />
 
                   <Region part="forearms" selected={selected} onSelect={setSelected}
-                    d="M 234 552 C 218 574 214 606 224 636 C 240 654 258 648 266 628 C 272 606 270 578 258 562 C 250 550 240 548 234 552 Z" />
+                    d="M 234 554 C 218 576 214 612 224 648 C 240 668 260 660 268 634 C 274 608 270 580 258 562 C 250 552 240 550 234 554 Z" />
                   <Region part="forearms" selected={selected} onSelect={setSelected}
-                    d="M 534 552 C 550 574 554 606 544 636 C 528 654 510 648 502 628 C 496 606 498 578 510 562 C 518 550 528 548 534 552 Z" />
+                    d="M 534 554 C 550 576 554 612 544 648 C 528 668 508 660 500 634 C 494 608 498 580 510 562 C 518 552 528 550 534 554 Z" />
 
                   <Region part="glutes" selected={selected} onSelect={setSelected}
-                    d="M 320 610 C 352 598 378 604 384 632 C 390 604 416 598 448 610 C 468 630 470 664 452 686 C 420 700 388 696 384 668 C 380 696 348 700 316 686 C 298 664 300 630 320 610 Z" />
+                    d="M 318 606 C 348 592 376 600 382 630 C 376 668 350 698 314 686 C 296 662 298 624 318 606 Z M 450 606 C 420 592 392 600 386 630 C 392 668 418 698 454 686 C 472 662 470 624 450 606 Z" />
 
                   <Region part="hamstrings" selected={selected} onSelect={setSelected}
-                    d="M 340 700 C 314 716 302 770 308 830 C 318 870 344 882 362 866 C 374 836 376 786 366 738 C 358 710 348 698 340 700 Z" />
+                    d="M 338 692 C 312 714 300 772 308 838 C 318 884 344 898 362 872 C 374 832 376 772 366 728 C 358 702 348 690 338 692 Z" />
                   <Region part="hamstrings" selected={selected} onSelect={setSelected}
-                    d="M 428 700 C 454 716 466 770 460 830 C 450 870 424 882 406 866 C 394 836 392 786 402 738 C 410 710 420 698 428 700 Z" />
+                    d="M 430 692 C 456 714 468 772 460 838 C 450 884 424 898 406 872 C 394 832 392 772 402 728 C 410 702 420 690 430 692 Z" />
 
                   <Region part="calves" selected={selected} onSelect={setSelected}
-                    d="M 302 892 C 278 908 264 954 270 1006 C 282 1042 302 1050 316 1030 C 326 998 326 956 318 922 C 314 902 308 890 302 892 Z" />
+                    d="M 300 884 C 274 908 262 964 270 1024 C 282 1062 304 1066 318 1034 C 328 994 326 942 316 908 C 312 892 306 882 300 884 Z" />
                   <Region part="calves" selected={selected} onSelect={setSelected}
-                    d="M 466 892 C 490 908 504 954 498 1006 C 486 1042 466 1050 452 1030 C 442 998 442 956 450 922 C 454 902 460 890 466 892 Z" />
+                    d="M 468 884 C 494 908 506 964 498 1024 C 486 1062 464 1066 450 1034 C 440 994 442 942 452 908 C 456 892 462 882 468 884 Z" />
                 </>
               )}
             </svg>
+            </div>
           </div>
         </div>
 
