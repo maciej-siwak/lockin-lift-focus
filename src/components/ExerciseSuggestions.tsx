@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from "react";
+import { useState, type KeyboardEvent, type SVGProps } from "react";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
@@ -148,10 +148,8 @@ const DATA: Record<BodyPart, { label: string; exercises: Exercise[] }> = {
   },
 };
 
-const HIGHLIGHT = "hsl(var(--primary))";
-const BASE = "transparent";
-const STROKE = "transparent";
-const ACTIVE_STROKE = "hsl(var(--primary))";
+const HIGHLIGHT_FILL = "hsl(var(--primary))";
+const HIT_FILL = "rgba(0,0,0,0.001)"; // invisible but hit-testable
 
 const FRONT_PARTS: BodyPart[] = ["chest", "shoulders", "biceps", "forearms", "abs", "quads", "calves"];
 const BACK_PARTS: BodyPart[] = ["traps", "shoulders", "upperBack", "lats", "lowerBack", "triceps", "forearms", "glutes", "hamstrings", "calves"];
@@ -167,31 +165,44 @@ interface RegionProps {
 
 const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: RegionProps) => {
   const active = selected === part;
-  const fill = active ? HIGHLIGHT : BASE;
   const handleKeyDown = (event: KeyboardEvent<SVGGElement>) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       onSelect(part);
     }
   };
-  const props = {
-    fill,
-    stroke: active ? ACTIVE_STROKE : STROKE,
-    strokeWidth: active ? 3 : 0,
-    vectorEffect: "non-scaling-stroke",
-    opacity: active ? 0.52 : 1,
-    style: {
-      cursor: "pointer",
-      filter: active ? "drop-shadow(0 0 12px hsl(var(--primary) / 0.78))" : "none",
-      transition: "fill 180ms ease, stroke 180ms ease, filter 180ms ease, opacity 180ms ease",
-    },
-  } as const;
+  const makeShape = (shapeProps: SVGProps<SVGElement>) => {
+    if (d) return <path d={d} {...(shapeProps as SVGProps<SVGPathElement>)} />;
+    if (cx != null && cy != null && rx != null && ry != null)
+      return <ellipse cx={cx} cy={cy} rx={rx} ry={ry} {...(shapeProps as SVGProps<SVGEllipseElement>)} />;
+    if (x != null && y != null && w != null && h != null)
+      return <rect x={x} y={y} width={w} height={h} rx={r ?? 4} {...(shapeProps as SVGProps<SVGRectElement>)} />;
+    return null;
+  };
 
-  let shape = null;
-  if (d) shape = <path d={d} {...props} />;
-  if (cx != null && cy != null && rx != null && ry != null) shape = <ellipse cx={cx} cy={cy} rx={rx} ry={ry} {...props} />;
-  if (x != null && y != null && w != null && h != null) shape = <rect x={x} y={y} width={w} height={h} rx={r ?? 4} {...props} />;
-  if (!shape) return null;
+  // Hit target: invisible but captures pointer events over full region.
+  const hit = makeShape({
+    fill: HIT_FILL,
+    style: { cursor: "pointer" },
+  });
+
+  // Highlight: layered green paint over the muscle. `screen` blend mode makes it feel
+  // like light on skin instead of a flat sticker. Outer wide blur = soft glow halo;
+  // inner tight blur = the core muscle shape with feathered edges.
+  const highlight = active ? (
+    <g style={{ mixBlendMode: "screen", pointerEvents: "none" }}>
+      {makeShape({
+        fill: HIGHLIGHT_FILL,
+        filter: "url(#muscleGlow)",
+        opacity: 0.55,
+      })}
+      {makeShape({
+        fill: HIGHLIGHT_FILL,
+        filter: "url(#muscleCore)",
+        opacity: 0.85,
+      })}
+    </g>
+  ) : null;
 
   return (
     <g
@@ -200,10 +211,11 @@ const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: 
       aria-label={DATA[part].label}
       onClick={() => onSelect(part)}
       onKeyDown={handleKeyDown}
-      className="outline-none"
+      className="outline-none transition-opacity"
     >
       <title>{DATA[part].label}</title>
-      {shape}
+      {hit}
+      {highlight}
     </g>
   );
 };
@@ -261,6 +273,14 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
               className="absolute inset-0 h-full w-full"
               aria-label={`${view} body`}
             >
+              <defs>
+                <filter id="muscleGlow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="18" />
+                </filter>
+                <filter id="muscleCore" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="5" />
+                </filter>
+              </defs>
               {view === "front" ? (
                 <>
                   <Region part="shoulders" selected={selected} onSelect={setSelected}
@@ -299,46 +319,46 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
               ) : (
                 <>
                   <Region part="traps" selected={selected} onSelect={setSelected}
-                    d="M 340 348 C 372 336 396 336 428 348 C 442 380 442 418 428 448 C 396 456 372 456 340 448 C 326 418 326 380 340 348 Z" />
+                    d="M 384 340 C 356 348 334 372 328 402 C 348 418 372 428 384 460 C 396 428 420 418 440 402 C 434 372 412 348 384 340 Z" />
 
                   <Region part="shoulders" selected={selected} onSelect={setSelected}
-                    cx={290} cy={392} rx={46} ry={40} />
+                    cx={306} cy={396} rx={38} ry={40} />
                   <Region part="shoulders" selected={selected} onSelect={setSelected}
-                    cx={480} cy={392} rx={46} ry={40} />
+                    cx={462} cy={396} rx={38} ry={40} />
 
                   <Region part="upperBack" selected={selected} onSelect={setSelected}
-                    d="M 328 452 C 360 444 408 444 440 452 C 454 480 454 520 440 548 C 408 558 360 558 328 548 C 314 520 314 480 328 452 Z" />
+                    d="M 336 452 C 364 446 404 446 432 452 C 446 472 446 500 432 522 C 404 530 364 530 336 522 C 322 500 322 472 336 452 Z" />
 
                   <Region part="lats" selected={selected} onSelect={setSelected}
-                    cx={348} cy={548} rx={52} ry={78} />
+                    d="M 328 442 C 306 452 292 484 296 522 C 298 552 312 578 340 588 C 358 590 372 574 374 552 C 376 512 376 476 372 452 C 362 440 344 438 328 442 Z" />
                   <Region part="lats" selected={selected} onSelect={setSelected}
-                    cx={420} cy={548} rx={52} ry={78} />
+                    d="M 440 442 C 462 452 476 484 472 522 C 470 552 456 578 428 588 C 410 590 396 574 394 552 C 392 512 392 476 396 452 C 406 440 424 438 440 442 Z" />
 
                   <Region part="lowerBack" selected={selected} onSelect={setSelected}
-                    d="M 338 604 C 368 614 400 614 430 604 C 442 626 442 654 430 678 C 400 686 368 686 338 678 C 326 654 326 626 338 604 Z" />
+                    d="M 358 540 C 372 548 396 548 410 540 C 418 558 418 582 410 604 C 396 612 372 612 358 604 C 350 582 350 558 358 540 Z" />
 
                   <Region part="triceps" selected={selected} onSelect={setSelected}
-                    cx={256} cy={480} rx={34} ry={74} />
+                    d="M 246 400 C 226 414 216 448 220 494 C 226 528 246 544 264 534 C 276 512 282 478 280 442 C 274 414 262 400 252 398 C 250 398 248 399 246 400 Z" />
                   <Region part="triceps" selected={selected} onSelect={setSelected}
-                    cx={514} cy={480} rx={34} ry={74} />
+                    d="M 522 400 C 542 414 552 448 548 494 C 542 528 522 544 504 534 C 492 512 486 478 488 442 C 494 414 506 400 516 398 C 518 398 520 399 522 400 Z" />
 
                   <Region part="forearms" selected={selected} onSelect={setSelected}
-                    cx={262} cy={594} rx={28} ry={52} />
+                    d="M 234 552 C 218 574 214 606 224 636 C 240 654 258 648 266 628 C 272 606 270 578 258 562 C 250 550 240 548 234 552 Z" />
                   <Region part="forearms" selected={selected} onSelect={setSelected}
-                    cx={508} cy={594} rx={28} ry={52} />
+                    d="M 534 552 C 550 574 554 606 544 636 C 528 654 510 648 502 628 C 496 606 498 578 510 562 C 518 550 528 548 534 552 Z" />
 
                   <Region part="glutes" selected={selected} onSelect={setSelected}
-                    d="M 304 686 C 344 674 424 674 464 686 C 480 708 480 744 464 764 C 424 776 344 776 304 764 C 288 744 288 708 304 686 Z" />
+                    d="M 320 610 C 352 598 378 604 384 632 C 390 604 416 598 448 610 C 468 630 470 664 452 686 C 420 700 388 696 384 668 C 380 696 348 700 316 686 C 298 664 300 630 320 610 Z" />
 
                   <Region part="hamstrings" selected={selected} onSelect={setSelected}
-                    cx={330} cy={800} rx={44} ry={70} />
+                    d="M 340 700 C 314 716 302 770 308 830 C 318 870 344 882 362 866 C 374 836 376 786 366 738 C 358 710 348 698 340 700 Z" />
                   <Region part="hamstrings" selected={selected} onSelect={setSelected}
-                    cx={480} cy={800} rx={44} ry={70} />
+                    d="M 428 700 C 454 716 466 770 460 830 C 450 870 424 882 406 866 C 394 836 392 786 402 738 C 410 710 420 698 428 700 Z" />
 
                   <Region part="calves" selected={selected} onSelect={setSelected}
-                    cx={288} cy={960} rx={36} ry={80} />
+                    d="M 302 892 C 278 908 264 954 270 1006 C 282 1042 302 1050 316 1030 C 326 998 326 956 318 922 C 314 902 308 890 302 892 Z" />
                   <Region part="calves" selected={selected} onSelect={setSelected}
-                    cx={522} cy={960} rx={36} ry={80} />
+                    d="M 466 892 C 490 908 504 954 498 1006 C 486 1042 466 1050 452 1030 C 442 998 442 956 450 922 C 454 902 460 890 466 892 Z" />
                 </>
               )}
             </svg>
