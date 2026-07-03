@@ -148,10 +148,8 @@ const DATA: Record<BodyPart, { label: string; exercises: Exercise[] }> = {
   },
 };
 
-const HIGHLIGHT = "hsl(var(--primary))";
-const BASE = "transparent";
-const STROKE = "transparent";
-const ACTIVE_STROKE = "hsl(var(--primary))";
+const HIGHLIGHT_FILL = "url(#muscleGlow)";
+const HIT_FILL = "rgba(0,0,0,0.001)"; // invisible but hit-testable
 
 const FRONT_PARTS: BodyPart[] = ["chest", "shoulders", "biceps", "forearms", "abs", "quads", "calves"];
 const BACK_PARTS: BodyPart[] = ["traps", "shoulders", "upperBack", "lats", "lowerBack", "triceps", "forearms", "glutes", "hamstrings", "calves"];
@@ -167,31 +165,45 @@ interface RegionProps {
 
 const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: RegionProps) => {
   const active = selected === part;
-  const fill = active ? HIGHLIGHT : BASE;
   const handleKeyDown = (event: KeyboardEvent<SVGGElement>) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       onSelect(part);
     }
   };
-  const props = {
-    fill,
-    stroke: active ? ACTIVE_STROKE : STROKE,
-    strokeWidth: active ? 3 : 0,
-    vectorEffect: "non-scaling-stroke",
-    opacity: active ? 0.52 : 1,
-    style: {
-      cursor: "pointer",
-      filter: active ? "drop-shadow(0 0 12px hsl(var(--primary) / 0.78))" : "none",
-      transition: "fill 180ms ease, stroke 180ms ease, filter 180ms ease, opacity 180ms ease",
-    },
-  } as const;
+  const makeShape = (shapeProps: React.SVGProps<SVGElement>) => {
+    if (d) return <path d={d} {...(shapeProps as React.SVGProps<SVGPathElement>)} />;
+    if (cx != null && cy != null && rx != null && ry != null)
+      return <ellipse cx={cx} cy={cy} rx={rx} ry={ry} {...(shapeProps as React.SVGProps<SVGEllipseElement>)} />;
+    if (x != null && y != null && w != null && h != null)
+      return <rect x={x} y={y} width={w} height={h} rx={r ?? 4} {...(shapeProps as React.SVGProps<SVGRectElement>)} />;
+    return null;
+  };
 
-  let shape = null;
-  if (d) shape = <path d={d} {...props} />;
-  if (cx != null && cy != null && rx != null && ry != null) shape = <ellipse cx={cx} cy={cy} rx={rx} ry={ry} {...props} />;
-  if (x != null && y != null && w != null && h != null) shape = <rect x={x} y={y} width={w} height={h} rx={r ?? 4} {...props} />;
-  if (!shape) return null;
+  // Hit target: invisible but captures pointer events over full region.
+  const hit = makeShape({
+    fill: HIT_FILL,
+    style: { cursor: "pointer" },
+  });
+
+  // Highlight: only rendered when active, with radial gradient + soft blur, plus a
+  // second brighter core layer for realistic depth. mix-blend-mode "screen" makes the
+  // green paint onto the dark figure like light, not a flat sticker.
+  const highlight = active ? (
+    <g style={{ mixBlendMode: "screen", pointerEvents: "none" }}>
+      {makeShape({
+        fill: HIGHLIGHT_FILL,
+        filter: "url(#muscleBlur)",
+        opacity: 0.95,
+      })}
+      {makeShape({
+        fill: HIGHLIGHT_FILL,
+        filter: "url(#muscleBlurTight)",
+        opacity: 0.65,
+        transform: `translate(${(cx ?? 0) * 0} 0)`,
+      })}
+    </g>
+  ) : null;
 
   return (
     <g
@@ -200,10 +212,11 @@ const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: 
       aria-label={DATA[part].label}
       onClick={() => onSelect(part)}
       onKeyDown={handleKeyDown}
-      className="outline-none"
+      className="outline-none transition-opacity"
     >
       <title>{DATA[part].label}</title>
-      {shape}
+      {hit}
+      {highlight}
     </g>
   );
 };
