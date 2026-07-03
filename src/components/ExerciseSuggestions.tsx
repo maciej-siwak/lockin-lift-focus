@@ -262,7 +262,7 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
           <div className="relative w-[min(260px,72vw)] aspect-[3/5] overflow-hidden">
             <div
               className="absolute inset-0 transition-transform duration-300 ease-out"
-              style={{ transform: view === "back" ? "scale(1.3)" : "scale(1)", transformOrigin: "50% 50%" }}
+              style={{ transform: view === "back" ? "scale(1.05)" : "scale(1)", transformOrigin: "50% 50%" }}
             >
               <img
                 src={view === "front" ? frontFigure : backFigure}
