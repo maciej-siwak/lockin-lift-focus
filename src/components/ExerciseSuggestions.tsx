@@ -299,46 +299,46 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
               ) : (
                 <>
                   <Region part="traps" selected={selected} onSelect={setSelected}
-                    d="M 340 340 C 372 328 396 328 428 340 C 440 380 440 420 428 452 C 396 462 372 462 340 452 C 328 420 328 380 340 340 Z" />
+                    d="M 340 348 C 372 336 396 336 428 348 C 442 380 442 418 428 448 C 396 456 372 456 340 448 C 326 418 326 380 340 348 Z" />
 
                   <Region part="shoulders" selected={selected} onSelect={setSelected}
-                    cx={292} cy={400} rx={48} ry={44} />
+                    cx={290} cy={392} rx={46} ry={40} />
                   <Region part="shoulders" selected={selected} onSelect={setSelected}
-                    cx={478} cy={400} rx={48} ry={44} />
+                    cx={480} cy={392} rx={46} ry={40} />
 
                   <Region part="upperBack" selected={selected} onSelect={setSelected}
-                    d="M 330 460 C 360 452 408 452 438 460 C 452 490 452 530 438 560 C 408 570 360 570 330 560 C 316 530 316 490 330 460 Z" />
+                    d="M 328 452 C 360 444 408 444 440 452 C 454 480 454 520 440 548 C 408 558 360 558 328 548 C 314 520 314 480 328 452 Z" />
 
                   <Region part="lats" selected={selected} onSelect={setSelected}
-                    cx={344} cy={560} rx={48} ry={90} />
+                    cx={348} cy={548} rx={52} ry={78} />
                   <Region part="lats" selected={selected} onSelect={setSelected}
-                    cx={424} cy={560} rx={48} ry={90} />
+                    cx={420} cy={548} rx={52} ry={78} />
 
                   <Region part="lowerBack" selected={selected} onSelect={setSelected}
-                    d="M 336 620 C 368 630 400 630 432 620 C 444 646 444 676 432 702 C 400 712 368 712 336 702 C 324 676 324 646 336 620 Z" />
+                    d="M 338 604 C 368 614 400 614 430 604 C 442 626 442 654 430 678 C 400 686 368 686 338 678 C 326 654 326 626 338 604 Z" />
 
                   <Region part="triceps" selected={selected} onSelect={setSelected}
-                    cx={254} cy={500} rx={36} ry={78} />
+                    cx={256} cy={480} rx={34} ry={74} />
                   <Region part="triceps" selected={selected} onSelect={setSelected}
-                    cx={516} cy={500} rx={36} ry={78} />
+                    cx={514} cy={480} rx={34} ry={74} />
 
                   <Region part="forearms" selected={selected} onSelect={setSelected}
-                    cx={256} cy={620} rx={30} ry={58} />
+                    cx={262} cy={594} rx={28} ry={52} />
                   <Region part="forearms" selected={selected} onSelect={setSelected}
-                    cx={514} cy={620} rx={30} ry={58} />
+                    cx={508} cy={594} rx={28} ry={52} />
 
                   <Region part="glutes" selected={selected} onSelect={setSelected}
-                    d="M 300 720 C 340 706 428 706 468 720 C 484 750 484 792 468 820 C 428 834 340 834 300 820 C 284 792 284 750 300 720 Z" />
+                    d="M 304 686 C 344 674 424 674 464 686 C 480 708 480 744 464 764 C 424 776 344 776 304 764 C 288 744 288 708 304 686 Z" />
 
                   <Region part="hamstrings" selected={selected} onSelect={setSelected}
-                    cx={324} cy={860} rx={44} ry={80} />
+                    cx={330} cy={800} rx={44} ry={70} />
                   <Region part="hamstrings" selected={selected} onSelect={setSelected}
-                    cx={484} cy={860} rx={44} ry={80} />
+                    cx={480} cy={800} rx={44} ry={70} />
 
                   <Region part="calves" selected={selected} onSelect={setSelected}
-                    cx={286} cy={1000} rx={36} ry={80} />
+                    cx={288} cy={960} rx={36} ry={80} />
                   <Region part="calves" selected={selected} onSelect={setSelected}
-                    cx={522} cy={1000} rx={36} ry={80} />
+                    cx={522} cy={960} rx={36} ry={80} />
                 </>
               )}
             </svg>
