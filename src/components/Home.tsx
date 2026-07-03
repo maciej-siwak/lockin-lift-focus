@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Dumbbell, Settings as SettingsIcon, Play, Trash2, Pencil, History as HistoryIcon, Trophy, Target, PersonStanding } from "lucide-react";
+import { Plus, Dumbbell, Settings as SettingsIcon, Play, Trash2, Pencil, History as HistoryIcon, Trophy, Target } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { storage } from "@/lib/storage";
@@ -14,10 +14,9 @@ interface Props {
   onOpenSettings: () => void;
   onOpenHistory: () => void;
   onOpenRecords: () => void;
-  onOpenSuggestions: () => void;
 }
 
-export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettings, onOpenHistory, onOpenRecords, onOpenSuggestions }: Props) => {
+export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettings, onOpenHistory, onOpenRecords }: Props) => {
   const t = useT();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
@@ -151,18 +150,6 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
             </div>
           </button>
         </div>
-        <button
-          onClick={onOpenSuggestions}
-          className="mt-3 w-full rounded-2xl bg-card border border-border p-4 flex items-center gap-3 text-left transition-base hover:border-primary/40 hover:bg-secondary"
-        >
-          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center text-primary shrink-0">
-            <PersonStanding className="w-5 h-5" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="font-bold text-sm">Exercise Suggestions</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Popular lifts by body part</p>
-          </div>
-        </button>
       </section>
     </AppShell>
   );
