@@ -274,16 +274,11 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
               aria-label={`${view} body`}
             >
               <defs>
-                <radialGradient id="muscleGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="1" />
-                  <stop offset="55%" stopColor="hsl(var(--primary))" stopOpacity="0.85" />
-                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
-                </radialGradient>
-                <filter id="muscleBlur" x="-25%" y="-25%" width="150%" height="150%">
-                  <feGaussianBlur stdDeviation="10" />
+                <filter id="muscleGlow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="18" />
                 </filter>
-                <filter id="muscleBlurTight" x="-25%" y="-25%" width="150%" height="150%">
-                  <feGaussianBlur stdDeviation="4" />
+                <filter id="muscleCore" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="5" />
                 </filter>
               </defs>
               {view === "front" ? (
