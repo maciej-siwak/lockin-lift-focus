@@ -239,163 +239,170 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
         {/* Human figure */}
         <div className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card flex justify-center">
           <svg
-            viewBox="0 0 200 380"
-            className="w-full max-w-[210px] h-auto"
+            viewBox="0 0 240 430"
+            className="w-full max-w-[188px] h-auto"
             aria-label={`${view} body`}
           >
             <defs>
               <linearGradient id="bodyShade" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stopColor="hsl(var(--muted))" stopOpacity="0.55" />
-                <stop offset="0.5" stopColor="hsl(var(--muted))" stopOpacity="0.9" />
-                <stop offset="1" stopColor="hsl(var(--muted))" stopOpacity="0.55" />
+                <stop offset="0" stopColor={FIGURE_FILL} stopOpacity="0.72" />
+                <stop offset="0.5" stopColor="hsl(var(--muted))" stopOpacity="1" />
+                <stop offset="1" stopColor={FIGURE_FILL} stopOpacity="0.72" />
+              </linearGradient>
+              <linearGradient id="limbShade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="hsl(var(--muted))" stopOpacity="0.98" />
+                <stop offset="1" stopColor={FIGURE_FILL} stopOpacity="0.76" />
               </linearGradient>
             </defs>
 
-            {/* Head */}
-            <circle cx="100" cy="34" r="15" fill="url(#bodyShade)" stroke={STROKE} strokeWidth={1.2} />
-            {/* Neck */}
-            <path
-              d="M 88,48 L 112,48 L 110,60 L 90,60 Z"
-              fill="url(#bodyShade)"
-              stroke={STROKE}
-              strokeWidth={1.2}
-            />
+            <g fill="none" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke">
+              <ellipse cx="120" cy="37" rx="17" ry="22" fill="url(#bodyShade)" stroke={FIGURE_STROKE} strokeWidth="1.1" />
+              <path d="M 107 57 C 111 66 129 66 133 57 L 137 81 C 129 86 111 86 103 81 Z" fill="url(#bodyShade)" stroke={FIGURE_STROKE} strokeWidth="1.1" />
+              <path d="M 112 47 C 117 51 123 51 128 47" stroke={DETAIL_STROKE} strokeWidth="0.9" opacity="0.7" />
 
-            {/* Bodybuilder silhouette — broad shoulders, narrow waist, thick limbs */}
-            <path
-              d="M 90,60
-                 C 68,62 34,70 28,86
-                 C 24,100 28,118 30,136
-                 C 30,154 28,174 28,192
-                 C 28,206 34,214 42,212
-                 C 50,208 52,198 52,186
-                 C 52,168 54,148 58,130
-                 C 62,114 72,104 78,102
-                 C 78,118 80,136 78,154
-                 C 78,168 76,178 80,186
-                 C 78,210 76,238 80,260
-                 C 82,278 84,294 84,310
-                 C 84,322 88,330 94,330
-                 C 98,330 98,326 98,310
-                 C 96,280 96,240 98,200
-                 C 98,192 98,188 98,186
-                 L 102,186
-                 C 102,188 102,192 102,200
-                 C 104,240 104,280 102,310
-                 C 102,326 102,330 106,330
-                 C 112,330 116,322 116,310
-                 C 116,294 118,278 120,260
-                 C 124,238 122,210 120,186
-                 C 124,178 122,168 122,154
-                 C 120,136 122,118 122,102
-                 C 128,104 138,114 142,130
-                 C 146,148 148,168 148,186
-                 C 148,198 150,208 158,212
-                 C 166,214 172,206 172,192
-                 C 172,174 170,154 170,136
-                 C 172,118 176,100 172,86
-                 C 166,70 132,62 110,60
-                 Z"
-              fill="url(#bodyShade)"
-              stroke={STROKE}
-              strokeWidth={1.2}
-            />
+              {/* Balanced bodybuilder base silhouette */}
+              <path
+                d="M 103 79
+                   C 87 80 66 86 53 101
+                   C 42 114 34 139 29 167
+                   C 25 191 25 220 32 240
+                   C 36 251 48 251 54 240
+                   C 61 226 60 200 65 172
+                   C 70 142 81 128 94 121
+                   C 88 147 88 175 92 197
+                   C 94 208 97 220 95 234
+                   C 91 258 86 284 82 310
+                   C 78 336 75 365 80 391
+                   C 83 405 96 407 101 393
+                   C 108 371 110 337 114 306
+                   C 116 286 117 264 119 242
+                   C 120 238 120 238 121 242
+                   C 123 264 124 286 126 306
+                   C 130 337 132 371 139 393
+                   C 144 407 157 405 160 391
+                   C 165 365 162 336 158 310
+                   C 154 284 149 258 145 234
+                   C 143 220 146 208 148 197
+                   C 152 175 152 147 146 121
+                   C 159 128 170 142 175 172
+                   C 180 200 179 226 186 240
+                   C 192 251 204 251 208 240
+                   C 215 220 215 191 211 167
+                   C 206 139 198 114 187 101
+                   C 174 86 153 80 137 79
+                   C 133 91 107 91 103 79 Z"
+                fill="url(#bodyShade)"
+                stroke={FIGURE_STROKE}
+                strokeWidth="1.25"
+              />
+              <path d="M 95 219 C 107 226 133 226 145 219" stroke={DETAIL_STROKE} strokeWidth="0.9" opacity="0.55" />
+              <path d="M 111 241 C 114 263 113 288 110 308" stroke={DETAIL_STROKE} strokeWidth="0.85" opacity="0.55" />
+              <path d="M 129 241 C 126 263 127 288 130 308" stroke={DETAIL_STROKE} strokeWidth="0.85" opacity="0.55" />
+              <path d="M 101 310 C 107 316 113 318 119 316" stroke={DETAIL_STROKE} strokeWidth="0.8" opacity="0.5" />
+              <path d="M 139 316 C 133 318 127 316 121 310" stroke={DETAIL_STROKE} strokeWidth="0.8" opacity="0.5" />
+            </g>
 
             {view === "front" ? (
               <>
-                {/* Shoulders (front delts) */}
                 <Region part="shoulders" selected={selected} onSelect={setSelected}
-                  d="M 88,66 C 68,68 46,78 38,92 C 48,98 66,94 78,86 C 84,78 84,70 88,66 Z" />
+                  d="M 100 84 C 82 82 61 91 50 105 C 44 113 43 123 48 131 C 63 130 81 121 91 107 C 97 99 99 91 100 84 Z" />
                 <Region part="shoulders" selected={selected} onSelect={setSelected}
-                  d="M 112,66 C 132,68 154,78 162,92 C 152,98 134,94 122,86 C 116,78 116,70 112,66 Z" />
+                  d="M 140 84 C 158 82 179 91 190 105 C 196 113 197 123 192 131 C 177 130 159 121 149 107 C 143 99 141 91 140 84 Z" />
 
-                {/* Chest — two full pecs */}
                 <Region part="chest" selected={selected} onSelect={setSelected}
-                  d="M 100,80 C 88,80 78,86 74,96 C 72,110 76,124 84,132 C 92,136 98,132 100,124 C 100,110 100,94 100,80 Z" />
+                  d="M 118 96 C 106 89 90 91 80 101 C 72 109 70 123 74 137 C 86 144 103 142 116 130 C 119 118 120 106 118 96 Z" />
                 <Region part="chest" selected={selected} onSelect={setSelected}
-                  d="M 100,80 C 112,80 122,86 126,96 C 128,110 124,124 116,132 C 108,136 102,132 100,124 C 100,110 100,94 100,80 Z" />
+                  d="M 122 96 C 134 89 150 91 160 101 C 168 109 170 123 166 137 C 154 144 137 142 124 130 C 121 118 120 106 122 96 Z" />
 
-                {/* Abs */}
                 <Region part="abs" selected={selected} onSelect={setSelected}
-                  d="M 82,134 C 100,138 118,138 118,134 C 120,146 120,158 118,168 C 100,172 82,168 82,168 C 80,158 80,146 82,134 Z" />
+                  d="M 102 140 C 113 145 127 145 138 140 C 143 160 144 183 137 206 C 129 212 111 212 103 206 C 96 183 97 160 102 140 Z" />
 
-                {/* Biceps */}
                 <Region part="biceps" selected={selected} onSelect={setSelected}
-                  d="M 60,104 C 44,112 38,130 40,148 C 50,156 66,150 72,132 C 72,118 68,106 60,104 Z" />
+                  d="M 69 119 C 54 129 47 149 48 169 C 52 181 65 184 74 174 C 83 162 86 140 81 126 C 78 120 74 118 69 119 Z" />
                 <Region part="biceps" selected={selected} onSelect={setSelected}
-                  d="M 140,104 C 156,112 162,130 160,148 C 150,156 134,150 128,132 C 128,118 132,106 140,104 Z" />
+                  d="M 171 119 C 186 129 193 149 192 169 C 188 181 175 184 166 174 C 157 162 154 140 159 126 C 162 120 166 118 171 119 Z" />
 
-                {/* Forearms */}
                 <Region part="forearms" selected={selected} onSelect={setSelected}
-                  d="M 46,152 C 40,168 40,188 46,204 C 56,206 64,196 64,180 C 64,166 56,154 48,152 Z" />
+                  d="M 49 174 C 39 191 39 220 47 239 C 55 246 65 241 68 229 C 70 209 68 189 60 177 C 56 173 52 172 49 174 Z" />
                 <Region part="forearms" selected={selected} onSelect={setSelected}
-                  d="M 154,152 C 160,168 160,188 154,204 C 144,206 136,196 136,180 C 136,166 144,154 152,152 Z" />
+                  d="M 191 174 C 201 191 201 220 193 239 C 185 246 175 241 172 229 C 170 209 172 189 180 177 C 184 173 188 172 191 174 Z" />
 
-                {/* Quads */}
                 <Region part="quads" selected={selected} onSelect={setSelected}
-                  d="M 82,188 C 74,210 72,234 78,254 C 88,260 98,252 98,238 C 98,220 94,200 90,188 C 86,184 84,184 82,188 Z" />
+                  d="M 96 235 C 87 259 82 285 84 313 C 89 329 102 329 110 314 C 116 290 115 259 109 238 C 105 233 100 232 96 235 Z" />
                 <Region part="quads" selected={selected} onSelect={setSelected}
-                  d="M 118,188 C 126,210 128,234 122,254 C 112,260 102,252 102,238 C 102,220 106,200 110,188 C 114,184 116,184 118,188 Z" />
+                  d="M 144 235 C 153 259 158 285 156 313 C 151 329 138 329 130 314 C 124 290 125 259 131 238 C 135 233 140 232 144 235 Z" />
 
-                {/* Calves */}
                 <Region part="calves" selected={selected} onSelect={setSelected}
-                  d="M 86,260 C 78,276 78,298 86,314 C 96,316 100,306 100,290 C 100,274 94,262 88,260 Z" />
+                  d="M 86 315 C 79 339 78 367 84 391 C 91 401 101 397 104 382 C 108 358 105 334 96 318 C 93 314 89 313 86 315 Z" />
                 <Region part="calves" selected={selected} onSelect={setSelected}
-                  d="M 114,260 C 122,276 122,298 114,314 C 104,316 100,306 100,290 C 100,274 106,262 112,260 Z" />
+                  d="M 154 315 C 161 339 162 367 156 391 C 149 401 139 397 136 382 C 132 358 135 334 144 318 C 147 314 151 313 154 315 Z" />
+
+                <g fill="none" stroke={SEPARATOR} strokeLinecap="round" strokeWidth="0.8" opacity="0.72" pointerEvents="none">
+                  <path d="M 120 98 L 120 132" />
+                  <path d="M 84 116 C 98 120 106 123 116 130" />
+                  <path d="M 156 116 C 142 120 134 123 124 130" />
+                  <path d="M 104 157 L 136 157" />
+                  <path d="M 101 176 L 139 176" />
+                  <path d="M 104 195 L 136 195" />
+                  <path d="M 120 146 L 120 207" />
+                  <path d="M 97 251 C 104 263 109 279 110 301" />
+                  <path d="M 143 251 C 136 263 131 279 130 301" />
+                </g>
               </>
             ) : (
               <>
-                {/* Traps */}
                 <Region part="traps" selected={selected} onSelect={setSelected}
-                  d="M 88,62 C 100,58 112,58 112,62 C 126,68 134,80 132,92 C 112,84 88,84 68,92 C 66,80 74,68 88,62 Z" />
+                  d="M 104 78 C 112 86 128 86 136 78 C 148 84 158 96 160 110 C 145 111 131 105 120 95 C 109 105 95 111 80 110 C 82 96 92 84 104 78 Z" />
 
-                {/* Shoulders (rear delts) */}
                 <Region part="shoulders" selected={selected} onSelect={setSelected}
-                  d="M 74,92 C 56,98 44,110 42,124 C 52,126 66,120 74,110 C 78,102 76,96 74,92 Z" />
+                  d="M 80 103 C 62 107 49 120 46 136 C 58 141 77 134 88 120 C 90 112 87 106 80 103 Z" />
                 <Region part="shoulders" selected={selected} onSelect={setSelected}
-                  d="M 126,92 C 144,98 156,110 158,124 C 148,126 134,120 126,110 C 122,102 124,96 126,92 Z" />
+                  d="M 160 103 C 178 107 191 120 194 136 C 182 141 163 134 152 120 C 150 112 153 106 160 103 Z" />
 
-                {/* Upper back */}
                 <Region part="upperBack" selected={selected} onSelect={setSelected}
-                  d="M 78,98 C 100,94 122,98 122,98 C 126,112 126,126 120,136 C 100,134 80,136 80,136 C 74,126 74,112 78,98 Z" />
+                  d="M 86 108 C 103 101 137 101 154 108 C 158 124 154 143 145 155 C 129 151 111 151 95 155 C 86 143 82 124 86 108 Z" />
 
-                {/* Lats */}
                 <Region part="lats" selected={selected} onSelect={setSelected}
-                  d="M 80,138 C 92,140 100,146 100,156 C 98,174 92,188 82,194 C 74,192 70,182 70,168 C 70,152 74,140 80,138 Z" />
+                  d="M 88 151 C 105 157 116 170 116 186 C 113 205 103 220 91 225 C 80 219 75 202 77 181 C 78 167 82 156 88 151 Z" />
                 <Region part="lats" selected={selected} onSelect={setSelected}
-                  d="M 120,138 C 108,140 100,146 100,156 C 102,174 108,188 118,194 C 126,192 130,182 130,168 C 130,152 126,140 120,138 Z" />
+                  d="M 152 151 C 135 157 124 170 124 186 C 127 205 137 220 149 225 C 160 219 165 202 163 181 C 162 167 158 156 152 151 Z" />
 
-                {/* Lower back */}
                 <Region part="lowerBack" selected={selected} onSelect={setSelected}
-                  d="M 84,196 C 100,198 116,196 116,196 C 118,206 116,214 112,220 C 100,222 88,222 88,220 C 84,214 82,206 84,196 Z" />
+                  d="M 100 218 C 111 222 129 222 140 218 C 143 232 139 245 131 254 C 123 258 117 258 109 254 C 101 245 97 232 100 218 Z" />
 
-                {/* Triceps */}
                 <Region part="triceps" selected={selected} onSelect={setSelected}
-                  d="M 60,104 C 44,112 38,130 40,148 C 50,156 66,150 72,132 C 72,118 68,106 60,104 Z" />
+                  d="M 68 123 C 55 135 49 154 50 174 C 54 185 66 187 74 177 C 82 163 83 141 78 128 C 75 123 72 122 68 123 Z" />
                 <Region part="triceps" selected={selected} onSelect={setSelected}
-                  d="M 140,104 C 156,112 162,130 160,148 C 150,156 134,150 128,132 C 128,118 132,106 140,104 Z" />
+                  d="M 172 123 C 185 135 191 154 190 174 C 186 185 174 187 166 177 C 158 163 157 141 162 128 C 165 123 168 122 172 123 Z" />
 
-                {/* Forearms */}
                 <Region part="forearms" selected={selected} onSelect={setSelected}
-                  d="M 46,152 C 40,168 40,188 46,204 C 56,206 64,196 64,180 C 64,166 56,154 48,152 Z" />
+                  d="M 50 178 C 40 195 40 221 48 239 C 56 246 65 240 68 228 C 70 209 68 192 60 181 C 57 177 53 176 50 178 Z" />
                 <Region part="forearms" selected={selected} onSelect={setSelected}
-                  d="M 154,152 C 160,168 160,188 154,204 C 144,206 136,196 136,180 C 136,166 144,154 152,152 Z" />
+                  d="M 190 178 C 200 195 200 221 192 239 C 184 246 175 240 172 228 C 170 209 172 192 180 181 C 183 177 187 176 190 178 Z" />
 
-                {/* Glutes */}
                 <Region part="glutes" selected={selected} onSelect={setSelected}
-                  d="M 78,222 C 100,228 122,228 122,222 C 130,232 130,248 124,258 C 100,266 78,258 78,258 C 70,248 70,232 78,222 Z" />
+                  d="M 93 253 C 109 245 131 245 147 253 C 155 269 153 287 142 299 C 129 301 111 301 98 299 C 87 287 85 269 93 253 Z" />
 
-                {/* Hamstrings */}
                 <Region part="hamstrings" selected={selected} onSelect={setSelected}
-                  d="M 82,260 C 76,276 76,296 82,312 C 90,314 96,306 96,292 C 96,278 92,264 86,260 Z" />
+                  d="M 91 299 C 84 324 82 352 87 378 C 93 390 104 388 109 374 C 115 349 114 324 105 304 C 101 299 96 297 91 299 Z" />
                 <Region part="hamstrings" selected={selected} onSelect={setSelected}
-                  d="M 118,260 C 124,276 124,296 118,312 C 110,314 104,306 104,292 C 104,278 108,264 114,260 Z" />
+                  d="M 149 299 C 156 324 158 352 153 378 C 147 390 136 388 131 374 C 125 349 126 324 135 304 C 139 299 144 297 149 299 Z" />
 
-                {/* Calves */}
                 <Region part="calves" selected={selected} onSelect={setSelected}
-                  d="M 86,260 C 78,276 78,298 86,314 C 96,316 100,306 100,290 C 100,274 94,262 88,260 Z" />
+                  d="M 86 334 C 79 353 79 376 84 392 C 91 401 101 397 104 382 C 106 362 102 343 95 335 C 92 332 89 332 86 334 Z" />
                 <Region part="calves" selected={selected} onSelect={setSelected}
-                  d="M 114,260 C 122,276 122,298 114,314 C 104,316 100,306 100,290 C 100,274 106,262 112,260 Z" />
+                  d="M 154 334 C 161 353 161 376 156 392 C 149 401 139 397 136 382 C 134 362 138 343 145 335 C 148 332 151 332 154 334 Z" />
+
+                <g fill="none" stroke={SEPARATOR} strokeLinecap="round" strokeWidth="0.8" opacity="0.72" pointerEvents="none">
+                  <path d="M 120 99 L 120 254" />
+                  <path d="M 91 127 C 107 134 133 134 149 127" />
+                  <path d="M 92 151 C 110 161 130 161 148 151" />
+                  <path d="M 91 223 C 111 231 129 231 149 223" />
+                  <path d="M 120 251 C 113 265 111 281 113 296" />
+                  <path d="M 120 251 C 127 265 129 281 127 296" />
+                  <path d="M 97 319 C 103 335 106 352 106 370" />
+                  <path d="M 143 319 C 137 335 134 352 134 370" />
+                </g>
               </>
             )}
           </svg>
