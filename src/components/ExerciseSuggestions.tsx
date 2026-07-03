@@ -274,6 +274,19 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
               className="absolute inset-0 h-full w-full"
               aria-label={`${view} body`}
             >
+              <defs>
+                <radialGradient id="muscleGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="1" />
+                  <stop offset="55%" stopColor="hsl(var(--primary))" stopOpacity="0.85" />
+                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+                </radialGradient>
+                <filter id="muscleBlur" x="-25%" y="-25%" width="150%" height="150%">
+                  <feGaussianBlur stdDeviation="10" />
+                </filter>
+                <filter id="muscleBlurTight" x="-25%" y="-25%" width="150%" height="150%">
+                  <feGaussianBlur stdDeviation="4" />
+                </filter>
+              </defs>
               {view === "front" ? (
                 <>
                   <Region part="shoulders" selected={selected} onSelect={setSelected}
