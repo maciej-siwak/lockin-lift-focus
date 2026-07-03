@@ -171,12 +171,12 @@ const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: 
       onSelect(part);
     }
   };
-  const makeShape = (shapeProps: React.SVGProps<SVGElement>) => {
-    if (d) return <path d={d} {...(shapeProps as React.SVGProps<SVGPathElement>)} />;
+  const makeShape = (shapeProps: SVGProps<SVGElement>) => {
+    if (d) return <path d={d} {...(shapeProps as SVGProps<SVGPathElement>)} />;
     if (cx != null && cy != null && rx != null && ry != null)
-      return <ellipse cx={cx} cy={cy} rx={rx} ry={ry} {...(shapeProps as React.SVGProps<SVGEllipseElement>)} />;
+      return <ellipse cx={cx} cy={cy} rx={rx} ry={ry} {...(shapeProps as SVGProps<SVGEllipseElement>)} />;
     if (x != null && y != null && w != null && h != null)
-      return <rect x={x} y={y} width={w} height={h} rx={r ?? 4} {...(shapeProps as React.SVGProps<SVGRectElement>)} />;
+      return <rect x={x} y={y} width={w} height={h} rx={r ?? 4} {...(shapeProps as SVGProps<SVGRectElement>)} />;
     return null;
   };
 
