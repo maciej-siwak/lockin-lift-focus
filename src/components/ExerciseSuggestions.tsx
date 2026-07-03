@@ -148,7 +148,7 @@ const DATA: Record<BodyPart, { label: string; exercises: Exercise[] }> = {
   },
 };
 
-const HIGHLIGHT_FILL = "url(#muscleGlow)";
+const HIGHLIGHT_FILL = "hsl(var(--primary))";
 const HIT_FILL = "rgba(0,0,0,0.001)"; // invisible but hit-testable
 
 const FRONT_PARTS: BodyPart[] = ["chest", "shoulders", "biceps", "forearms", "abs", "quads", "calves"];
@@ -186,20 +186,20 @@ const Region = ({ part, selected, onSelect, d, cx, cy, rx, ry, x, y, w, h, r }: 
     style: { cursor: "pointer" },
   });
 
-  // Highlight: only rendered when active, with radial gradient + soft blur, plus a
-  // second brighter core layer for realistic depth. mix-blend-mode "screen" makes the
-  // green paint onto the dark figure like light, not a flat sticker.
+  // Highlight: layered green paint over the muscle. `screen` blend mode makes it feel
+  // like light on skin instead of a flat sticker. Outer wide blur = soft glow halo;
+  // inner tight blur = the core muscle shape with feathered edges.
   const highlight = active ? (
     <g style={{ mixBlendMode: "screen", pointerEvents: "none" }}>
       {makeShape({
         fill: HIGHLIGHT_FILL,
-        filter: "url(#muscleBlur)",
-        opacity: 0.95,
+        filter: "url(#muscleGlow)",
+        opacity: 0.55,
       })}
       {makeShape({
         fill: HIGHLIGHT_FILL,
-        filter: "url(#muscleBlurTight)",
-        opacity: 0.65,
+        filter: "url(#muscleCore)",
+        opacity: 0.85,
       })}
     </g>
   ) : null;
