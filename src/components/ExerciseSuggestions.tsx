@@ -275,9 +275,9 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
               <>
                 {/* Shoulders (front delts) */}
                 <Region part="shoulders" selected={selected} onSelect={setSelected}
-                  d="M 88,66 C 70,68 48,78 40,92 C 50,98 68,94 80,86 C 86,78 86,70 88,66 Z" />
+                  d="M 88,66 C 68,68 46,78 38,92 C 48,98 66,94 78,86 C 84,78 84,70 88,66 Z" />
                 <Region part="shoulders" selected={selected} onSelect={setSelected}
-                  d="M 112,66 C 130,68 152,78 160,92 C 150,98 132,94 120,86 C 114,78 114,70 112,66 Z" />
+                  d="M 112,66 C 132,68 154,78 162,92 C 152,98 134,94 122,86 C 116,78 116,70 112,66 Z" />
 
                 {/* Chest — two full pecs */}
                 <Region part="chest" selected={selected} onSelect={setSelected}
@@ -291,27 +291,27 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
 
                 {/* Biceps */}
                 <Region part="biceps" selected={selected} onSelect={setSelected}
-                  d="M 60,104 C 48,112 44,128 46,144 C 54,150 66,144 70,128 C 70,116 66,106 60,104 Z" />
+                  d="M 60,104 C 44,112 38,130 40,148 C 50,156 66,150 72,132 C 72,118 68,106 60,104 Z" />
                 <Region part="biceps" selected={selected} onSelect={setSelected}
-                  d="M 140,104 C 152,112 156,128 154,144 C 146,150 134,144 130,128 C 130,116 134,106 140,104 Z" />
+                  d="M 140,104 C 156,112 162,130 160,148 C 150,156 134,150 128,132 C 128,118 132,106 140,104 Z" />
 
                 {/* Forearms */}
                 <Region part="forearms" selected={selected} onSelect={setSelected}
-                  d="M 48,152 C 42,168 42,188 48,204 C 58,206 64,196 64,180 C 64,166 58,154 50,152 Z" />
+                  d="M 46,152 C 40,168 40,188 46,204 C 56,206 64,196 64,180 C 64,166 56,154 48,152 Z" />
                 <Region part="forearms" selected={selected} onSelect={setSelected}
-                  d="M 152,152 C 158,168 158,188 152,204 C 142,206 136,196 136,180 C 136,166 142,154 150,152 Z" />
+                  d="M 154,152 C 160,168 160,188 154,204 C 144,206 136,196 136,180 C 136,166 144,154 152,152 Z" />
 
                 {/* Quads */}
                 <Region part="quads" selected={selected} onSelect={setSelected}
-                  d="M 82,188 C 76,210 74,234 80,254 C 88,258 96,250 96,236 C 96,218 94,200 90,188 C 86,184 84,184 82,188 Z" />
+                  d="M 82,188 C 74,210 72,234 78,254 C 88,260 98,252 98,238 C 98,220 94,200 90,188 C 86,184 84,184 82,188 Z" />
                 <Region part="quads" selected={selected} onSelect={setSelected}
-                  d="M 118,188 C 124,210 126,234 120,254 C 112,258 104,250 104,236 C 104,218 106,200 110,188 C 114,184 116,184 118,188 Z" />
+                  d="M 118,188 C 126,210 128,234 122,254 C 112,260 102,252 102,238 C 102,220 106,200 110,188 C 114,184 116,184 118,188 Z" />
 
                 {/* Calves */}
                 <Region part="calves" selected={selected} onSelect={setSelected}
-                  d="M 86,260 C 80,276 80,296 86,312 C 94,314 98,306 98,290 C 98,276 94,262 88,260 Z" />
+                  d="M 86,260 C 78,276 78,298 86,314 C 96,316 100,306 100,290 C 100,274 94,262 88,260 Z" />
                 <Region part="calves" selected={selected} onSelect={setSelected}
-                  d="M 114,260 C 120,276 120,296 114,312 C 106,314 102,306 102,290 C 102,276 106,262 112,260 Z" />
+                  d="M 114,260 C 122,276 122,298 114,314 C 104,316 100,306 100,290 C 100,274 106,262 112,260 Z" />
               </>
             ) : (
               <>
@@ -321,9 +321,9 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
 
                 {/* Shoulders (rear delts) */}
                 <Region part="shoulders" selected={selected} onSelect={setSelected}
-                  d="M 74,92 C 58,98 46,110 44,124 C 54,126 68,120 76,110 C 80,102 78,96 74,92 Z" />
+                  d="M 74,92 C 56,98 44,110 42,124 C 52,126 66,120 74,110 C 78,102 76,96 74,92 Z" />
                 <Region part="shoulders" selected={selected} onSelect={setSelected}
-                  d="M 126,92 C 142,98 154,110 156,124 C 146,126 132,120 124,110 C 120,102 122,96 126,92 Z" />
+                  d="M 126,92 C 144,98 156,110 158,124 C 148,126 134,120 126,110 C 122,102 124,96 126,92 Z" />
 
                 {/* Upper back */}
                 <Region part="upperBack" selected={selected} onSelect={setSelected}
@@ -341,15 +341,15 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
 
                 {/* Triceps */}
                 <Region part="triceps" selected={selected} onSelect={setSelected}
-                  d="M 60,104 C 48,112 44,128 46,144 C 54,150 66,144 70,128 C 70,116 66,106 60,104 Z" />
+                  d="M 60,104 C 44,112 38,130 40,148 C 50,156 66,150 72,132 C 72,118 68,106 60,104 Z" />
                 <Region part="triceps" selected={selected} onSelect={setSelected}
-                  d="M 140,104 C 152,112 156,128 154,144 C 146,150 134,144 130,128 C 130,116 134,106 140,104 Z" />
+                  d="M 140,104 C 156,112 162,130 160,148 C 150,156 134,150 128,132 C 128,118 132,106 140,104 Z" />
 
                 {/* Forearms */}
                 <Region part="forearms" selected={selected} onSelect={setSelected}
-                  d="M 48,152 C 42,168 42,188 48,204 C 58,206 64,196 64,180 C 64,166 58,154 50,152 Z" />
+                  d="M 46,152 C 40,168 40,188 46,204 C 56,206 64,196 64,180 C 64,166 56,154 48,152 Z" />
                 <Region part="forearms" selected={selected} onSelect={setSelected}
-                  d="M 152,152 C 158,168 158,188 152,204 C 142,206 136,196 136,180 C 136,166 142,154 150,152 Z" />
+                  d="M 154,152 C 160,168 160,188 154,204 C 144,206 136,196 136,180 C 136,166 144,154 152,152 Z" />
 
                 {/* Glutes */}
                 <Region part="glutes" selected={selected} onSelect={setSelected}
@@ -363,9 +363,9 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
 
                 {/* Calves */}
                 <Region part="calves" selected={selected} onSelect={setSelected}
-                  d="M 86,260 C 80,276 80,296 86,312 C 94,314 98,306 98,290 C 98,276 94,262 88,260 Z" />
+                  d="M 86,260 C 78,276 78,298 86,314 C 96,316 100,306 100,290 C 100,274 94,262 88,260 Z" />
                 <Region part="calves" selected={selected} onSelect={setSelected}
-                  d="M 114,260 C 120,276 120,296 114,312 C 106,314 102,306 102,290 C 102,276 106,262 112,260 Z" />
+                  d="M 114,260 C 122,276 122,298 114,314 C 104,316 100,306 100,290 C 100,274 106,262 112,260 Z" />
               </>
             )}
           </svg>
