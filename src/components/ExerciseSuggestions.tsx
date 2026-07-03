@@ -2,8 +2,8 @@ import { useState, type KeyboardEvent, type SVGProps } from "react";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import frontFigure from "@/assets/fitness-figure-front.png";
-import backFigure from "@/assets/fitness-figure-back.png";
+import frontFigure from "@/assets/fitness-figure-front.webp";
+import backFigure from "@/assets/fitness-figure-back.webp";
 
 type BodyPart =
   | "chest"
@@ -259,10 +259,10 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
 
         {/* Human figure */}
         <div className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card flex justify-center">
-          <div className="relative w-full max-w-[215px] aspect-[3/5] overflow-hidden">
+          <div className="relative w-[min(260px,72vw)] aspect-[3/5] overflow-hidden">
             <div
               className="absolute inset-0 transition-transform duration-300 ease-out"
-              style={{ transform: view === "back" ? "scale(1.3)" : "scale(1)", transformOrigin: "50% 50%" }}
+              style={{ transform: view === "back" ? "scale(1.05)" : "scale(1)", transformOrigin: "50% 50%" }}
             >
               <img
                 src={view === "front" ? frontFigure : backFigure}
