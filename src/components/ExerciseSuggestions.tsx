@@ -153,6 +153,9 @@ const BASE = "transparent";
 const STROKE = "transparent";
 const ACTIVE_STROKE = "hsl(var(--primary))";
 
+const FRONT_PARTS: BodyPart[] = ["chest", "shoulders", "biceps", "forearms", "abs", "quads", "calves"];
+const BACK_PARTS: BodyPart[] = ["traps", "shoulders", "upperBack", "lats", "lowerBack", "triceps", "forearms", "glutes", "hamstrings", "calves"];
+
 interface RegionProps {
   part: BodyPart;
   selected: BodyPart | null;
@@ -212,6 +215,13 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
   const [selected, setSelected] = useState<BodyPart | null>("chest");
 
   const info = selected ? DATA[selected] : null;
+  const setFigureView = (nextView: "front" | "back") => {
+    setView(nextView);
+    const validParts = nextView === "front" ? FRONT_PARTS : BACK_PARTS;
+    if (!selected || !validParts.includes(selected)) {
+      setSelected(nextView === "front" ? "chest" : "upperBack");
+    }
+  };
 
   return (
     <AppShell
@@ -222,13 +232,13 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
         {/* View toggle */}
         <div className="grid grid-cols-2 gap-2 p-1 bg-secondary rounded-xl">
           <button
-            onClick={() => setView("front")}
+            onClick={() => setFigureView("front")}
             className={`h-9 rounded-lg text-sm font-semibold transition-base ${
               view === "front" ? "bg-primary text-primary-foreground shadow-glow" : "text-muted-foreground"
             }`}
           >Front</button>
           <button
-            onClick={() => setView("back")}
+            onClick={() => setFigureView("back")}
             className={`h-9 rounded-lg text-sm font-semibold transition-base ${
               view === "back" ? "bg-primary text-primary-foreground shadow-glow" : "text-muted-foreground"
             }`}
@@ -237,7 +247,7 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
 
         {/* Human figure */}
         <div className="rounded-2xl bg-gradient-dark border border-border p-4 shadow-card flex justify-center">
-          <div className="relative w-full max-w-[190px] aspect-[3/5]">
+          <div className="relative w-full max-w-[215px] aspect-[3/5]">
             <img
               src={view === "front" ? frontFigure : backFigure}
               alt={`${view} anatomy figure`}
