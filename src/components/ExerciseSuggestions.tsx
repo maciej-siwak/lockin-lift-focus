@@ -287,9 +287,9 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
                     cx={558} cy={600} rx={36} ry={90} />
 
                   <Region part="quads" selected={selected} onSelect={setSelected}
-                    cx={322} cy={870} rx={50} ry={100} />
+                    cx={322} cy={840} rx={48} ry={95} />
                   <Region part="quads" selected={selected} onSelect={setSelected}
-                    cx={450} cy={870} rx={50} ry={100} />
+                    cx={450} cy={840} rx={48} ry={95} />
 
                   <Region part="calves" selected={selected} onSelect={setSelected}
                     cx={320} cy={1100} rx={32} ry={72} />
