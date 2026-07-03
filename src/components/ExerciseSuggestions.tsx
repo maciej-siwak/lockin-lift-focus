@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from "react";
+import { useState, type KeyboardEvent, type SVGProps } from "react";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
