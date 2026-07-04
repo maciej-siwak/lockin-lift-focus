@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Home } from "@/components/Home";
 import { WorkoutBuilder } from "@/components/WorkoutBuilder";
 import { Session } from "@/components/Session";
@@ -20,6 +20,10 @@ type View =
 
 const Index = () => {
   const [view, setView] = useState<View>({ name: "home" });
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [view]);
 
   const goBack = () => {
     if (view.name === "exercise") {
