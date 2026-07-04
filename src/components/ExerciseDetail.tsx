@@ -67,18 +67,18 @@ export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
 
         {/* Quick stats */}
         <div className="grid grid-cols-3 gap-3">
-          <StatCard icon={<Dumbbell className="w-4 h-4" />} label="Equipment" value={info.equipment} />
-          <StatCard icon={<Target className="w-4 h-4" />} label="Level" value={info.difficulty} />
-          <StatCard icon={<Clock className="w-4 h-4" />} label="Focus" value={info.type} />
+          <StatCard icon={<Dumbbell className="w-4 h-4" />} label={t("exercise.equipment")} value={info.equipment} />
+          <StatCard icon={<Target className="w-4 h-4" />} label={t("exercise.level")} value={info.difficulty} />
+          <StatCard icon={<Clock className="w-4 h-4" />} label={t("exercise.focus")} value={info.type} />
         </div>
 
         {/* Info sections */}
         <div className="space-y-4">
-          <InfoSection icon={<Info className="w-4 h-4" />} title="Overview" text={info.description} />
-          <InfoSection icon={<CheckCircle2 className="w-4 h-4" />} title="Setup" text={info.setup} />
-          <InfoSection icon={<Target className="w-4 h-4" />} title="Execution" text={info.execution} />
-          <InfoSection icon={<CheckCircle2 className="w-4 h-4" />} title="Pro tips" text={info.tips} />
-          <InfoSection icon={<AlertTriangle className="w-4 h-4" />} title="Common mistakes" text={info.mistakes} variant="warning" />
+          <InfoSection icon={<Info className="w-4 h-4" />} title={t("exercise.overview")} text={info.description} />
+          <InfoSection icon={<CheckCircle2 className="w-4 h-4" />} title={t("exercise.setup")} text={info.setup} />
+          <InfoSection icon={<Target className="w-4 h-4" />} title={t("exercise.execution")} text={info.execution} />
+          <InfoSection icon={<CheckCircle2 className="w-4 h-4" />} title={t("exercise.tips")} text={info.tips} />
+          <InfoSection icon={<AlertTriangle className="w-4 h-4" />} title={t("exercise.mistakes")} text={info.mistakes} variant="warning" />
         </div>
 
         {/* CTA */}
@@ -87,7 +87,7 @@ export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
             onClick={onStart}
             className="w-full h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-extrabold text-base shadow-glow"
           >
-            <Play className="w-4 h-4 mr-2 fill-current" /> Start this lift
+            <Play className="w-4 h-4 mr-2 fill-current" /> {t("exercise.start")}
           </Button>
         )}
       </div>
