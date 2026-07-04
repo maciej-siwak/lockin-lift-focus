@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Home } from "@/components/Home";
 import { WorkoutBuilder } from "@/components/WorkoutBuilder";
 import { Session } from "@/components/Session";
