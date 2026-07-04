@@ -3,6 +3,7 @@ import { AppShell } from "./AppShell";
 
 interface Props {
   onBack: () => void;
+  onViewExercise?: (exerciseName: string) => void;
 }
 
 type Suggestion = { name: string; note: string };
@@ -77,7 +78,7 @@ const GROUPS: Group[] = [
   },
 ];
 
-export const ExerciseSuggestions = ({ onBack }: Props) => {
+export const ExerciseSuggestions = ({ onBack, onViewExercise }: Props) => {
   return (
     <AppShell
       title="Suggestions"
@@ -130,16 +131,21 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
                   key={it.name}
                   className="group relative rounded-2xl bg-card border border-border p-5 shadow-card transition-base hover:border-primary/40"
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black text-base tabular-nums">
-                      {i + 1}
+                  <button
+                    onClick={() => onViewExercise?.(it.name)}
+                    className="w-full text-left"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black text-base tabular-nums">
+                        {i + 1}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-bold text-[15px] leading-tight truncate">{it.name}</h3>
+                        <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">{it.note}</p>
+                      </div>
+                      <Dumbbell className="w-4 h-4 text-muted-foreground/50 shrink-0 mt-1" />
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-bold text-[15px] leading-tight truncate">{it.name}</h3>
-                      <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">{it.note}</p>
-                    </div>
-                    <Dumbbell className="w-4 h-4 text-muted-foreground/50 shrink-0 mt-1" />
-                  </div>
+                  </button>
                 </li>
               ))}
             </ol>
