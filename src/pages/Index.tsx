@@ -48,15 +48,6 @@ const Index = () => {
         workoutId={view.workoutId}
         startAtIndex={view.startAtIndex}
         onExit={() => setView({ name: "home" })}
-        onViewExercise={(exerciseName, index) =>
-          setView({
-            name: "exercise",
-            exerciseName,
-            source: { name: "session", workoutId: view.workoutId, startAtIndex: view.startAtIndex },
-            workoutId: view.workoutId,
-            startAtIndex: index,
-          })
-        }
       />
     );
   }
