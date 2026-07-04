@@ -2,6 +2,7 @@ import { ArrowLeft, Dumbbell, Play, Target, Clock, AlertTriangle, CheckCircle2, 
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { getExerciseInfo } from "@/lib/exercises";
+import { useT } from "@/lib/i18n";
 import benchPressImg from "@/assets/bench-press.png";
 
 interface Props {
@@ -15,17 +16,18 @@ const IMAGES: Record<string, string> = {
 };
 
 export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
+  const t = useT();
   const info = getExerciseInfo(exerciseName);
   const image = IMAGES[info.imageKey] ?? benchPressImg;
 
   return (
     <AppShell
-      title="Exercise"
+      title={t("exercise.title")}
       subtitle={info.name}
       left={
         <button
           onClick={onBack}
-          aria-label="Back"
+          aria-label={t("common.back")}
           className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-base"
         >
           <ArrowLeft className="w-5 h-5" />
