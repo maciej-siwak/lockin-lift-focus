@@ -93,13 +93,13 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
       }
     >
       {/* Muscle group nav */}
-      <nav className="pt-4 pb-3 -mx-5 px-5 overflow-x-auto scrollbar-none">
-        <ul className="flex gap-2 min-w-max">
+      <nav className="pt-6 pb-5 -mx-5 px-5 overflow-x-auto scrollbar-none">
+        <ul className="flex gap-3 min-w-max">
           {GROUPS.map((g) => (
             <li key={g.muscle}>
               <a
                 href={`#g-${g.muscle}`}
-                className="inline-flex items-center h-8 px-3 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold tracking-tight hover:bg-primary hover:text-primary-foreground transition-base"
+                className="inline-flex items-center h-9 px-4 rounded-full bg-secondary text-secondary-foreground text-sm font-semibold tracking-tight hover:bg-primary hover:text-primary-foreground transition-base"
               >
                 {g.muscle}
               </a>
@@ -108,37 +108,37 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
         </ul>
       </nav>
 
-      <div className="space-y-8 pt-2 animate-fade-in">
+      <div className="space-y-12 pt-4 pb-8 animate-fade-in">
         {GROUPS.map((g, gi) => (
-          <section key={g.muscle} id={`g-${g.muscle}`} className="scroll-mt-20">
-            <header className="flex items-baseline justify-between mb-3 px-1">
-              <div className="flex items-baseline gap-3">
-                <span className="text-[10px] font-bold text-primary tabular-nums tracking-[0.25em]">
+          <section key={g.muscle} id={`g-${g.muscle}`} className="scroll-mt-24">
+            <header className="flex items-baseline justify-between mb-5 px-1">
+              <div className="flex items-baseline gap-4">
+                <span className="text-[11px] font-bold text-primary tabular-nums tracking-[0.25em]">
                   {String(gi + 1).padStart(2, "0")}
                 </span>
                 <div>
                   <h2 className="text-xl font-black tracking-tight leading-none">{g.muscle}</h2>
-                  <p className="text-[11px] text-muted-foreground mt-1">{g.blurb}</p>
+                  <p className="text-xs text-muted-foreground mt-2">{g.blurb}</p>
                 </div>
               </div>
-              <span className="text-[11px] text-muted-foreground tabular-nums">{g.items.length}</span>
+              <span className="text-xs text-muted-foreground tabular-nums">{g.items.length}</span>
             </header>
 
-            <ol className="space-y-2">
+            <ol className="space-y-3">
               {g.items.map((it, i) => (
                 <li
                   key={it.name}
-                  className="group relative rounded-2xl bg-card border border-border p-4 shadow-card transition-base hover:border-primary/40"
+                  className="group relative rounded-2xl bg-card border border-border p-5 shadow-card transition-base hover:border-primary/40"
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black text-sm tabular-nums">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black text-base tabular-nums">
                       {i + 1}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-bold text-sm leading-tight truncate">{it.name}</h3>
-                      <p className="text-xs text-muted-foreground mt-1 leading-snug">{it.note}</p>
+                      <h3 className="font-bold text-[15px] leading-tight truncate">{it.name}</h3>
+                      <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">{it.note}</p>
                     </div>
-                    <Dumbbell className="w-4 h-4 text-muted-foreground/50 shrink-0 mt-0.5" />
+                    <Dumbbell className="w-4 h-4 text-muted-foreground/50 shrink-0 mt-1" />
                   </div>
                 </li>
               ))}
@@ -146,7 +146,7 @@ export const ExerciseSuggestions = ({ onBack }: Props) => {
           </section>
         ))}
 
-        <p className="text-center text-[11px] text-muted-foreground/70 pt-4">
+        <p className="text-center text-xs text-muted-foreground/70 pt-8">
           Pick 4–6 per session. Lock in.
         </p>
       </div>
