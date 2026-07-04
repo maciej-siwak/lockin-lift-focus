@@ -20,12 +20,14 @@ import {
 
 interface Props {
   workoutId: string;
+  startAtIndex?: number;
   onExit: () => void;
+  onViewExercise?: (exerciseName: string, index: number) => void;
 }
 
 type Phase = "picking" | "previewing" | "lifting" | "resting" | "ready" | "logging" | "done";
 
-export const Session = ({ workoutId, onExit }: Props) => {
+export const Session = ({ workoutId, startAtIndex, onExit, onViewExercise }: Props) => {
   const t = useT();
   const settings = useMemo(() => storage.getSettings(), []);
   const workout = useMemo<Workout | undefined>(
@@ -33,9 +35,9 @@ export const Session = ({ workoutId, onExit }: Props) => {
     [workoutId]
   );
 
-  const [exIdx, setExIdx] = useState(0);
+  const [exIdx, setExIdx] = useState(startAtIndex ?? 0);
   const [setIdx, setSetIdx] = useState(0); // sets completed for current exercise
-  const [phase, setPhase] = useState<Phase>("picking");
+  const [phase, setPhase] = useState<Phase>(startAtIndex != null ? "previewing" : "picking");
   const [previewIdx, setPreviewIdx] = useState<number | null>(null);
   const [restLeft, setRestLeft] = useState(0);
   const [readyLeft, setReadyLeft] = useState(3);
