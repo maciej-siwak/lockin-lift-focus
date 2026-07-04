@@ -45,6 +45,15 @@ for (const ex of EXERCISES) {
   }
 }
 
+/** Convert an exercise name to a slug matching the image filename. */
+export function slugifyExercise(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export function getExerciseInfo(name: string): ExerciseInfo {
   const key = name.toLowerCase().trim();
   return (
@@ -62,7 +71,7 @@ export function getExerciseInfo(name: string): ExerciseInfo {
       tips: "Start light, master the form, then add weight or reps gradually.",
       mistakes:
         "Rushing reps, using momentum and sacrificing range of motion for heavier loads are the most common mistakes.",
-      imageKey: "bench-press",
+      imageKey: slugifyExercise(name),
     }
   );
 }
