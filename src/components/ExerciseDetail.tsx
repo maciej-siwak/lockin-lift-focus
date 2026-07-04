@@ -1,4 +1,4 @@
-import { ArrowLeft, Dumbbell, Play, Target, Clock, AlertTriangle, CheckCircle2, Info } from "lucide-react";
+import { ArrowLeft, Dumbbell, Play, Target, Clock, AlertTriangle, CheckCircle2, Info, Lightbulb } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { getExerciseInfo } from "@/lib/exercises";
