@@ -317,6 +317,11 @@ export const Session = ({ workoutId, startAtIndex, onExit, onViewExercise }: Pro
   };
 
   const pickExercise = (idx: number) => {
+    const picked = workout?.exercises[idx];
+    if (picked && onViewExercise) {
+      onViewExercise(picked.name, idx);
+      return;
+    }
     setPreviewIdx(idx);
     setPhase("previewing");
   };
