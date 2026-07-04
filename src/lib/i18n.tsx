@@ -178,6 +178,18 @@ const en: Dict = {
   "preview.total": "Total",
   "preview.noHistory": "No previous history for this lift yet. Set the bar.",
   "preview.start": "Start",
+
+  // exercise detail
+  "exercise.title": "Exercise",
+  "exercise.equipment": "Equipment",
+  "exercise.level": "Level",
+  "exercise.focus": "Focus",
+  "exercise.overview": "Overview",
+  "exercise.setup": "Setup",
+  "exercise.execution": "Execution",
+  "exercise.tips": "Pro tips",
+  "exercise.mistakes": "Common mistakes",
+  "exercise.start": "Start this lift",
 };
 
 const es: Dict = {
