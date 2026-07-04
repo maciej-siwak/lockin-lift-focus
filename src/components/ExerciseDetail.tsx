@@ -4,6 +4,35 @@ import { Button } from "@/components/ui/button";
 import { getExerciseInfo } from "@/lib/exercises";
 import { useT } from "@/lib/i18n";
 import benchPressImg from "@/assets/bench-press.png";
+import inclineDumbbellPressImg from "@/assets/exercises/incline-dumbbell-press.png";
+import chestDipImg from "@/assets/exercises/chest-dip.png";
+import cableFlyImg from "@/assets/exercises/cable-fly.png";
+import machineChestPressImg from "@/assets/exercises/machine-chest-press.png";
+import closeGripBenchPressImg from "@/assets/exercises/close-grip-bench-press.png";
+import overheadCableTricepsExtensionImg from "@/assets/exercises/overhead-cable-triceps-extension.png";
+import cableTricepsPushdownImg from "@/assets/exercises/cable-triceps-pushdown.png";
+import skullCrusherImg from "@/assets/exercises/skull-crusher.png";
+import benchDipImg from "@/assets/exercises/bench-dip.png";
+import barbellCurlImg from "@/assets/exercises/barbell-curl.png";
+import inclineDumbbellCurlImg from "@/assets/exercises/incline-dumbbell-curl.png";
+import hammerCurlImg from "@/assets/exercises/hammer-curl.png";
+import preacherCurlImg from "@/assets/exercises/preacher-curl.png";
+import cableCurlImg from "@/assets/exercises/cable-curl.png";
+import deadliftImg from "@/assets/exercises/deadlift.png";
+import pullUpImg from "@/assets/exercises/pull-up.png";
+import barbellRowImg from "@/assets/exercises/barbell-row.png";
+import latPulldownImg from "@/assets/exercises/lat-pulldown.png";
+import seatedCableRowImg from "@/assets/exercises/seated-cable-row.png";
+import overheadPressImg from "@/assets/exercises/overhead-press.png";
+import dumbbellLateralRaiseImg from "@/assets/exercises/dumbbell-lateral-raise.png";
+import rearDeltFlyImg from "@/assets/exercises/rear-delt-fly.png";
+import facePullImg from "@/assets/exercises/face-pull.png";
+import arnoldPressImg from "@/assets/exercises/arnold-press.png";
+import backSquatImg from "@/assets/exercises/back-squat.png";
+import romanianDeadliftImg from "@/assets/exercises/romanian-deadlift.png";
+import legPressImg from "@/assets/exercises/leg-press.png";
+import bulgarianSplitSquatImg from "@/assets/exercises/bulgarian-split-squat.png";
+import standingCalfRaiseImg from "@/assets/exercises/standing-calf-raise.png";
 
 interface Props {
   exerciseName: string;
@@ -13,6 +42,36 @@ interface Props {
 
 const IMAGES: Record<string, string> = {
   "bench-press": benchPressImg,
+  "barbell-bench-press": benchPressImg,
+  "incline-dumbbell-press": inclineDumbbellPressImg,
+  "chest-dip": chestDipImg,
+  "cable-fly": cableFlyImg,
+  "machine-chest-press": machineChestPressImg,
+  "close-grip-bench-press": closeGripBenchPressImg,
+  "overhead-cable-triceps-extension": overheadCableTricepsExtensionImg,
+  "cable-triceps-pushdown": cableTricepsPushdownImg,
+  "skull-crusher": skullCrusherImg,
+  "bench-dip": benchDipImg,
+  "barbell-curl": barbellCurlImg,
+  "incline-dumbbell-curl": inclineDumbbellCurlImg,
+  "hammer-curl": hammerCurlImg,
+  "preacher-curl": preacherCurlImg,
+  "cable-curl": cableCurlImg,
+  "deadlift": deadliftImg,
+  "pull-up": pullUpImg,
+  "barbell-row": barbellRowImg,
+  "lat-pulldown": latPulldownImg,
+  "seated-cable-row": seatedCableRowImg,
+  "overhead-press": overheadPressImg,
+  "dumbbell-lateral-raise": dumbbellLateralRaiseImg,
+  "rear-delt-fly": rearDeltFlyImg,
+  "face-pull": facePullImg,
+  "arnold-press": arnoldPressImg,
+  "back-squat": backSquatImg,
+  "romanian-deadlift": romanianDeadliftImg,
+  "leg-press": legPressImg,
+  "bulgarian-split-squat": bulgarianSplitSquatImg,
+  "standing-calf-raise": standingCalfRaiseImg,
 };
 
 export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
