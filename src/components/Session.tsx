@@ -38,7 +38,7 @@ export const Session = ({ workoutId, startAtIndex, onExit, onViewExercise }: Pro
   const [exIdx, setExIdx] = useState(startAtIndex ?? 0);
   const [setIdx, setSetIdx] = useState(0); // sets completed for current exercise
   const [phase, setPhase] = useState<Phase>(startAtIndex != null ? "previewing" : "picking");
-  const [previewIdx, setPreviewIdx] = useState<number | null>(null);
+  const [previewIdx, setPreviewIdx] = useState<number | null>(startAtIndex ?? null);
   const [restLeft, setRestLeft] = useState(0);
   const [readyLeft, setReadyLeft] = useState(3);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
