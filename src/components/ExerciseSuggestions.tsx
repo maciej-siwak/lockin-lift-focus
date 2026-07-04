@@ -3,6 +3,7 @@ import { AppShell } from "./AppShell";
 
 interface Props {
   onBack: () => void;
+  onViewExercise?: (exerciseName: string) => void;
 }
 
 type Suggestion = { name: string; note: string };
