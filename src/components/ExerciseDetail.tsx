@@ -77,7 +77,7 @@ export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
           <InfoSection icon={<Info className="w-4 h-4" />} title={t("exercise.overview")} text={info.description} />
           <InfoSection icon={<CheckCircle2 className="w-4 h-4" />} title={t("exercise.setup")} text={info.setup} />
           <InfoSection icon={<Target className="w-4 h-4" />} title={t("exercise.execution")} text={info.execution} />
-          <InfoSection icon={<CheckCircle2 className="w-4 h-4" />} title={t("exercise.tips")} text={info.tips} />
+          <InfoSection icon={<Lightbulb className="w-4 h-4" />} title={t("exercise.tips")} text={info.tips} />
           <InfoSection icon={<AlertTriangle className="w-4 h-4" />} title={t("exercise.mistakes")} text={info.mistakes} variant="warning" />
         </div>
 
