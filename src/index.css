@@ -89,43 +89,43 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  /* Time Chamber skin — white background with green, purple, yellow and light green accents. */
+  /* Time Chamber skin — white background with purple and green accents plus yellow highlights. */
   [data-skin="time-chamber"],
   [data-skin="time-chamber"] .dark {
     --background: 0 0% 100%;
     --foreground: 270 40% 12%;
 
-    --card: 100 60% 97%;
+    --card: 100 50% 97%;
     --card-foreground: 270 40% 12%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 270 40% 12%;
 
-    --primary: 100 70% 48%;              /* green */
+    --primary: 270 85% 55%;              /* purple */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 55 100% 90%;            /* soft yellow surface */
+    --secondary: 100 70% 94%;             /* light green surface */
     --secondary-foreground: 270 40% 15%;
 
-    --muted: 100 60% 93%;                /* light green surface */
+    --muted: 55 100% 92%;                 /* soft yellow surface */
     --muted-foreground: 270 20% 35%;
 
-    --accent: 100 80% 55%;               /* vibrant green accent */
+    --accent: 100 80% 55%;                /* vibrant green accent */
     --accent-foreground: 270 40% 12%;
 
     --destructive: 0 84% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --warning: 48 100% 50%;              /* yellow */
+    --warning: 48 100% 50%;               /* yellow */
 
-    --border: 100 45% 85%;
-    --input: 100 45% 92%;
+    --border: 270 40% 88%;
+    --input: 270 40% 94%;
     --ring: 100 80% 55%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(100 80% 55%), hsl(270 85% 55%));
-    --gradient-dark: linear-gradient(160deg, hsl(0 0% 100%), hsl(100 60% 96%));
-    --shadow-glow: 0 0 40px hsl(100 80% 55% / 0.35);
-    --shadow-card: 0 8px 30px -8px hsl(100 60% 40% / 0.18);
+    --gradient-primary: linear-gradient(135deg, hsl(270 85% 55%), hsl(100 80% 55%));
+    --gradient-dark: linear-gradient(160deg, hsl(0 0% 100%), hsl(100 50% 96%));
+    --shadow-glow: 0 0 40px hsl(270 85% 55% / 0.35);
+    --shadow-card: 0 8px 30px -8px hsl(270 40% 40% / 0.15);
   }
 }
 
