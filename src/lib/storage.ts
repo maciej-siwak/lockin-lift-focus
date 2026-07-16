@@ -28,6 +28,7 @@ export const defaultSettings: Settings = {
   vibration: true,
   weightUnit: "kg",
   language: "en",
+  skin: "default",
 };
 
 const buildDefaultWorkouts = (): Workout[] => [
