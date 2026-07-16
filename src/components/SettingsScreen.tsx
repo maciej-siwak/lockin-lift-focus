@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { storage } from "@/lib/storage";
 import { toast } from "sonner";
 import { LANGUAGES, useI18n, type Lang } from "@/lib/i18n";
+import { setSkin, type Skin } from "@/lib/skin";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   AlertDialog,
@@ -34,6 +35,11 @@ export const SettingsScreen = ({ onBack }: Props) => {
   const onLangChange = (code: Lang) => {
     setLang(code);
     setS(prev => ({ ...prev, language: code }));
+  };
+
+  const onSkinChange = (skin: Skin) => {
+    setS(prev => ({ ...prev, skin }));
+    setSkin(skin);
   };
 
   const resetApp = () => {
@@ -99,10 +105,27 @@ export const SettingsScreen = ({ onBack }: Props) => {
           <Row label={t("settings.sound")} desc={t("settings.soundDesc")}>
             <Switch checked={s.sound} onCheckedChange={v => setS({ ...s, sound: v })} />
           </Row>
-          <div className="border-t border-border my-3" />
-          <Row label={t("settings.vibration")} desc={t("settings.vibrationDesc")}>
-            <Switch checked={s.vibration} onCheckedChange={v => setS({ ...s, vibration: v })} />
-          </Row>
+        </Card>
+
+        <Card>
+          <Label>Skins</Label>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {([
+              { id: "default", label: "Default" },
+              { id: "time-chamber", label: "Time Chamber" },
+            ] as const).map(opt => {
+              const active = (s.skin ?? "default") === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  onClick={() => onSkinChange(opt.id)}
+                  className={`h-11 rounded-xl font-semibold text-sm transition-base ${active ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"}`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
         </Card>
 
         <Button onClick={save} className="w-full h-14 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{t("common.save")}</Button>
