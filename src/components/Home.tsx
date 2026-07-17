@@ -67,11 +67,11 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
 
   const greeting = useMemo(() => {
     const h = new Date().getHours();
-    if (h < 5) return t("home.greetLate") ?? "Late night lift.";
-    if (h < 12) return t("home.greetMorning") ?? "Good morning.";
-    if (h < 18) return t("home.greetAfternoon") ?? "Good afternoon.";
-    return t("home.greetEvening") ?? "Good evening.";
-  }, [t]);
+    if (h < 5) return "Late night.";
+    if (h < 12) return "Good morning.";
+    if (h < 18) return "Good afternoon.";
+    return "Good evening.";
+  }, []);
 
   const today = useMemo(
     () =>
@@ -106,7 +106,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         <p className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
           {today}
         </p>
-        <h1 className="mt-2 text-[32px] leading-[1.05] font-display uppercase tracking-tight">
+        <h1 className="mt-2 text-[26px] leading-[1.1] font-display uppercase tracking-tight break-words">
           {greeting}
           <br />
           <span className="text-muted-foreground/70">Time to </span>
