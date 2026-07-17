@@ -136,7 +136,7 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Hind', 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior: none;
   }
@@ -151,6 +151,14 @@ All colors MUST be HSL.
     font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
+  }
+  .font-display {
+    font-family: 'Archivo Black', 'Hind', system-ui, sans-serif;
+    letter-spacing: -0.01em;
+  }
+  .font-mono-data {
+    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
   }
   .bg-gradient-primary { background: var(--gradient-primary); }
   .bg-gradient-dark { background: var(--gradient-dark); }
