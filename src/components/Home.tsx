@@ -6,6 +6,7 @@ import type { Workout, SessionLog } from "@/lib/types";
 import { useT } from "@/lib/i18n";
 import { LockInLogo } from "./LockInLogo";
 import { buildPRs } from "@/lib/prs";
+import { ConfirmDelete } from "./ConfirmDelete";
 
 interface Props {
   onNewWorkout: () => void;
@@ -185,13 +186,18 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
                       >
                         <Pencil className="w-[15px] h-[15px]" strokeWidth={1.75} />
                       </button>
-                      <button
-                        onClick={() => removeWorkout(w.id)}
-                        aria-label={t("common.delete")}
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/70 hover:text-destructive hover:bg-secondary transition-base"
-                      >
-                        <Trash2 className="w-[15px] h-[15px]" strokeWidth={1.75} />
-                      </button>
+                      <ConfirmDelete
+                        onConfirm={() => removeWorkout(w.id)}
+                        description={`"${w.name}" will be removed. This action cannot be undone.`}
+                        trigger={
+                          <button
+                            aria-label={t("common.delete")}
+                            className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/70 hover:text-destructive hover:bg-secondary transition-base"
+                          >
+                            <Trash2 className="w-[15px] h-[15px]" strokeWidth={1.75} />
+                          </button>
+                        }
+                      />
                       <button
                         onClick={() => onStartWorkout(w.id)}
                         disabled={disabled}
