@@ -86,126 +86,119 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
   return (
     <AppShell
       left={
-        <div className="flex items-center gap-2 pl-1">
-          <LockInLogo size={28} className="text-primary" />
-          <span className="font-display text-sm uppercase tracking-[0.18em]">Lock In</span>
+        <div className="flex items-center gap-2.5 pl-0.5">
+          <LockInLogo size={26} className="text-primary" />
+          <span className="font-display text-[13px] uppercase tracking-[0.22em]">Lock In</span>
         </div>
       }
       right={
         <button
           onClick={onOpenSettings}
           aria-label={t("home.settings")}
-          className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-base"
+          className="w-10 h-10 -mr-2 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-base"
         >
-          <SettingsIcon className="w-5 h-5" />
+          <SettingsIcon className="w-[18px] h-[18px]" strokeWidth={1.75} />
         </button>
       }
     >
       {/* Greeting */}
-      <section className="pt-6 animate-fade-in">
-        <p className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+      <section className="pt-8 animate-fade-in">
+        <p className="font-mono-data text-[10px] uppercase tracking-[0.32em] text-muted-foreground/80">
           {today}
         </p>
-        <h1 className="mt-2 text-[26px] leading-[1.1] font-display uppercase tracking-tight break-words">
+        <h1 className="mt-3 text-[30px] leading-[1.05] font-display uppercase tracking-[-0.01em] break-words">
           {greeting}
-          <br />
-          <span className="text-muted-foreground/70">Time to </span>
-          <span className="text-primary">lock in.</span>
         </h1>
+        <p className="mt-2 text-[15px] leading-snug text-muted-foreground">
+          Time to <span className="text-foreground">lock in</span>
+          <span className="text-primary">.</span>
+        </p>
       </section>
 
       {/* Stats strip */}
-      <section className="mt-6 grid grid-cols-3 gap-2 animate-fade-in">
-        <StatChip
-          value={stats.streak}
-          label={stats.streak === 1 ? "day streak" : "day streak"}
-          accent
-          icon={<Flame className="w-3 h-3" />}
-        />
-        <StatChip value={stats.thisWeek} label="this week" />
-        <StatChip value={stats.total} label="total lifts" />
+      <section className="mt-8 rounded-2xl border border-border/70 bg-card/40 divide-x divide-border/70 grid grid-cols-3 overflow-hidden animate-fade-in">
+        <StatCell value={stats.streak} label="Streak" suffix={stats.streak === 1 ? "day" : "days"} accent icon={<Flame className="w-3 h-3" strokeWidth={2} />} />
+        <StatCell value={stats.thisWeek} label="This week" suffix="lifts" />
+        <StatCell value={stats.total} label="All time" suffix="lifts" />
       </section>
 
       {/* Primary action */}
-      <section className="mt-5 animate-fade-in">
+      <section className="mt-4 animate-fade-in">
         <button
           onClick={onNewWorkout}
-          className="group relative w-full rounded-3xl bg-primary text-primary-foreground p-5 text-left overflow-hidden transition-base active:scale-[0.99]"
+          className="group relative w-full rounded-2xl border border-border bg-card p-4 text-left overflow-hidden transition-base hover:border-primary/50 active:scale-[0.995]"
         >
-          <div className="absolute -right-8 -bottom-10 opacity-15 pointer-events-none">
-            <Dumbbell className="w-40 h-40" strokeWidth={1.5} />
-          </div>
-          <div className="relative flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-primary-foreground/15 flex items-center justify-center">
-              <Plus className="w-6 h-6" strokeWidth={2.5} />
+          <div className="flex items-center gap-4">
+            <div className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shrink-0">
+              <Plus className="w-5 h-5" strokeWidth={2.5} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] opacity-70">
+              <p className="font-mono-data text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
                 {t("home.today")}
               </p>
-              <p className="mt-1 text-lg font-bold leading-tight">{t("home.newWorkout")}</p>
+              <p className="mt-0.5 text-[15px] font-semibold leading-tight">{t("home.newWorkout")}</p>
             </div>
-            <ChevronRight className="w-5 h-5 opacity-70 transition-transform group-hover:translate-x-0.5" />
+            <ChevronRight className="w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
           </div>
         </button>
       </section>
 
       {/* Workouts */}
-      <section className="mt-8 animate-fade-in">
-        <div className="flex items-baseline justify-between mb-3">
-          <h3 className="text-sm font-bold tracking-tight">{t("home.yourWorkouts")}</h3>
-          <span className="font-mono-data text-[11px] text-muted-foreground">
-            {workouts.length}
+      <section className="mt-10 animate-fade-in">
+        <div className="flex items-baseline justify-between mb-4">
+          <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground">{t("home.yourWorkouts")}</h3>
+          <span className="font-mono-data text-[10px] tracking-[0.15em] text-muted-foreground/70 tabular-nums">
+            {String(workouts.length).padStart(2, "0")}
           </span>
         </div>
 
         {workouts.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border p-8 text-center">
-            <Dumbbell className="w-8 h-8 mx-auto text-muted-foreground" />
-            <p className="mt-3 text-sm text-muted-foreground">{t("home.noWorkouts")}</p>
+          <div className="rounded-2xl border border-dashed border-border/70 p-10 text-center">
+            <Dumbbell className="w-7 h-7 mx-auto text-muted-foreground/60" strokeWidth={1.5} />
+            <p className="mt-4 text-[13px] text-muted-foreground">{t("home.noWorkouts")}</p>
           </div>
         ) : (
-          <ul className="space-y-2.5">
+          <ul className="space-y-2">
             {workouts.map(w => {
               const totalSets = w.exercises.reduce((s, e) => s + e.sets, 0);
               const disabled = w.exercises.length === 0;
               return (
                 <li
                   key={w.id}
-                  className="group rounded-2xl bg-card border border-border p-3.5 transition-base hover:border-primary/40"
+                  className="group rounded-2xl bg-card border border-border/70 p-3 transition-base hover:border-primary/40"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 shrink-0 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground">
-                      <Dumbbell className="w-5 h-5" />
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-11 h-11 shrink-0 rounded-xl bg-secondary/70 flex items-center justify-center text-muted-foreground">
+                      <Dumbbell className="w-[18px] h-[18px]" strokeWidth={1.75} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-[15px] truncate leading-tight">{w.name}</h4>
-                      <p className="text-[11px] text-muted-foreground mt-0.5 truncate">
-                        {w.exercises.length} {w.exercises.length === 1 ? "exercise" : "exercises"} · {totalSets} sets
+                      <h4 className="font-semibold text-[15px] truncate leading-tight tracking-tight">{w.name}</h4>
+                      <p className="font-mono-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground mt-1 truncate">
+                        {w.exercises.length} {w.exercises.length === 1 ? "exercise" : "exercises"} <span className="opacity-40 mx-1">·</span> {totalSets} sets
                       </p>
                     </div>
-                    <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex items-center gap-0.5 shrink-0">
                       <button
                         onClick={() => onEditWorkout(w.id)}
                         aria-label={t("common.edit")}
-                        className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-base"
+                        className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground/70 hover:text-foreground hover:bg-secondary transition-base"
                       >
-                        <Pencil className="w-4 h-4" />
+                        <Pencil className="w-[15px] h-[15px]" strokeWidth={1.75} />
                       </button>
                       <button
                         onClick={() => removeWorkout(w.id)}
                         aria-label={t("common.delete")}
-                        className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:text-destructive hover:bg-secondary transition-base"
+                        className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground/70 hover:text-destructive hover:bg-secondary transition-base"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-[15px] h-[15px]" strokeWidth={1.75} />
                       </button>
                       <button
                         onClick={() => onStartWorkout(w.id)}
                         disabled={disabled}
                         aria-label={t("home.lockIn")}
-                        className="ml-1 w-11 h-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center transition-base hover:brightness-110 active:scale-95 disabled:opacity-40 disabled:pointer-events-none"
+                        className="ml-1.5 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center transition-base hover:brightness-110 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
                       >
-                        <Play className="w-4 h-4 fill-current ml-0.5" />
+                        <Play className="w-[14px] h-[14px] fill-current ml-0.5" />
                       </button>
                     </div>
                   </div>
@@ -217,19 +210,19 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       </section>
 
       {/* Progress */}
-      <section className="mt-8 mb-6 animate-fade-in">
-        <h3 className="text-sm font-bold tracking-tight mb-3">{t("home.progress")}</h3>
-        <div className="grid grid-cols-2 gap-2.5">
+      <section className="mt-10 mb-8 animate-fade-in">
+        <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground mb-4">{t("home.progress")}</h3>
+        <div className="grid grid-cols-2 gap-2">
           <ProgressTile
             onClick={onOpenRecords}
-            icon={<Trophy className="w-4 h-4" />}
+            icon={<Trophy className="w-[15px] h-[15px]" strokeWidth={1.75} />}
             value={stats.prCount}
             label={t("home.records")}
             desc={t("home.recordsDesc")}
           />
           <ProgressTile
             onClick={onOpenHistory}
-            icon={<HistoryIcon className="w-4 h-4" />}
+            icon={<HistoryIcon className="w-[15px] h-[15px]" strokeWidth={1.75} />}
             value={stats.total}
             label={t("home.history")}
             desc={t("home.historyDesc")}
@@ -237,49 +230,46 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         </div>
         <button
           onClick={onOpenSuggestions}
-          className="mt-2.5 w-full rounded-2xl bg-card border border-border p-3.5 flex items-center gap-3 text-left transition-base hover:border-primary/40"
+          className="mt-2 w-full rounded-2xl bg-card border border-border/70 p-3.5 flex items-center gap-3.5 text-left transition-base hover:border-primary/40"
         >
-          <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground shrink-0">
-            <Lightbulb className="w-4 h-4" />
+          <div className="w-10 h-10 rounded-xl bg-secondary/70 flex items-center justify-center text-muted-foreground shrink-0">
+            <Lightbulb className="w-[15px] h-[15px]" strokeWidth={1.75} />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="font-semibold text-[14px] leading-tight">Exercise suggestions</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Proven lifts by muscle group</p>
+            <p className="font-semibold text-[14px] leading-tight tracking-tight">Exercise suggestions</p>
+            <p className="font-mono-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground mt-1">Proven lifts by muscle group</p>
           </div>
-          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          <ChevronRight className="w-4 h-4 text-muted-foreground/70" />
         </button>
       </section>
     </AppShell>
   );
 };
 
-const StatChip = ({
+const StatCell = ({
   value,
   label,
+  suffix,
   icon,
   accent,
 }: {
   value: number;
   label: string;
+  suffix?: string;
   icon?: React.ReactNode;
   accent?: boolean;
 }) => (
-  <div
-    className={`rounded-2xl border p-3 ${
-      accent
-        ? "bg-primary/10 border-primary/25 text-primary"
-        : "bg-card border-border text-foreground"
-    }`}
-  >
-    <div className="flex items-center gap-1.5">
-      <span className="font-mono-data text-2xl font-bold leading-none tabular-nums">{value}</span>
-      {icon && <span className={accent ? "text-primary" : "text-muted-foreground"}>{icon}</span>}
+  <div className="px-3.5 py-3.5">
+    <div className="flex items-baseline gap-1.5">
+      <span className={`font-display text-[26px] leading-none tabular-nums ${accent ? "text-primary" : "text-foreground"}`}>
+        {value}
+      </span>
+      {suffix && (
+        <span className="font-mono-data text-[10px] uppercase tracking-[0.15em] text-muted-foreground/70">{suffix}</span>
+      )}
+      {icon && <span className={`ml-auto ${accent ? "text-primary" : "text-muted-foreground/50"}`}>{icon}</span>}
     </div>
-    <p
-      className={`mt-1.5 text-[10px] uppercase tracking-[0.15em] font-semibold ${
-        accent ? "text-primary/80" : "text-muted-foreground"
-      }`}
-    >
+    <p className="mt-2 font-mono-data text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
       {label}
     </p>
   </div>
@@ -300,17 +290,17 @@ const ProgressTile = ({
 }) => (
   <button
     onClick={onClick}
-    className="rounded-2xl bg-card border border-border p-4 flex flex-col gap-3 text-left transition-base hover:border-primary/40"
+    className="rounded-2xl bg-card border border-border/70 p-4 flex flex-col gap-4 text-left transition-base hover:border-primary/40"
   >
     <div className="flex items-center justify-between">
-      <div className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground">
+      <div className="w-9 h-9 rounded-xl bg-secondary/70 flex items-center justify-center text-muted-foreground">
         {icon}
       </div>
-      <span className="font-mono-data text-2xl font-bold leading-none tabular-nums">{value}</span>
+      <span className="font-display text-[22px] leading-none tabular-nums text-foreground">{value}</span>
     </div>
     <div>
-      <p className="font-semibold text-sm leading-tight">{label}</p>
-      <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{desc}</p>
+      <p className="font-semibold text-[14px] leading-tight tracking-tight">{label}</p>
+      <p className="font-mono-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground mt-1.5 leading-snug">{desc}</p>
     </div>
   </button>
 );
