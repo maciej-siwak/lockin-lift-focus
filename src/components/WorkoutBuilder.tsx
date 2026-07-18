@@ -7,6 +7,7 @@ import { storage, uid } from "@/lib/storage";
 import type { Workout, ExerciseTemplate, ExerciseMode } from "@/lib/types";
 import { toast } from "sonner";
 import { useT } from "@/lib/i18n";
+import { ConfirmDelete } from "./ConfirmDelete";
 
 interface Props {
   workoutId?: string;
@@ -126,9 +127,15 @@ export const WorkoutBuilder = ({ workoutId, onBack, onSaved }: Props) => {
                     placeholder={t("builder.exerciseNamePh")}
                     className="flex-1 h-11 bg-secondary border-0 rounded-lg"
                   />
-                  <button onClick={() => remove(ex.id)} aria-label={t("builder.remove")} className="p-2 text-muted-foreground hover:text-destructive transition-base">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <ConfirmDelete
+                    onConfirm={() => remove(ex.id)}
+                    description={`"${ex.name || t("builder.exerciseNamePh")}" will be removed from this workout.`}
+                    trigger={
+                      <button aria-label={t("builder.remove")} className="p-2 text-muted-foreground hover:text-destructive transition-base">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    }
+                  />
                 </div>
                 <ModeToggle
                   value={ex.mode ?? "weight_reps"}
