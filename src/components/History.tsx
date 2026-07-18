@@ -5,6 +5,7 @@ import { storage } from "@/lib/storage";
 import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
 import { useT } from "@/lib/i18n";
+import { ConfirmDelete } from "./ConfirmDelete";
 
 const formatSet = (s: SetLog, unit: string): string => {
   if ((s.seconds ?? 0) > 0 && s.weight === 0 && s.reps === 0) return `${s.seconds}s`;
@@ -102,9 +103,14 @@ export const History = ({ onBack }: Props) => {
                       <button onClick={() => share(s)} aria-label={t("common.share")} className="p-2 text-muted-foreground hover:text-primary transition-base">
                         <Share2 className="w-4 h-4" />
                       </button>
-                      <button onClick={() => remove(s.id)} aria-label={t("common.delete")} className="p-2 text-muted-foreground hover:text-destructive transition-base">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <ConfirmDelete
+                        onConfirm={() => remove(s.id)}
+                        trigger={
+                          <button aria-label={t("common.delete")} className="p-2 text-muted-foreground hover:text-destructive transition-base">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        }
+                      />
                     </div>
                   </div>
                   {isOpen && (
