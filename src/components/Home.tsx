@@ -173,22 +173,22 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
                     </div>
                     <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-[15px] truncate leading-tight tracking-tight">{w.name}</h4>
-                      <p className="font-mono-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground mt-1 truncate">
-                        {w.exercises.length} {w.exercises.length === 1 ? "exercise" : "exercises"} <span className="opacity-40 mx-1">·</span> {totalSets} sets
+                      <p className="font-mono-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground mt-1 truncate">
+                        {w.exercises.length} {w.exercises.length === 1 ? "ex" : "ex"} <span className="opacity-40 mx-1">·</span> {totalSets} sets
                       </p>
                     </div>
                     <div className="flex items-center gap-0.5 shrink-0">
                       <button
                         onClick={() => onEditWorkout(w.id)}
                         aria-label={t("common.edit")}
-                        className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground/70 hover:text-foreground hover:bg-secondary transition-base"
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/70 hover:text-foreground hover:bg-secondary transition-base"
                       >
                         <Pencil className="w-[15px] h-[15px]" strokeWidth={1.75} />
                       </button>
                       <button
                         onClick={() => removeWorkout(w.id)}
                         aria-label={t("common.delete")}
-                        className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground/70 hover:text-destructive hover:bg-secondary transition-base"
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/70 hover:text-destructive hover:bg-secondary transition-base"
                       >
                         <Trash2 className="w-[15px] h-[15px]" strokeWidth={1.75} />
                       </button>
