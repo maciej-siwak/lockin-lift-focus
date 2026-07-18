@@ -1121,6 +1121,8 @@ const bg: Dict = {
   "common.copyOk": "Копирано в клипборда",
   "common.copyFail": "Неуспешно копиране",
   "common.share": "Сподели",
+  "confirm.deleteTitle": "Изтриване?",
+  "confirm.deleteDesc": "Това действие не може да бъде отменено.",
   "home.tagline": "Фокусирани тренировки",
   "home.today": "Днес",
   "home.todayHeadline": "Без разсейване. Само тренировка.",
