@@ -1,92 +1,100 @@
 import { ArrowLeft, Dumbbell } from "lucide-react";
 import { AppShell } from "./AppShell";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   onBack: () => void;
   onViewExercise?: (exerciseName: string) => void;
 }
 
-type Suggestion = { name: string; note: string };
-type Group = { muscle: string; blurb: string; items: Suggestion[] };
+type Suggestion = { name: string; noteKey: string };
+type Group = { key: string; muscleKey: string; blurbKey: string; items: Suggestion[] };
 
 const GROUPS: Group[] = [
   {
-    muscle: "Chest",
-    blurb: "Press, dip, fly.",
+    key: "chest",
+    muscleKey: "muscle.chest",
+    blurbKey: "muscle.chestBlurb",
     items: [
-      { name: "Barbell Bench Press", note: "Overall chest mass and strength." },
-      { name: "Incline Dumbbell Press", note: "Upper chest emphasis." },
-      { name: "Chest Dip", note: "Lower chest and triceps." },
-      { name: "Cable Fly", note: "Constant tension and chest isolation." },
-      { name: "Machine Chest Press", note: "Safe, controlled hypertrophy work." },
+      { name: "Barbell Bench Press", noteKey: "note.barbellBenchPress" },
+      { name: "Incline Dumbbell Press", noteKey: "note.inclineDumbbellPress" },
+      { name: "Chest Dip", noteKey: "note.chestDip" },
+      { name: "Cable Fly", noteKey: "note.cableFly" },
+      { name: "Machine Chest Press", noteKey: "note.machineChestPress" },
     ],
   },
   {
-    muscle: "Triceps",
-    blurb: "Extend and lock out.",
+    key: "triceps",
+    muscleKey: "muscle.triceps",
+    blurbKey: "muscle.tricepsBlurb",
     items: [
-      { name: "Close-Grip Bench Press", note: "Heavy compound for overall size." },
-      { name: "Overhead Cable Triceps Extension", note: "Targets the long head." },
-      { name: "Cable Triceps Pushdown", note: "Great for overall development." },
-      { name: "Skull Crusher", note: "Excellent mass builder." },
-      { name: "Bench Dip", note: "Bodyweight finisher." },
+      { name: "Close-Grip Bench Press", noteKey: "note.closeGripBench" },
+      { name: "Overhead Cable Triceps Extension", noteKey: "note.overheadCableTri" },
+      { name: "Cable Triceps Pushdown", noteKey: "note.cablePushdown" },
+      { name: "Skull Crusher", noteKey: "note.skullCrusher" },
+      { name: "Bench Dip", noteKey: "note.benchDip" },
     ],
   },
   {
-    muscle: "Biceps",
-    blurb: "Curl every angle.",
+    key: "biceps",
+    muscleKey: "muscle.biceps",
+    blurbKey: "muscle.bicepsBlurb",
     items: [
-      { name: "Barbell Curl", note: "Overall mass." },
-      { name: "Incline Dumbbell Curl", note: "Stretches the long head." },
-      { name: "Hammer Curl", note: "Builds the brachialis and forearms." },
-      { name: "Preacher Curl", note: "Strict isolation." },
-      { name: "Cable Curl", note: "Constant tension." },
+      { name: "Barbell Curl", noteKey: "note.barbellCurl" },
+      { name: "Incline Dumbbell Curl", noteKey: "note.inclineDumbbellCurl" },
+      { name: "Hammer Curl", noteKey: "note.hammerCurl" },
+      { name: "Preacher Curl", noteKey: "note.preacherCurl" },
+      { name: "Cable Curl", noteKey: "note.cableCurl" },
     ],
   },
   {
-    muscle: "Back",
-    blurb: "Pull wide, pull heavy.",
+    key: "back",
+    muscleKey: "muscle.back",
+    blurbKey: "muscle.backBlurb",
     items: [
-      { name: "Deadlift", note: "Overall posterior chain strength." },
-      { name: "Pull-Up", note: "Best for lat width." },
-      { name: "Barbell Row", note: "Thickness." },
-      { name: "Lat Pulldown", note: "Great pull-up alternative." },
-      { name: "Seated Cable Row", note: "Mid-back development." },
+      { name: "Deadlift", noteKey: "note.deadlift" },
+      { name: "Pull-Up", noteKey: "note.pullUp" },
+      { name: "Barbell Row", noteKey: "note.barbellRow" },
+      { name: "Lat Pulldown", noteKey: "note.latPulldown" },
+      { name: "Seated Cable Row", noteKey: "note.seatedCableRow" },
     ],
   },
   {
-    muscle: "Shoulders",
-    blurb: "Press and raise.",
+    key: "shoulders",
+    muscleKey: "muscle.shoulders",
+    blurbKey: "muscle.shouldersBlurb",
     items: [
-      { name: "Overhead Press", note: "Overall shoulder strength." },
-      { name: "Dumbbell Lateral Raise", note: "Side delts for width." },
-      { name: "Rear Delt Fly", note: "Rear delts." },
-      { name: "Face Pull", note: "Rear delts and shoulder health." },
-      { name: "Arnold Press", note: "Front and side delts." },
+      { name: "Overhead Press", noteKey: "note.overheadPress" },
+      { name: "Dumbbell Lateral Raise", noteKey: "note.lateralRaise" },
+      { name: "Rear Delt Fly", noteKey: "note.rearDeltFly" },
+      { name: "Face Pull", noteKey: "note.facePull" },
+      { name: "Arnold Press", noteKey: "note.arnoldPress" },
     ],
   },
   {
-    muscle: "Legs",
-    blurb: "Squat, hinge, drive.",
+    key: "legs",
+    muscleKey: "muscle.legs",
+    blurbKey: "muscle.legsBlurb",
     items: [
-      { name: "Back Squat", note: "King of leg exercises." },
-      { name: "Romanian Deadlift", note: "Hamstrings and glutes." },
-      { name: "Leg Press", note: "Heavy quad builder." },
-      { name: "Bulgarian Split Squat", note: "Single-leg strength and stability." },
-      { name: "Standing Calf Raise", note: "Gastrocnemius development." },
+      { name: "Back Squat", noteKey: "note.backSquat" },
+      { name: "Romanian Deadlift", noteKey: "note.rdl" },
+      { name: "Leg Press", noteKey: "note.legPress" },
+      { name: "Bulgarian Split Squat", noteKey: "note.bulgarianSplit" },
+      { name: "Standing Calf Raise", noteKey: "note.calfRaise" },
     ],
   },
 ];
 
 export const ExerciseSuggestions = ({ onBack, onViewExercise }: Props) => {
+  const t = useT();
   return (
     <AppShell
-      title="Suggestions"
-      subtitle="Proven lifts by muscle group"
+      title={t("suggestions.title")}
+      subtitle={t("suggestions.subtitle")}
       left={
         <button
           onClick={onBack}
-          aria-label="Back"
+          aria-label={t("common.back")}
           className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-base"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -97,12 +105,12 @@ export const ExerciseSuggestions = ({ onBack, onViewExercise }: Props) => {
       <nav className="pt-6 pb-5 -mx-5 px-5 overflow-x-auto scrollbar-none">
         <ul className="flex gap-3 min-w-max">
           {GROUPS.map((g) => (
-            <li key={g.muscle}>
+            <li key={g.key}>
               <a
-                href={`#g-${g.muscle}`}
+                href={`#g-${g.key}`}
                 className="inline-flex items-center h-9 px-4 rounded-full bg-secondary text-secondary-foreground text-sm font-semibold tracking-tight hover:bg-primary hover:text-primary-foreground transition-base"
               >
-                {g.muscle}
+                {t(g.muscleKey)}
               </a>
             </li>
           ))}
@@ -111,15 +119,15 @@ export const ExerciseSuggestions = ({ onBack, onViewExercise }: Props) => {
 
       <div className="space-y-12 pt-4 pb-8 animate-fade-in">
         {GROUPS.map((g, gi) => (
-          <section key={g.muscle} id={`g-${g.muscle}`} className="scroll-mt-24">
+          <section key={g.key} id={`g-${g.key}`} className="scroll-mt-24">
             <header className="flex items-baseline justify-between mb-5 px-1">
               <div className="flex items-baseline gap-4">
                 <span className="text-[11px] font-bold text-primary tabular-nums tracking-[0.25em]">
                   {String(gi + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h2 className="text-xl font-black tracking-tight leading-none">{g.muscle}</h2>
-                  <p className="text-xs text-muted-foreground mt-2">{g.blurb}</p>
+                  <h2 className="text-xl font-black tracking-tight leading-none">{t(g.muscleKey)}</h2>
+                  <p className="text-xs text-muted-foreground mt-2">{t(g.blurbKey)}</p>
                 </div>
               </div>
               <span className="text-xs text-muted-foreground tabular-nums">{g.items.length}</span>
@@ -141,7 +149,7 @@ export const ExerciseSuggestions = ({ onBack, onViewExercise }: Props) => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <h3 className="font-bold text-[15px] leading-tight truncate">{it.name}</h3>
-                        <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">{it.note}</p>
+                        <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">{t(it.noteKey)}</p>
                       </div>
                       <Dumbbell className="w-4 h-4 text-muted-foreground/50 shrink-0 mt-1" />
                     </div>
@@ -153,7 +161,7 @@ export const ExerciseSuggestions = ({ onBack, onViewExercise }: Props) => {
         ))}
 
         <p className="text-center text-xs text-muted-foreground/70 pt-8">
-          Pick 4–6 per session. Lock in.
+          {t("suggestions.footer")}
         </p>
       </div>
     </AppShell>

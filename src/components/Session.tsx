@@ -758,7 +758,7 @@ const FocusChip = ({ count, t }: { count: number; t: (k: string, p?: Record<stri
         : "border-border bg-muted text-muted-foreground";
   return (
     <span
-      title="Times you left the app during this workout"
+      title={t("focus.tooltipSession")}
       className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider border ${tone}`}
     >
       <Eye className="w-3 h-3" />

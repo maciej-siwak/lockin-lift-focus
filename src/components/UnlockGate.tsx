@@ -14,10 +14,12 @@ import {
   shouldLock,
 } from "@/lib/purchase";
 import { toast } from "@/hooks/use-toast";
+import { useT } from "@/lib/i18n";
 
 interface Props { children: React.ReactNode }
 
 export const UnlockGate = ({ children }: Props) => {
+  const t = useT();
   const [locked, setLocked] = useState<boolean>(shouldLock());
   const [busy, setBusy] = useState(false);
   const [, force] = useState(0);
@@ -52,14 +54,14 @@ export const UnlockGate = ({ children }: Props) => {
     setBusy(true);
     const res = await purchaseUnlock();
     setBusy(false);
-    if (!res.ok) toast({ title: "Purchase failed", description: res.error });
+    if (!res.ok) toast({ title: t("unlock.purchaseFail"), description: res.error });
   };
 
   const handleRestore = async () => {
     setBusy(true);
     await restorePurchases();
     setBusy(false);
-    if (!isUnlocked()) toast({ title: "No purchase found", description: "We couldn't find a previous purchase on this account." });
+    if (!isUnlocked()) toast({ title: t("unlock.noPurchase"), description: t("unlock.noPurchaseDesc") });
   };
 
   if (!locked) return <>{children}</>;
@@ -77,13 +79,13 @@ export const UnlockGate = ({ children }: Props) => {
         </div>
 
         <p className="mt-6 text-[10px] font-bold text-primary tracking-[0.3em] uppercase">
-          Free trial complete
+          {t("unlock.trialComplete")}
         </p>
         <h1 className="mt-2 text-3xl font-black tracking-tight text-center leading-tight">
-          You crushed <span className="text-primary">{sessions}</span> sessions
+          {t("unlock.crushedBefore")}<span className="text-primary">{sessions}</span>{t("unlock.crushedAfter")}
         </h1>
         <p className="mt-3 text-sm text-muted-foreground text-center max-w-xs">
-          Unlock <span className="font-semibold text-foreground">Lock In</span> forever with a one-time purchase and keep every workout, PR and streak going.
+          {t("unlock.pitchBefore")}<span className="font-semibold text-foreground">Lock In</span>{t("unlock.pitchAfter")}
         </p>
 
         <div className="mt-8 w-full rounded-3xl border-2 border-primary/60 bg-card/60 p-5 shadow-glow">
@@ -92,8 +94,8 @@ export const UnlockGate = ({ children }: Props) => {
               <Sparkles className="w-5 h-5" strokeWidth={2.5} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-bold leading-tight">Lock In — Full Access</p>
-              <p className="text-xs text-muted-foreground mt-0.5">One-time purchase · No subscription</p>
+              <p className="font-bold leading-tight">Lock In — {t("unlock.fullAccessSuffix")}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{t("unlock.oneTime")}</p>
             </div>
             {price && (
               <span className="text-sm font-bold text-primary tabular-nums">{price}</span>
@@ -102,9 +104,9 @@ export const UnlockGate = ({ children }: Props) => {
 
           <ul className="mt-4 space-y-2 text-sm">
             {[
-              "Unlimited workouts & sessions",
-              "Full history, records and focus score",
-              "All future updates included",
+              t("unlock.feature1"),
+              t("unlock.feature2"),
+              t("unlock.feature3"),
             ].map((f) => (
               <li key={f} className="flex items-start gap-2">
                 <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
@@ -118,7 +120,7 @@ export const UnlockGate = ({ children }: Props) => {
             disabled={busy}
             className="mt-5 w-full h-12 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-bold shadow-glow"
           >
-            {busy ? "Please wait…" : price ? `Unlock for ${price}` : "Unlock full access"}
+            {busy ? t("unlock.wait") : price ? t("unlock.unlockFor", { price }) : t("unlock.unlockFull")}
           </Button>
 
           <button
@@ -126,14 +128,14 @@ export const UnlockGate = ({ children }: Props) => {
             disabled={busy}
             className="mt-3 w-full inline-flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-base"
           >
-            <RotateCcw className="w-3.5 h-3.5" /> Restore purchase
+            <RotateCcw className="w-3.5 h-3.5" /> {t("unlock.restore")}
           </button>
         </div>
 
         <p className="mt-6 text-[11px] text-muted-foreground text-center max-w-xs leading-relaxed">
           {remaining === 0
-            ? "You've used all 9 free sessions. Purchase is processed securely by Google Play."
-            : `${remaining} free sessions left.`}
+            ? t("unlock.usedAll")
+            : t("unlock.free", { n: remaining })}
         </p>
       </div>
     </div>
