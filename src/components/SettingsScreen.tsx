@@ -108,11 +108,11 @@ export const SettingsScreen = ({ onBack }: Props) => {
         </Card>
 
         <Card>
-          <Label>Skins</Label>
+          <Label>{t("settings.skins")}</Label>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {([
-              { id: "default", label: "Default" },
-              { id: "time-chamber", label: "Time Chamber" },
+              { id: "default", label: t("settings.skinDefault") },
+              { id: "time-chamber", label: t("settings.skinTimeChamber") },
             ] as const).map(opt => {
               const active = (s.skin ?? "default") === opt.id;
               return (
