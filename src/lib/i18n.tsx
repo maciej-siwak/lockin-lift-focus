@@ -45,8 +45,21 @@ const en: Dict = {
   "home.recordsDesc": "Top 3 lifts per exercise",
   "home.history": "History",
   "home.historyDesc": "Past sessions & lifts",
+  "home.suggestions": "Suggestions",
+  "home.suggestionsDesc": "Proven lifts by muscle group",
+  "home.charts": "Charts",
+  "home.chartsDesc": "Top weight over time",
   "home.settings": "Settings",
   "home.lockIn": "Lock In",
+
+  // charts
+  "charts.title": "Charts",
+  "charts.pickExercise": "Pick an exercise",
+  "charts.empty": "Log a session with weight to see charts.",
+  "charts.topWeight": "Top weight per session",
+  "charts.noData": "No weighted sets logged yet for this exercise.",
+  "charts.sessions": "sessions",
+  "charts.peak": "Peak",
 
   // settings
   "settings.title": "Settings",

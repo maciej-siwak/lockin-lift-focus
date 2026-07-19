@@ -7,6 +7,7 @@ import { History } from "@/components/History";
 import { Records } from "@/components/Records";
 import { ExerciseSuggestions } from "@/components/ExerciseSuggestions";
 import { ExerciseDetail } from "@/components/ExerciseDetail";
+import { Charts } from "@/components/Charts";
 
 type View =
   | { name: "home" }
@@ -16,6 +17,7 @@ type View =
   | { name: "history" }
   | { name: "records" }
   | { name: "suggestions" }
+  | { name: "charts" }
   | { name: "exercise"; exerciseName: string; source: View; workoutId?: string; startAtIndex?: number };
 
 const Index = () => {
@@ -60,6 +62,9 @@ const Index = () => {
   if (view.name === "records") {
     return <Records onBack={() => setView({ name: "home" })} />;
   }
+  if (view.name === "charts") {
+    return <Charts onBack={() => setView({ name: "home" })} />;
+  }
   if (view.name === "suggestions") {
     return (
       <ExerciseSuggestions
@@ -96,6 +101,7 @@ const Index = () => {
       onOpenHistory={() => setView({ name: "history" })}
       onOpenRecords={() => setView({ name: "records" })}
       onOpenSuggestions={() => setView({ name: "suggestions" })}
+      onOpenCharts={() => setView({ name: "charts" })}
     />
   );
 };
