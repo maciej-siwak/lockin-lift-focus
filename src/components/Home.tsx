@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { Dumbbell, Settings as SettingsIcon, Play, Trash2, Pencil, History as HistoryIcon, Trophy, Lightbulb, ChevronRight, Flame, Plus } from "lucide-react";
+import { Dumbbell, Settings as SettingsIcon, Play, Trash2, Pencil, History as HistoryIcon, Trophy, Lightbulb, ChevronRight, Flame, Plus, Eye, LineChart as LineChartIcon } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { storage } from "@/lib/storage";
 import type { Workout, SessionLog } from "@/lib/types";
 import { useT } from "@/lib/i18n";
 import { LockInLogo } from "./LockInLogo";
-import { buildPRs } from "@/lib/prs";
 import { ConfirmDelete } from "./ConfirmDelete";
 
 interface Props {
@@ -16,9 +15,10 @@ interface Props {
   onOpenHistory: () => void;
   onOpenRecords: () => void;
   onOpenSuggestions: () => void;
+  onOpenCharts: () => void;
 }
 
-export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettings, onOpenHistory, onOpenRecords, onOpenSuggestions }: Props) => {
+export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettings, onOpenHistory, onOpenRecords, onOpenSuggestions, onOpenCharts }: Props) => {
   const t = useT();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [sessions, setSessions] = useState<SessionLog[]>([]);
@@ -34,36 +34,20 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
     storage.saveWorkouts(next);
   };
 
-  const stats = useMemo(() => {
-    const now = new Date();
-    const startOfWeek = new Date(now);
-    const dow = (now.getDay() + 6) % 7; // Monday = 0
-    startOfWeek.setDate(now.getDate() - dow);
-    startOfWeek.setHours(0, 0, 0, 0);
-    const thisWeek = sessions.filter(s => s.startedAt >= startOfWeek.getTime()).length;
-
-    // streak: consecutive days back from today with at least one session
-    const days = new Set(
-      sessions.map(s => {
-        const d = new Date(s.startedAt);
-        d.setHours(0, 0, 0, 0);
-        return d.getTime();
-      })
-    );
-    let streak = 0;
-    const cursor = new Date();
-    cursor.setHours(0, 0, 0, 0);
-    // allow today OR yesterday to start the streak
-    if (!days.has(cursor.getTime())) cursor.setDate(cursor.getDate() - 1);
-    while (days.has(cursor.getTime())) {
-      streak += 1;
-      cursor.setDate(cursor.getDate() - 1);
+  const focusStats = useMemo(() => {
+    const withFocus = sessions.filter(s => s.focusBreaks != null);
+    const fullFocusCount = withFocus.filter(s => s.focusBreaks === 0).length;
+    const chrono = [...withFocus].sort((a, b) => a.startedAt - b.startedAt);
+    let best = 0, run = 0, current = 0;
+    for (const s of chrono) {
+      if (s.focusBreaks === 0) { run++; if (run > best) best = run; }
+      else run = 0;
     }
-
-    const prMap = buildPRs(sessions);
-    const prCount = Object.keys(prMap).length;
-
-    return { total: sessions.length, thisWeek, streak, prCount };
+    for (let i = chrono.length - 1; i >= 0; i--) {
+      if (chrono[i].focusBreaks === 0) current++;
+      else break;
+    }
+    return { fullFocusCount, best, current, hasData: withFocus.length > 0, total: sessions.length };
   }, [sessions]);
 
   const greeting = useMemo(() => {
@@ -87,9 +71,9 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
   return (
     <AppShell
       left={
-        <div className="flex items-center gap-2.5 pl-0.5">
-          <LockInLogo size={26} className="text-primary" />
-          <span className="font-display text-[13px] uppercase tracking-[0.22em]">Lock In</span>
+        <div className="flex items-center gap-3 pl-0.5">
+          <LockInLogo size={38} className="text-primary drop-shadow-[0_0_10px_hsl(var(--primary)/0.35)]" />
+          <span className="font-display text-[15px] uppercase tracking-[0.24em]">Lock In</span>
         </div>
       }
       right={
@@ -116,11 +100,24 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         </p>
       </section>
 
-      {/* Stats strip */}
-      <section className="mt-8 rounded-2xl border border-border/70 bg-card/40 divide-x divide-border/70 grid grid-cols-3 overflow-hidden animate-fade-in">
-        <StatCell value={stats.streak} label="Streak" suffix={stats.streak === 1 ? "day" : "days"} accent icon={<Flame className="w-3 h-3" strokeWidth={2} />} />
-        <StatCell value={stats.thisWeek} label="This week" suffix="lifts" />
-        <StatCell value={stats.total} label="All time" suffix="lifts" />
+      {/* Focus records strip */}
+      <section className="mt-8 rounded-2xl border border-border/70 bg-card/40 p-3.5 animate-fade-in">
+        <div className="flex items-center gap-2 mb-3">
+          <Eye className="w-3.5 h-3.5 text-primary" />
+          <h3 className="font-mono-data text-[10px] uppercase tracking-[0.24em] text-primary">
+            {t("records.focusRecords")}
+          </h3>
+        </div>
+        <div className="grid grid-cols-3 divide-x divide-border/70">
+          <FocusCell value={focusStats.fullFocusCount} label={t("records.fullFocus")} />
+          <FocusCell value={focusStats.best} label={t("records.bestStreak")} icon={<Flame className="w-3 h-3" strokeWidth={2} />} />
+          <FocusCell
+            value={focusStats.current}
+            label={t("records.currentStreak")}
+            accent
+            icon={<Flame className="w-3 h-3" strokeWidth={2} />}
+          />
+        </div>
       </section>
 
       {/* Primary action */}
@@ -222,60 +219,52 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
           <ProgressTile
             onClick={onOpenRecords}
             icon={<Trophy className="w-[15px] h-[15px]" strokeWidth={1.75} />}
-            value={stats.prCount}
             label={t("home.records")}
             desc={t("home.recordsDesc")}
           />
           <ProgressTile
             onClick={onOpenHistory}
             icon={<HistoryIcon className="w-[15px] h-[15px]" strokeWidth={1.75} />}
-            value={stats.total}
             label={t("home.history")}
             desc={t("home.historyDesc")}
           />
+          <ProgressTile
+            onClick={onOpenSuggestions}
+            icon={<Lightbulb className="w-[15px] h-[15px]" strokeWidth={1.75} />}
+            label={t("home.suggestions")}
+            desc={t("home.suggestionsDesc")}
+          />
+          <ProgressTile
+            onClick={onOpenCharts}
+            icon={<LineChartIcon className="w-[15px] h-[15px]" strokeWidth={1.75} />}
+            label={t("home.charts")}
+            desc={t("home.chartsDesc")}
+          />
         </div>
-        <button
-          onClick={onOpenSuggestions}
-          className="mt-2 w-full rounded-2xl bg-card border border-border/70 p-3.5 flex items-center gap-3.5 text-left transition-base hover:border-primary/40"
-        >
-          <div className="w-10 h-10 rounded-xl bg-secondary/70 flex items-center justify-center text-muted-foreground shrink-0">
-            <Lightbulb className="w-[15px] h-[15px]" strokeWidth={1.75} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="font-semibold text-[14px] leading-tight tracking-tight">Exercise suggestions</p>
-            <p className="font-mono-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground mt-1">Proven lifts by muscle group</p>
-          </div>
-          <ChevronRight className="w-4 h-4 text-muted-foreground/70" />
-        </button>
       </section>
     </AppShell>
   );
 };
 
-const StatCell = ({
+const FocusCell = ({
   value,
   label,
-  suffix,
   icon,
   accent,
 }: {
   value: number;
   label: string;
-  suffix?: string;
   icon?: React.ReactNode;
   accent?: boolean;
 }) => (
-  <div className="px-3.5 py-3.5">
-    <div className="flex items-baseline gap-1.5">
-      <span className={`font-display text-[26px] leading-none tabular-nums ${accent ? "text-primary" : "text-foreground"}`}>
+  <div className="px-2 first:pl-0 last:pr-0 text-center">
+    <div className="flex items-baseline justify-center gap-1">
+      <span className={`font-display text-[24px] leading-none tabular-nums ${accent ? "text-primary" : "text-foreground"}`}>
         {value}
       </span>
-      {suffix && (
-        <span className="font-mono-data text-[10px] uppercase tracking-[0.15em] text-muted-foreground/70">{suffix}</span>
-      )}
-      {icon && <span className={`ml-auto ${accent ? "text-primary" : "text-muted-foreground/50"}`}>{icon}</span>}
+      {icon && <span className={accent ? "text-primary" : "text-muted-foreground/60"}>{icon}</span>}
     </div>
-    <p className="mt-2 font-mono-data text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+    <p className="mt-2 font-mono-data text-[9px] uppercase tracking-[0.18em] text-muted-foreground leading-tight">
       {label}
     </p>
   </div>
@@ -283,13 +272,11 @@ const StatCell = ({
 
 const ProgressTile = ({
   icon,
-  value,
   label,
   desc,
   onClick,
 }: {
   icon: React.ReactNode;
-  value: number;
   label: string;
   desc: string;
   onClick: () => void;
@@ -302,7 +289,7 @@ const ProgressTile = ({
       <div className="w-9 h-9 rounded-xl bg-secondary/70 flex items-center justify-center text-muted-foreground">
         {icon}
       </div>
-      <span className="font-display text-[22px] leading-none tabular-nums text-foreground">{value}</span>
+      <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
     </div>
     <div>
       <p className="font-semibold text-[14px] leading-tight tracking-tight">{label}</p>
