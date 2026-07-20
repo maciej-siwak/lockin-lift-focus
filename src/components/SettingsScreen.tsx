@@ -112,7 +112,7 @@ export const SettingsScreen = ({ onBack }: Props) => {
           <div className="mt-3 grid grid-cols-2 gap-2">
             {([
               { id: "default", label: t("settings.skinDefault") },
-              { id: "time-chamber", label: t("settings.skinTimeChamber") },
+              { id: "polska-gurom", label: t("settings.skinPolskaGurom") },
             ] as const).map(opt => {
               const active = (s.skin ?? "default") === opt.id;
               return (
