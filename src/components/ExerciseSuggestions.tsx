@@ -7,7 +7,7 @@ interface Props {
   onViewExercise?: (exerciseName: string) => void;
 }
 
-type Suggestion = { name: string; noteKey: string };
+type Suggestion = { name: string; nameKey: string; noteKey: string };
 type Group = { key: string; muscleKey: string; blurbKey: string; items: Suggestion[] };
 
 const GROUPS: Group[] = [
@@ -16,11 +16,11 @@ const GROUPS: Group[] = [
     muscleKey: "muscle.chest",
     blurbKey: "muscle.chestBlurb",
     items: [
-      { name: "Barbell Bench Press", noteKey: "note.barbellBenchPress" },
-      { name: "Incline Dumbbell Press", noteKey: "note.inclineDumbbellPress" },
-      { name: "Chest Dip", noteKey: "note.chestDip" },
-      { name: "Cable Fly", noteKey: "note.cableFly" },
-      { name: "Machine Chest Press", noteKey: "note.machineChestPress" },
+      { name: "Barbell Bench Press", nameKey: "ex.barbellBenchPress", noteKey: "note.barbellBenchPress" },
+      { name: "Incline Dumbbell Press", nameKey: "ex.inclineDumbbellPress", noteKey: "note.inclineDumbbellPress" },
+      { name: "Chest Dip", nameKey: "ex.chestDip", noteKey: "note.chestDip" },
+      { name: "Cable Fly", nameKey: "ex.cableFly", noteKey: "note.cableFly" },
+      { name: "Machine Chest Press", nameKey: "ex.machineChestPress", noteKey: "note.machineChestPress" },
     ],
   },
   {
@@ -28,11 +28,11 @@ const GROUPS: Group[] = [
     muscleKey: "muscle.triceps",
     blurbKey: "muscle.tricepsBlurb",
     items: [
-      { name: "Close-Grip Bench Press", noteKey: "note.closeGripBench" },
-      { name: "Overhead Cable Triceps Extension", noteKey: "note.overheadCableTri" },
-      { name: "Cable Triceps Pushdown", noteKey: "note.cablePushdown" },
-      { name: "Skull Crusher", noteKey: "note.skullCrusher" },
-      { name: "Bench Dip", noteKey: "note.benchDip" },
+      { name: "Close-Grip Bench Press", nameKey: "ex.closeGripBenchPress", noteKey: "note.closeGripBench" },
+      { name: "Overhead Cable Triceps Extension", nameKey: "ex.overheadCableTricepsExtension", noteKey: "note.overheadCableTri" },
+      { name: "Cable Triceps Pushdown", nameKey: "ex.cableTricepsPushdown", noteKey: "note.cablePushdown" },
+      { name: "Skull Crusher", nameKey: "ex.skullCrusher", noteKey: "note.skullCrusher" },
+      { name: "Bench Dip", nameKey: "ex.benchDip", noteKey: "note.benchDip" },
     ],
   },
   {
@@ -40,11 +40,11 @@ const GROUPS: Group[] = [
     muscleKey: "muscle.biceps",
     blurbKey: "muscle.bicepsBlurb",
     items: [
-      { name: "Barbell Curl", noteKey: "note.barbellCurl" },
-      { name: "Incline Dumbbell Curl", noteKey: "note.inclineDumbbellCurl" },
-      { name: "Hammer Curl", noteKey: "note.hammerCurl" },
-      { name: "Preacher Curl", noteKey: "note.preacherCurl" },
-      { name: "Cable Curl", noteKey: "note.cableCurl" },
+      { name: "Barbell Curl", nameKey: "ex.barbellCurl", noteKey: "note.barbellCurl" },
+      { name: "Incline Dumbbell Curl", nameKey: "ex.inclineDumbbellCurl", noteKey: "note.inclineDumbbellCurl" },
+      { name: "Hammer Curl", nameKey: "ex.hammerCurl", noteKey: "note.hammerCurl" },
+      { name: "Preacher Curl", nameKey: "ex.preacherCurl", noteKey: "note.preacherCurl" },
+      { name: "Cable Curl", nameKey: "ex.cableCurl", noteKey: "note.cableCurl" },
     ],
   },
   {
@@ -52,11 +52,11 @@ const GROUPS: Group[] = [
     muscleKey: "muscle.back",
     blurbKey: "muscle.backBlurb",
     items: [
-      { name: "Deadlift", noteKey: "note.deadlift" },
-      { name: "Pull-Up", noteKey: "note.pullUp" },
-      { name: "Barbell Row", noteKey: "note.barbellRow" },
-      { name: "Lat Pulldown", noteKey: "note.latPulldown" },
-      { name: "Seated Cable Row", noteKey: "note.seatedCableRow" },
+      { name: "Deadlift", nameKey: "ex.deadlift", noteKey: "note.deadlift" },
+      { name: "Pull-Up", nameKey: "ex.pullUp", noteKey: "note.pullUp" },
+      { name: "Barbell Row", nameKey: "ex.barbellRow", noteKey: "note.barbellRow" },
+      { name: "Lat Pulldown", nameKey: "ex.latPulldown", noteKey: "note.latPulldown" },
+      { name: "Seated Cable Row", nameKey: "ex.seatedCableRow", noteKey: "note.seatedCableRow" },
     ],
   },
   {
@@ -64,11 +64,11 @@ const GROUPS: Group[] = [
     muscleKey: "muscle.shoulders",
     blurbKey: "muscle.shouldersBlurb",
     items: [
-      { name: "Overhead Press", noteKey: "note.overheadPress" },
-      { name: "Dumbbell Lateral Raise", noteKey: "note.lateralRaise" },
-      { name: "Rear Delt Fly", noteKey: "note.rearDeltFly" },
-      { name: "Face Pull", noteKey: "note.facePull" },
-      { name: "Arnold Press", noteKey: "note.arnoldPress" },
+      { name: "Overhead Press", nameKey: "ex.overheadPress", noteKey: "note.overheadPress" },
+      { name: "Dumbbell Lateral Raise", nameKey: "ex.dumbbellLateralRaise", noteKey: "note.lateralRaise" },
+      { name: "Rear Delt Fly", nameKey: "ex.rearDeltFly", noteKey: "note.rearDeltFly" },
+      { name: "Face Pull", nameKey: "ex.facePull", noteKey: "note.facePull" },
+      { name: "Arnold Press", nameKey: "ex.arnoldPress", noteKey: "note.arnoldPress" },
     ],
   },
   {
@@ -76,11 +76,11 @@ const GROUPS: Group[] = [
     muscleKey: "muscle.legs",
     blurbKey: "muscle.legsBlurb",
     items: [
-      { name: "Back Squat", noteKey: "note.backSquat" },
-      { name: "Romanian Deadlift", noteKey: "note.rdl" },
-      { name: "Leg Press", noteKey: "note.legPress" },
-      { name: "Bulgarian Split Squat", noteKey: "note.bulgarianSplit" },
-      { name: "Standing Calf Raise", noteKey: "note.calfRaise" },
+      { name: "Back Squat", nameKey: "ex.backSquat", noteKey: "note.backSquat" },
+      { name: "Romanian Deadlift", nameKey: "ex.romanianDeadlift", noteKey: "note.rdl" },
+      { name: "Leg Press", nameKey: "ex.legPress", noteKey: "note.legPress" },
+      { name: "Bulgarian Split Squat", nameKey: "ex.bulgarianSplitSquat", noteKey: "note.bulgarianSplit" },
+      { name: "Standing Calf Raise", nameKey: "ex.standingCalfRaise", noteKey: "note.calfRaise" },
     ],
   },
 ];
@@ -148,7 +148,7 @@ export const ExerciseSuggestions = ({ onBack, onViewExercise }: Props) => {
                         {i + 1}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-bold text-[15px] leading-tight truncate">{it.name}</h3>
+                        <h3 className="font-bold text-[15px] leading-tight truncate">{t(it.nameKey)}</h3>
                         <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">{t(it.noteKey)}</p>
                       </div>
                       <Dumbbell className="w-4 h-4 text-muted-foreground/50 shrink-0 mt-1" />

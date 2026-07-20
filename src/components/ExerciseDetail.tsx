@@ -74,15 +74,50 @@ const IMAGES: Record<string, string> = {
   "standing-calf-raise": standingCalfRaiseImg,
 };
 
+const NAME_KEYS: Record<string, string> = {
+  "Barbell Bench Press": "ex.barbellBenchPress",
+  "Incline Dumbbell Press": "ex.inclineDumbbellPress",
+  "Chest Dip": "ex.chestDip",
+  "Cable Fly": "ex.cableFly",
+  "Machine Chest Press": "ex.machineChestPress",
+  "Close-Grip Bench Press": "ex.closeGripBenchPress",
+  "Overhead Cable Triceps Extension": "ex.overheadCableTricepsExtension",
+  "Cable Triceps Pushdown": "ex.cableTricepsPushdown",
+  "Skull Crusher": "ex.skullCrusher",
+  "Bench Dip": "ex.benchDip",
+  "Barbell Curl": "ex.barbellCurl",
+  "Incline Dumbbell Curl": "ex.inclineDumbbellCurl",
+  "Hammer Curl": "ex.hammerCurl",
+  "Preacher Curl": "ex.preacherCurl",
+  "Cable Curl": "ex.cableCurl",
+  "Deadlift": "ex.deadlift",
+  "Pull-Up": "ex.pullUp",
+  "Barbell Row": "ex.barbellRow",
+  "Lat Pulldown": "ex.latPulldown",
+  "Seated Cable Row": "ex.seatedCableRow",
+  "Overhead Press": "ex.overheadPress",
+  "Dumbbell Lateral Raise": "ex.dumbbellLateralRaise",
+  "Rear Delt Fly": "ex.rearDeltFly",
+  "Face Pull": "ex.facePull",
+  "Arnold Press": "ex.arnoldPress",
+  "Back Squat": "ex.backSquat",
+  "Romanian Deadlift": "ex.romanianDeadlift",
+  "Leg Press": "ex.legPress",
+  "Bulgarian Split Squat": "ex.bulgarianSplitSquat",
+  "Standing Calf Raise": "ex.standingCalfRaise",
+};
+
 export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
   const t = useT();
   const info = getExerciseInfo(exerciseName);
   const image = IMAGES[info.imageKey] ?? benchPressImg;
+  const nameKey = NAME_KEYS[info.name];
+  const localizedName = nameKey ? t(nameKey) : info.name;
 
   return (
     <AppShell
       title={t("exercise.title")}
-      subtitle={info.name}
+      subtitle={localizedName}
       left={
         <button
           onClick={onBack}
@@ -110,7 +145,7 @@ export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
             <div className="flex items-center gap-2 text-[11px] font-bold text-primary uppercase tracking-[0.2em]">
               <Dumbbell className="w-3.5 h-3.5" /> {info.type}
             </div>
-            <h1 className="mt-2 text-3xl font-black tracking-tight leading-tight">{info.name}</h1>
+            <h1 className="mt-2 text-3xl font-black tracking-tight leading-tight">{localizedName}</h1>
             <div className="mt-3 flex flex-wrap gap-2">
               {info.muscles.map((m) => (
                 <span
