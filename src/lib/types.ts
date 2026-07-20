@@ -60,5 +60,5 @@ export interface Settings {
   vibration: boolean;
   weightUnit: "kg" | "lb";
   language?: "en" | "es" | "pt" | "de" | "ja" | "ko" | "pl" | "bg";
-  skin?: "default" | "time-chamber";
+  skin?: "default" | "polska-gurom";
 }
