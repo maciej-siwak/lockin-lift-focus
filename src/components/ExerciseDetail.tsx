@@ -136,8 +136,11 @@ export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
               src={image}
               alt={info.name}
               className="w-full h-full object-contain drop-shadow-lg"
-              width={1024}
-              height={1024}
+              width={900}
+              height={900}
+              decoding="async"
+              loading="eager"
+              fetchPriority="high"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent pointer-events-none" />
