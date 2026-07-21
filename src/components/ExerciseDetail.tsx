@@ -2,7 +2,8 @@ import { ArrowLeft, Dumbbell, Play, Target, Clock, AlertTriangle, CheckCircle2, 
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { getExerciseInfo } from "@/lib/exercises";
-import { useT } from "@/lib/i18n";
+import { useT, useI18n } from "@/lib/i18n";
+import { getLocalizedExerciseFields } from "@/lib/exerciseI18n";
 import benchPressImg from "@/assets/bench-press.webp";
 import inclineDumbbellPressImg from "@/assets/exercises/incline-dumbbell-press.webp";
 import chestDipImg from "@/assets/exercises/chest-dip.webp";
@@ -109,10 +110,21 @@ const NAME_KEYS: Record<string, string> = {
 
 export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
   const t = useT();
+  const { lang } = useI18n();
   const info = getExerciseInfo(exerciseName);
   const image = IMAGES[info.imageKey] ?? benchPressImg;
   const nameKey = NAME_KEYS[info.name];
   const localizedName = nameKey ? t(nameKey) : info.name;
+  const l = getLocalizedExerciseFields(info.imageKey, lang);
+  const muscles = l?.muscles ?? info.muscles;
+  const equipment = l?.equipment ?? info.equipment;
+  const difficulty = l?.difficulty ?? info.difficulty;
+  const type = l?.type ?? info.type;
+  const description = l?.description ?? info.description;
+  const setup = l?.setup ?? info.setup;
+  const execution = l?.execution ?? info.execution;
+  const tips = l?.tips ?? info.tips;
+  const mistakes = l?.mistakes ?? info.mistakes;
 
   return (
     <AppShell
@@ -146,11 +158,11 @@ export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent pointer-events-none" />
           <div className="absolute bottom-0 left-0 right-0 p-5">
             <div className="flex items-center gap-2 text-[11px] font-bold text-primary uppercase tracking-[0.2em]">
-              <Dumbbell className="w-3.5 h-3.5" /> {info.type}
+              <Dumbbell className="w-3.5 h-3.5" /> {type}
             </div>
             <h1 className="mt-2 text-3xl font-black tracking-tight leading-tight">{localizedName}</h1>
             <div className="mt-3 flex flex-wrap gap-2">
-              {info.muscles.map((m) => (
+              {muscles.map((m) => (
                 <span
                   key={m}
                   className="inline-flex items-center px-3 py-1.5 rounded-full bg-primary/15 text-primary text-xs font-semibold"
@@ -164,18 +176,18 @@ export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
 
         {/* Quick stats */}
         <div className="grid grid-cols-3 gap-3">
-          <StatCard icon={<Dumbbell className="w-4 h-4" />} label={t("exercise.equipment")} value={info.equipment} />
-          <StatCard icon={<Target className="w-4 h-4" />} label={t("exercise.level")} value={info.difficulty} />
-          <StatCard icon={<Clock className="w-4 h-4" />} label={t("exercise.focus")} value={info.type} />
+          <StatCard icon={<Dumbbell className="w-4 h-4" />} label={t("exercise.equipment")} value={equipment} />
+          <StatCard icon={<Target className="w-4 h-4" />} label={t("exercise.level")} value={difficulty} />
+          <StatCard icon={<Clock className="w-4 h-4" />} label={t("exercise.focus")} value={type} />
         </div>
 
         {/* Info sections */}
         <div className="space-y-4">
-          <InfoSection icon={<Info className="w-4 h-4" />} title={t("exercise.overview")} text={info.description} />
-          <InfoSection icon={<CheckCircle2 className="w-4 h-4" />} title={t("exercise.setup")} text={info.setup} />
-          <InfoSection icon={<Target className="w-4 h-4" />} title={t("exercise.execution")} text={info.execution} />
-          <InfoSection icon={<Lightbulb className="w-4 h-4" />} title={t("exercise.tips")} text={info.tips} />
-          <InfoSection icon={<AlertTriangle className="w-4 h-4" />} title={t("exercise.mistakes")} text={info.mistakes} variant="warning" />
+          <InfoSection icon={<Info className="w-4 h-4" />} title={t("exercise.overview")} text={description} />
+          <InfoSection icon={<CheckCircle2 className="w-4 h-4" />} title={t("exercise.setup")} text={setup} />
+          <InfoSection icon={<Target className="w-4 h-4" />} title={t("exercise.execution")} text={execution} />
+          <InfoSection icon={<Lightbulb className="w-4 h-4" />} title={t("exercise.tips")} text={tips} />
+          <InfoSection icon={<AlertTriangle className="w-4 h-4" />} title={t("exercise.mistakes")} text={mistakes} variant="warning" />
         </div>
 
         {/* CTA */}
