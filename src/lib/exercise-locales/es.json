@@ -1,0 +1,436 @@
+{
+    "bench-press": {
+        "muscles": [
+            "Pecho",
+            "Deltoides anterior",
+            "Tríceps"
+        ],
+        "equipment": "Barra, banco plano",
+        "difficulty": "Intermedio",
+        "type": "Press horizontal",
+        "description": "El estándar de oro para la fuerza de empuje de la parte superior del cuerpo. Trabaja pectorales, deltoides anterior y tríceps mediante un recorrido estable con barra que permite añadir peso durante años.",
+        "setup": "Túmbate plano con los ojos bajo la barra. Apoya los pies, arquea ligeramente y retrae las escápulas hacia atrás y hacia abajo contra el banco. Agarre aproximadamente 1.5x la anchura de hombros con muñecas rectas.",
+        "execution": "Desengancha sobre los hombros, luego baja la barra bajo control hasta la parte inferior del esternón con los codos metidos a 45–75°. Pausa en el pecho, luego empuja hacia arriba y ligeramente hacia atrás hacia tu cara hasta el bloqueo.",
+        "tips": "Mantén la espalda alta firme en cada repetición. Empuja los pies contra el suelo para obtener empuje de piernas sin levantar la cadera. Ralentiza la fase excéntrica — 2–3 segundos bajando construye mucho más pecho que una repetición apresurada.",
+        "mistakes": "Abrir los codos a 90° castiga los hombros. Rebotar la barra en el pecho hace trampa en la parte más difícil del levantamiento. Perder el arco a mitad de la serie coloca los pectorales en una posición débil y estirada."
+    },
+    "incline-dumbbell-press": {
+        "muscles": [
+            "Pecho superior",
+            "Deltoides anterior",
+            "Tríceps"
+        ],
+        "equipment": "Mancuernas, banco inclinado",
+        "difficulty": "Intermedio",
+        "type": "Press inclinado",
+        "description": "El mejor constructor para la parte clavicular (superior) del pecho — el estante que separa un pecho lleno de uno plano. Las mancuernas permiten a cada brazo seguir su arco de empuje natural.",
+        "setup": "Ajusta el banco a 30°. Impulsa las mancuernas hacia tus hombros mientras te tumbas, palmas mirando hacia adelante, muñecas sobre los codos.",
+        "execution": "Baja las mancuernas hasta que se alineen con la parte superior del pecho y sientas un estiramiento. Empuja hacia arriba y ligeramente hacia adentro, parando justo antes de que las mancuernas choquen arriba.",
+        "tips": "Mantén el banco a 30° — más inclinado lo convierte en un press de hombros. Aprieta el pecho fuerte arriba en lugar de descansar en el bloqueo.",
+        "mistakes": "Usar una inclinación de 45–60° desplaza la carga a los deltoides anteriores. Rebotar las mancuernas en los hombros roba el estiramiento que impulsa el crecimiento del pecho superior."
+    },
+    "chest-dip": {
+        "muscles": [
+            "Pecho inferior",
+            "Tríceps",
+            "Deltoides anterior"
+        ],
+        "equipment": "Barras paralelas",
+        "difficulty": "Intermedio",
+        "type": "Press con peso corporal",
+        "description": "Un constructor brutal con peso corporal para el pecho inferior y tríceps. La inclinación hacia adelante es lo que convierte un fondo de tríceps en uno de pecho.",
+        "setup": "Agarra barras paralelas un poco más anchas que los hombros. Bloquea los brazos, inclina el torso 30° hacia adelante y cruza los tobillos detrás de ti.",
+        "execution": "Baja bajo control hasta que los hombros caigan justo debajo de los codos y sientas un estiramiento en el pecho. Empuja hacia el bloqueo manteniendo la inclinación hacia adelante.",
+        "tips": "Añade peso con un cinturón una vez que las repeticiones con peso corporal sean fáciles. Mantén los hombros retraídos lejos de las orejas durante todo el movimiento.",
+        "mistakes": "Mantenerse erguido lo convierte en un ejercicio solo de tríceps. Bajar más allá de 90° de flexión de codo sin control ejerce una tensión seria sobre la articulación del hombro."
+    },
+    "cable-fly": {
+        "muscles": [
+            "Pecho"
+        ],
+        "equipment": "Poleas, manerales tipo D",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "Aislamiento puro de pecho con tensión constante en todo el rango de movimiento — imposible de replicar con mancuernas.",
+        "setup": "Ajusta ambas poleas ligeramente por encima de la altura de los hombros. Adopta una postura escalonada, brazos ligeramente flexionados y bloqueados en ese ángulo.",
+        "execution": "Con una ligera flexión de codo, barre las poleas hacia abajo y juntas frente a tus caderas como si abrazaras un barril. Aprieta durante un segundo, luego deja que los brazos se abran hasta sentir un estiramiento profundo.",
+        "tips": "Piensa 'codos hacia codos', no 'manos hacia manos'. Cruza los manerales ligeramente al final para contraer completamente la parte interna del pecho.",
+        "mistakes": "Flexionar y extender los codos convierte el cruce en un press. Ir con demasiado peso tira de los hombros hacia adelante fuera de su posición."
+    },
+    "machine-chest-press": {
+        "muscles": [
+            "Pecho",
+            "Tríceps",
+            "Deltoides anterior"
+        ],
+        "equipment": "Máquina de press de pecho",
+        "difficulty": "Principiante",
+        "type": "Press en máquina",
+        "description": "Una trayectoria de empuje fija te permite llegar al fallo de forma segura — perfecto para trabajo de hipertrofia de alto volumen o cuando estás fatigado de un press pesado.",
+        "setup": "Ajusta el asiento para que las manetas se alineen con la mitad de tu pecho. Apoya los pies, mantén las escápulas pegadas contra el respaldo.",
+        "execution": "Empuja las manetas hacia adelante sin bloquear totalmente arriba. Baja lentamente hasta que tus manos estén alineadas con el pecho y sientas estiramiento.",
+        "tips": "Pausa la fase negativa por un segundo completo. Parar justo antes del bloqueo mantiene tensión constante en los pectorales en cada repetición.",
+        "mistakes": "Poner el asiento demasiado bajo apunta el press hacia arriba y roba trabajo al pecho. Dejar que los hombros se rueden hacia adelante reduce la activación pectoral."
+    },
+    "close-grip-bench-press": {
+        "muscles": [
+            "Tríceps",
+            "Pecho",
+            "Deltoides anterior"
+        ],
+        "equipment": "Barra, banco plano",
+        "difficulty": "Intermedio",
+        "type": "Press compuesto",
+        "description": "El movimiento de tríceps más pesado que puedes cargar. Usa un patrón de press de banca pero desplaza el trabajo a la cabeza larga y medial del tríceps.",
+        "setup": "Prepárate como para un press de banca pero agarra la barra a la anchura de los hombros — nunca más estrecho, o las muñecas sufrirán.",
+        "execution": "Baja la barra al esternón inferior con los codos pegados a las costillas. Empuja hacia arriba en línea recta, bloqueando fuertemente.",
+        "tips": "Mantén los codos pegados a los costados — abrir los codos lo convierte de nuevo en un press de pecho. Enfócate en la parte del bloqueo donde los tríceps hacen la mayor parte del trabajo.",
+        "mistakes": "Ir demasiado estrecho (pulgares tocándose) colapsa las muñecas y pinza los hombros. Rebotar en el pecho desperdicia la tensión en los tríceps."
+    },
+    "overhead-cable-triceps-extension": {
+        "muscles": [
+            "Tríceps (cabeza larga)"
+        ],
+        "equipment": "Polea, cuerda",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "Coloca la cabeza larga del tríceps en una posición totalmente estirada, que es donde crece más rápido.",
+        "setup": "Ajusta la polea baja, agarra la cuerda y da la espalda. Postura dividida, torso inclinado ligeramente adelante, codos encuadrando tu cabeza.",
+        "execution": "Extiende la cuerda hacia adelante y arriba hasta bloquear los brazos por encima de la cabeza. Invierte lentamente hasta que las manos caigan detrás de la cabeza y sientas un estiramiento profundo de tríceps.",
+        "tips": "Mantén los brazos totalmente quietos — solo los antebrazos se mueven. Separa la cuerda en el bloqueo para una contracción más fuerte.",
+        "mistakes": "Dejar que los codos se abran reduce el reclutamiento de la cabeza larga. Apresurarse al salir del estiramiento salta la parte más productiva de la repetición."
+    },
+    "cable-triceps-pushdown": {
+        "muscles": [
+            "Tríceps"
+        ],
+        "equipment": "Polea, cuerda o barra",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "El finalizador clásico de tríceps. Repeticiones altas bajo tensión constante para una congestión salvaje y fuerza de bloqueo.",
+        "setup": "Ajusta la polea a la altura de la cabeza. Postura a la anchura de los hombros con una ligera inclinación adelante, codos pegados a las costillas.",
+        "execution": "Empuja la maneta hacia abajo hasta que los codos bloqueen completamente. Aprieta un segundo, luego deja que el peso viaje hacia arriba justo por encima de 90° en el codo.",
+        "tips": "Mantén los codos pegados a los costados toda la serie. Separa la cuerda en el final para trabajar la cabeza lateral.",
+        "mistakes": "Inclinarse hacia adelante y empujar con los hombros lo convierte en un press parcial. Dejar que los codos se desplacen adelante al subir mata la tensión."
+    },
+    "skull-crusher": {
+        "muscles": [
+            "Tríceps"
+        ],
+        "equipment": "Barra EZ o mancuernas, banco",
+        "difficulty": "Intermedio",
+        "type": "Aislamiento",
+        "description": "Una extensión de tríceps tumbada clásica que sobrecarga la cabeza larga desde una posición estirada. Gran constructor de masa cuando se hace estrictamente.",
+        "setup": "Túmbate plano sujetando una barra EZ con agarre estrecho. Empuja hacia arriba e inclina los brazos ligeramente atrás hacia la cabeza — no rectos hacia arriba.",
+        "execution": "Flexiona solo los codos, bajando la barra justo por encima de la frente o detrás de la cabeza. Invierte el movimiento apretando los tríceps para extender los brazos.",
+        "tips": "Inclinar los brazos atrás mantiene la tensión en los tríceps en el bloqueo en lugar de descargarla en la articulación. Usa una barra EZ para no castigar tus muñecas.",
+        "mistakes": "Dejar que los codos se abran reduce el trabajo de tríceps. Poner los brazos perpendiculares lo convierte en un pullover sin tensión en la parte alta."
+    },
+    "bench-dip": {
+        "muscles": [
+            "Tríceps"
+        ],
+        "equipment": "Banco",
+        "difficulty": "Principiante",
+        "type": "Aislamiento con peso corporal",
+        "description": "Un finalizador de tríceps sin equipo — trabajo de congestión después de tus presses pesados.",
+        "setup": "Siéntate en un banco, coloca las manos al lado de las caderas agarrando el borde. Camina hacia adelante y desliza las caderas fuera del banco.",
+        "execution": "Bájate flexionando solo los codos hasta que los brazos estén paralelos al suelo. Empuja de nuevo fuerte con las palmas.",
+        "tips": "Mantén la espalda cerca del banco para que la carga se mantenga en los tríceps, no en los hombros. Añade un disco en tu regazo para progresar.",
+        "mistakes": "Bajar demasiado pincha la articulación del hombro. Las caderas alejándose del banco sobrecargan los deltoides anteriores."
+    },
+    "barbell-curl": {
+        "muscles": [
+            "Bíceps",
+            "Antebrazos"
+        ],
+        "equipment": "Barra",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "La variante de curl más pesada. Usa ambos brazos simétricamente para que puedas mover peso real y construir masa total de bíceps.",
+        "setup": "Pies a la anchura de caderas, agarra la barra a la anchura de hombros con agarre supinado (palmas arriba). Codos pegados a las costillas.",
+        "execution": "Flexiona la barra en un arco cerrado sin balancear el torso. Aprieta fuerte arriba, luego baja bajo control hasta que los brazos estén casi — pero no totalmente — estirados.",
+        "tips": "Mantén los codos clavados en su lugar. Ralentiza la fase de bajada — la excéntrica es donde ocurre la mayor parte del daño muscular.",
+        "mistakes": "Balancearse con la cadera lo convierte en un power clean. Dejar que los codos se desplacen adelante lo convierte en una elevación frontal y roba tensión a los bíceps."
+    },
+    "incline-dumbbell-curl": {
+        "muscles": [
+            "Bíceps (cabeza larga)"
+        ],
+        "equipment": "Mancuernas, banco inclinado",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "Coloca los bíceps en un estiramiento profundo detrás del cuerpo — la forma más rápida de hacer crecer la cabeza larga y alargar el pico del bíceps.",
+        "setup": "Ajusta el banco a 60°. Siéntate con las mancuernas colgando rectas hacia abajo, palmas hacia adelante, hombros pegados atrás.",
+        "execution": "Flexiona las mancuernas sin dejar que los codos se desplacen adelante. Aprieta arriba, luego baja lentamente hasta que los brazos estén totalmente extendidos y estirados.",
+        "tips": "Controla el estiramiento abajo — pausar ahí un segundo impulsa el mayor crecimiento. Mantén el meñique más alto que el pulgar arriba para supinación completa.",
+        "mistakes": "Encoger los hombros hacia adelante hace trampa en el estiramiento. Hacer media repetición en la parte baja salta toda la razón de este ejercicio."
+    },
+    "hammer-curl": {
+        "muscles": [
+            "Braquial",
+            "Antebrazos",
+            "Bíceps"
+        ],
+        "equipment": "Mancuernas",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "El mejor constructor para el braquial — el músculo que se sitúa debajo del bíceps y empuja el pico hacia arriba cuando crece.",
+        "setup": "Ponte de pie erguido, mancuernas a los lados con agarre neutro (palmas mirándose entre sí).",
+        "execution": "Flexiona ambas mancuernas manteniendo las muñecas neutras como si estuvieras usando un martillo. Aprieta arriba, luego baja con control.",
+        "tips": "Alterna los brazos si quieres más enfoque por lado. Una polea de cuerda hacia arriba imita este movimiento con tensión constante.",
+        "mistakes": "Rotar las muñecas al subir lo convierte en un curl normal. Balancear el torso arruina el aislamiento."
+    },
+    "preacher-curl": {
+        "muscles": [
+            "Bíceps (cabeza corta)"
+        ],
+        "equipment": "Banco Scott, barra EZ",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "El apoyo mata toda trampa y obliga al bíceps a hacer el 100% del trabajo — la variante de curl más estricta que existe.",
+        "setup": "Siéntate en el banco Scott con las axilas sobre la parte superior del apoyo y los codos a la anchura de hombros sobre la almohadilla.",
+        "execution": "Flexiona la barra a la altura de los hombros, apretando fuerte arriba. Baja bajo control estricto hasta que los brazos estén casi estirados — nunca totalmente bloqueados.",
+        "tips": "Para un grado antes de la extensión total para proteger los tendones del codo. Usa una barra EZ para mantener las muñecas felices.",
+        "mistakes": "Rebotar en la parte baja estresa el tendón del bíceps. Levantarse o despegarse totalmente del apoyo anula el propósito."
+    },
+    "cable-curl": {
+        "muscles": [
+            "Bíceps"
+        ],
+        "equipment": "Polea, barra recta",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "La tensión constante de abajo hacia arriba hace que las poleas sean ideales para trabajo de altas repeticiones al final de un día de brazo.",
+        "setup": "Ajusta la polea a la posición más baja, coloca una barra recta o EZ, y ponte de pie a un paso de distancia con los codos pegados a los costados.",
+        "execution": "Flexiona la barra, aprieta arriba, luego resiste la polea todo el camino de bajada — siente la tensión todo el tiempo.",
+        "tips": "Da un paso atrás ligeramente para que el cable tire hacia adelante y abajo en la parte superior, manteniendo la tensión donde las mancuernas la pierden.",
+        "mistakes": "Ponerse demasiado cerca hace que la tensión desaparezca arriba. Balancear el torso atrás lo convierte en un ejercicio de cuerpo completo."
+    },
+    "deadlift": {
+        "muscles": [
+            "Isquiotibiales",
+            "Glúteos",
+            "Espalda",
+            "Trapecios",
+            "Antebrazos"
+        ],
+        "equipment": "Barra, discos",
+        "difficulty": "Avanzado",
+        "type": "Bisagra de cadera",
+        "description": "El mejor constructor de fuerza de cuerpo completo. Carga toda la cadena posterior desde gemelos hasta trapecios en un movimiento.",
+        "setup": "Pies a la anchura de caderas, barra sobre el mediopié. Bisagra de cadera, agarra justo fuera de las espinillas, espinillas verticales, pecho orgulloso, dorsales activos.",
+        "execution": "Empuja el suelo con las piernas, manteniendo la barra arrastrándose por tus espinillas. Una vez pasadas las rodillas, empuja la cadera hacia adelante hasta el bloqueo. Invierte el patrón para devolver la barra.",
+        "tips": "Toma una respiración enorme y bracea antes de cada repetición. Reinicia tu agarre y postura entre repeticiones para cargas pesadas — no 'touch-and-go'.",
+        "mistakes": "Tirar de la barra del suelo estresa la espalda baja. Redondear la espalda alta está bien con pesos altos, pero redondear la espalda baja es receta para lesión."
+    },
+    "pull-up": {
+        "muscles": [
+            "Dorsales",
+            "Bíceps",
+            "Espalda media"
+        ],
+        "equipment": "Barra de dominadas",
+        "difficulty": "Intermedio",
+        "type": "Tirón vertical",
+        "description": "El rey de los constructores de anchura de espalda. Nada más estira y contrae los dorsales a través de un rango completo de movimiento.",
+        "setup": "Agarra la barra un poco más ancha que los hombros, palmas hacia adelante. Cuélgate con hombros activos — retrae las escápulas lejos de las orejas.",
+        "execution": "Lleva tu pecho hacia la barra empujando los codos hacia abajo y atrás. Pausa arriba con la barra a la altura de la barbilla, luego baja lentamente a un cuelgue muerto.",
+        "tips": "Piensa 'codos a las caderas' en lugar de 'barbilla sobre la barra' para sentir los dorsales. Añade peso con cinturón una vez que alcances 10 repeticiones limpias.",
+        "mistakes": "Kipping y usar balanceo de piernas lo convierte en un movimiento de CrossFit, no en un constructor de espalda. Parar antes de la extensión total engaña a los dorsales."
+    },
+    "barbell-row": {
+        "muscles": [
+            "Espalda media",
+            "Dorsales",
+            "Deltoides posterior",
+            "Bíceps"
+        ],
+        "equipment": "Barra",
+        "difficulty": "Intermedio",
+        "type": "Tirón horizontal",
+        "description": "El constructor de grosor de espalda más pesado. Remar con barra es la forma más rápida de rellenar la parte media de tu espalda.",
+        "setup": "Bisagra de cadera a un ángulo de torso de 45°, rodillas blandas, barra colgando con brazos extendidos. Agarre prono un poco más ancho que hombros, pecho arriba, dorsales activos.",
+        "execution": "Lleva la barra a tus costillas inferiores empujando los codos hacia atrás. Aprieta las escápulas juntas, luego baja bajo control sin cambiar el ángulo del torso.",
+        "tips": "Mantén el ángulo del torso firme durante toda la serie. Un ligero agarre supino te permite remar más pesado y golpear más fuerte los dorsales.",
+        "mistakes": "Enderezarse mientras tiras lo convierte en un encogimiento. Tirar al pecho en lugar de al abdomen recluta más los trapecios que los dorsales."
+    },
+    "lat-pulldown": {
+        "muscles": [
+            "Dorsales",
+            "Bíceps",
+            "Espalda media"
+        ],
+        "equipment": "Polea, barra de jalón al pecho",
+        "difficulty": "Principiante",
+        "type": "Tirón vertical",
+        "description": "La mejor alternativa a las dominadas — puedes ajustar exactamente la carga que tus dorsales pueden manejar, desde el estiramiento hasta la contracción.",
+        "setup": "Siéntate con los muslos bien sujetos bajo los apoyos. Agarra la barra un poco más ancha que los hombros con palmas adelante, brazos totalmente extendidos sobre la cabeza.",
+        "execution": "Lleva la barra hacia tu pecho superior empujando los codos abajo y atrás. Aprieta, luego deja que la barra viaje totalmente hacia arriba hasta sentir estiramiento en los dorsales.",
+        "tips": "Inclínate atrás solo ligeramente (5–10°). Inicia cada repetición deprimiendo la escápula antes de que se muevan los codos.",
+        "mistakes": "Tirar de la barra detrás del cuello coloca los hombros en una posición comprometida. Inclinarte demasiado atrás lo convierte en un remo."
+    },
+    "seated-cable-row": {
+        "muscles": [
+            "Espalda media",
+            "Dorsales",
+            "Deltoides posterior"
+        ],
+        "equipment": "Polea, maneral en V",
+        "difficulty": "Principiante",
+        "type": "Tirón horizontal",
+        "description": "Apunta al grosor de la espalda media con una carga suave y controlable, sin el estrés lumbar de un remo con barra.",
+        "setup": "Siéntate erguido, pies apoyados, rodillas ligeramente flexionadas. Agarra el maneral en V con brazos extendidos, pecho arriba.",
+        "execution": "Lleva el maneral a tu abdomen empujando los codos recto hacia atrás y apretando las escápulas. Extiende los brazos totalmente para estirar los dorsales entre repeticiones.",
+        "tips": "Mantén el torso casi vertical — no remes con tu cuerpo. Pausa con los codos pegados a las costillas para una contracción total.",
+        "mistakes": "Balancearse de adelante hacia atrás convierte el remo en trabajo de impulso. Redondear los hombros en el estiramiento descarga el peso en la espalda baja."
+    },
+    "overhead-press": {
+        "muscles": [
+            "Deltoides anterior",
+            "Deltoides lateral",
+            "Tríceps",
+            "Pecho superior"
+        ],
+        "equipment": "Barra",
+        "difficulty": "Intermedio",
+        "type": "Press vertical",
+        "description": "La verdadera prueba de fuerza de la parte superior del cuerpo — empujar peso sobre la cabeza con todo el cuerpo firme. Construye hombros de roca y trapecios.",
+        "setup": "Pies a la anchura de caderas, barra sobre los deltoides anteriores, codos ligeramente por delante de la barra, antebrazos verticales. Bracea abdominales y glúteos fuerte.",
+        "execution": "Empuja la barra recto hacia arriba, moviendo la cabeza atrás para que la barra pase la barbilla. Una vez pasada la frente, empuja la cabeza 'por la ventana' y bloquea con la barra sobre el mediopié.",
+        "tips": "Aprieta los glúteos para evitar inclinarte hacia atrás. Toma una respiración fresca y bracea antes de cada repetición.",
+        "mistakes": "Empujar por delante de la cara en lugar de recto arriba desperdicia fuerza. Inclinarse hacia atrás como un press declinado castiga la espalda baja."
+    },
+    "dumbbell-lateral-raise": {
+        "muscles": [
+            "Deltoides lateral"
+        ],
+        "equipment": "Mancuernas",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "El mejor ejercicio para la anchura de hombros. Haz crecer los deltoides laterales y tu físico cambiará de la noche a la mañana.",
+        "setup": "Ponte de pie con una ligera inclinación adelante, mancuernas a los lados, flexión suave de codos que se mantiene bloqueada toda la serie.",
+        "execution": "Eleva las mancuernas hacia los lados en un arco amplio hasta la altura de los hombros. Guía con los codos, no con las manos, luego baja lentamente.",
+        "tips": "Piensa en verter agua de una jarra arriba — meñique un poco más alto que el pulgar — para enfocar el deltoides lateral. Usa menos peso del que tu ego quiere.",
+        "mistakes": "Balancearse y tirar con los trapecios solo hace que crezcan los trapecios. Llevar las manos por encima de los hombros desplaza la carga a los trapecios."
+    },
+    "rear-delt-fly": {
+        "muscles": [
+            "Deltoides posterior",
+            "Espalda alta"
+        ],
+        "equipment": "Mancuernas o polea inversa",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "Golpea los deltoides posteriores, la cabeza más desentrenada del hombro. No negociable para unos hombros 3D equilibrados y una postura saludable.",
+        "setup": "Bisagra adelante hasta que el torso esté casi paralelo al suelo, mancuernas colgando rectas con palmas mirándose, codos flexionados.",
+        "execution": "Eleva las mancuernas hacia los lados en un arco amplio hasta la altura de los hombros. Aprieta los deltoides posteriores fuerte, luego baja con control.",
+        "tips": "Guía con los codos y mantén los pulgares apuntando un poco hacia abajo para enfocar el deltoides posterior sobre los trapecios. Ve ligero — la técnica es todo aquí.",
+        "mistakes": "Flexionar y extender los codos convierte la elevación en remo. Encogerse al elevar recluta trapecios y salta el deltoides posterior totalmente."
+    },
+    "face-pull": {
+        "muscles": [
+            "Deltoides posterior",
+            "Rotadores externos",
+            "Trapecios"
+        ],
+        "equipment": "Polea, cuerda",
+        "difficulty": "Principiante",
+        "type": "Tirón correctivo",
+        "description": "El mejor ejercicio de salud para hombros. Fortalece el deltoides posterior y el manguito rotador — los levantadores pesados de press necesitan esto semanalmente.",
+        "setup": "Ajusta una cuerda a la altura del pecho superior. Agarra con pulgares encima de la cuerda, da un paso atrás con ligera inclinación, brazos extendidos.",
+        "execution": "Tira de la cuerda hacia tu cara abriendo los codos ampliamente y rotando las manos para que los nudillos terminen al lado de tus oídos. Aprieta, luego invierte lentamente.",
+        "tips": "Altas repeticiones (15–25) con un apretón arriba da los mejores resultados. Pista: 'muéstrame tus bíceps' en la posición final.",
+        "mistakes": "Tirar al pecho lo convierte en remo. No rotar externamente salta el beneficio del manguito rotador totalmente."
+    },
+    "arnold-press": {
+        "muscles": [
+            "Deltoides anterior",
+            "Deltoides lateral",
+            "Tríceps"
+        ],
+        "equipment": "Mancuernas, banco",
+        "difficulty": "Intermedio",
+        "type": "Press vertical",
+        "description": "Un press con mancuernas rotatorio inventado por Arnold. El giro recluta tanto deltoides anterior como lateral a través de un rango de movimiento más largo que un press normal.",
+        "setup": "Siéntate en un banco con respaldo. Empieza con mancuernas delante de los hombros, palmas hacia ti, codos pegados.",
+        "execution": "Empuja las mancuernas sobre la cabeza mientras rotas las palmas para mirar hacia adelante, terminando totalmente extendido con palmas afuera. Invierte el movimiento suavemente al inicio.",
+        "tips": "Mantén la rotación lenta y deliberada. Usa peso moderado — perseguir récords rompe el giro y lo convierte en un press normal.",
+        "mistakes": "Apresurar la rotación engaña al rango de movimiento. Bloquear los codos agresivamente arriba estresa las articulaciones."
+    },
+    "back-squat": {
+        "muscles": [
+            "Cuádriceps",
+            "Glúteos",
+            "Isquiotibiales",
+            "Core"
+        ],
+        "equipment": "Barra, rack de sentadilla",
+        "difficulty": "Avanzado",
+        "type": "Sentadilla",
+        "description": "El rey de la fuerza de tren inferior. Nada carga piernas, cadera y core en un movimiento como una sentadilla pesada.",
+        "setup": "Barra alta en trapecios (no cuello), agarre estrecho para bloquear la espalda alta. Desengancha, da un paso atrás, pies a anchura de hombros, puntas hacia afuera ~15°.",
+        "execution": "Siéntate atrás y abajo entre las caderas, pecho arriba y rodillas alineadas sobre los pies. Desciende hasta que el pliegue de la cadera caiga bajo la rodilla, luego empuja desde todo el pie.",
+        "tips": "Toma una respiración enorme, bracea, luego desciende. Empuja las rodillas hacia afuera al bajar para alinearlas con los pies.",
+        "mistakes": "Dejar que las rodillas colapsen hacia adentro carga ligamentos en lugar de músculos. Redondear la espalda baja abajo es el patrón de lesión clásico."
+    },
+    "romanian-deadlift": {
+        "muscles": [
+            "Isquiotibiales",
+            "Glúteos",
+            "Espalda baja"
+        ],
+        "equipment": "Barra",
+        "difficulty": "Intermedio",
+        "type": "Bisagra de cadera",
+        "description": "Una bisagra de cadera pura que construye los isquiotibiales desde el origen hasta la inserción. El mejor ejercicio para hipertrofia de isquios — punto.",
+        "setup": "De pie sujetando barra a nivel de cadera, pies a anchura de caderas, ligera flexión en rodillas que se mantiene bloqueada toda la repetición.",
+        "execution": "Empuja la cadera recto hacia atrás, manteniendo la barra arrastrándose por los muslos. Baja hasta sentir un estiramiento profundo en isquios — usualmente a media espinilla — luego empuja la cadera hacia adelante.",
+        "tips": "El rango está limitado por tu flexibilidad de isquios, no por el suelo. Mantén la barra en contacto con las piernas todo el camino.",
+        "mistakes": "Flexionar más las rodillas lo convierte en una sentadilla rumana. Redondear la espalda baja en el estiramiento es la forma #1 de lesionarse aquí."
+    },
+    "leg-press": {
+        "muscles": [
+            "Cuádriceps",
+            "Glúteos",
+            "Isquiotibiales"
+        ],
+        "equipment": "Prensa de piernas",
+        "difficulty": "Principiante",
+        "type": "Sentadilla en máquina",
+        "description": "Permite sobrecargar cuádriceps con peso pesado y cero demanda de equilibrio — perfecto para alto volumen después de sentadillas.",
+        "setup": "Siéntate profundo, espalda baja pegada al respaldo. Coloca pies a anchura de hombros en el medio de la plataforma.",
+        "execution": "Desbloquea seguros, baja plataforma flexionando rodillas hasta que muslos se acerquen al pecho. Empuja de nuevo sin bloquear las rodillas.",
+        "tips": "La posición de pies importa: bajo = más cuádriceps, alto = más glúteos e isquios. Nunca dejes que la cadera se levante del respaldo abajo.",
+        "mistakes": "Bloquear totalmente arriba hiperextiende rodillas bajo carga. Cadera que se despega (butt wink) abajo carga la espalda baja."
+    },
+    "bulgarian-split-squat": {
+        "muscles": [
+            "Cuádriceps",
+            "Glúteos",
+            "Aductores",
+            "Core"
+        ],
+        "equipment": "Mancuernas, banco",
+        "difficulty": "Intermedio",
+        "type": "Sentadilla unilateral",
+        "description": "El ejercicio a una pierna más difícil. Arregla desequilibrios de fuerza, construye tamaño serio de cuádriceps y glúteos, y quema los estabilizadores.",
+        "setup": "Ponte de pie a una zancada del banco, apoya el empeine del pie atrás en él. Pie delantero plano, torso erguido, mancuernas a los lados.",
+        "execution": "Baja la rodilla trasera hacia el suelo flexionando la pierna delantera hasta que la rodilla trasera bese el suelo. Empuja desde el talón delantero.",
+        "tips": "Torso erguido = enfoque en cuádriceps. Ligera inclinación adelante = enfoque en glúteo. La longitud de la zancada cambia todo — experimenta.",
+        "mistakes": "Poner el pie delantero demasiado cerca empuja la rodilla muy lejos de los dedos y martillea la articulación. Equilibrarse en el pie trasero en lugar de usarlo como apoyo roba carga a la pierna delantera."
+    },
+    "standing-calf-raise": {
+        "muscles": [
+            "Gastrocnemio"
+        ],
+        "equipment": "Máquina de gemelo o Multipower",
+        "difficulty": "Principiante",
+        "type": "Aislamiento",
+        "description": "La única forma de hacer crecer el gastrocnemio — el músculo de dos cabezas que da al gemelo su forma de diamante. Pierna recta es no negociable.",
+        "setup": "Ponte de pie con las puntas de los pies en la plataforma, talones colgando. Piernas totalmente rectas, cadera y hombros alineados.",
+        "execution": "Deja caer los talones bajo la plataforma hasta sentir un estiramiento profundo, luego empuja a través de las puntas de los pies hasta subir totalmente. Pausa arriba.",
+        "tips": "Pausa 1 segundo arriba y 1 abajo. Altas repeticiones (15–30) con forma estricta vencen a las repeticiones pesadas y bruscas.",
+        "mistakes": "Rebotar en el estiramiento acorta el crecimiento. Flexionar las rodillas durante la elevación lo convierte en un patrón de gemelo sentado que salta el gastrocnemio."
+    }
+}
