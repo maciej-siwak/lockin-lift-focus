@@ -1,0 +1,436 @@
+{
+  "bench-press": {
+    "muscles": [
+      "Peito",
+      "Deltoide anterior",
+      "Tríceps"
+    ],
+    "equipment": "Barra, banco reto",
+    "difficulty": "Intermediário",
+    "type": "Supino horizontal",
+    "description": "O padrão ouro para força de empurrar na parte superior do corpo. Trabalha peitorais, deltoides anteriores e tríceps através de um caminho estável com barra, onde você pode adicionar peso por anos.",
+    "setup": "Deite-se reto com os olhos sob a barra. Plante os pés, arqueie levemente e puxe as escápulas juntas e para baixo contra o banco. Pegada aproximadamente 1.5× a largura dos ombros com os pulsos retos.",
+    "execution": "Tire a barra do suporte sobre os ombros, depois baixe a barra sob controle até a base do esterno com os cotovelos fechados em 45–75°. Pause no peito, depois empurre para cima e levemente para trás em direção ao rosto até travar os cotovelos.",
+    "tips": "Mantenha as costas superiores firmes a cada repetição. Empurre os pés no chão para gerar força de perna sem levantar o quadril. Lenta a excêntrica — 2–3 segundos descendo constrói muito mais peito do que uma repetição apressada.",
+    "mistakes": "Abrir os cotovelos a 90° sobrecarrega os ombros. Quicar a barra no peito rouba a parte mais difícil do levantamento. Perder o arco durante a série coloca os peitorais em uma posição fraca e alongada."
+  },
+  "incline-dumbbell-press": {
+    "muscles": [
+      "Peitoral superior",
+      "Deltoide anterior",
+      "Tríceps"
+    ],
+    "equipment": "Halteres, banco inclinado",
+    "difficulty": "Intermediário",
+    "type": "Supino inclinado",
+    "description": "O melhor construtor para o peitoral clavicular (superior) — a prateleira que separa um peito cheio de um plano. Halteres permitem que cada braço siga seu arco natural de empurrar.",
+    "setup": "Ajuste o banco a 30°. Chute os halteres para cima até os ombros enquanto se deita, palmas voltadas para frente, pulsos alinhados sobre os cotovelos.",
+    "execution": "Baixe os halteres até que se alinhem com o peitoral superior e você sinta um alongamento. Empurre para cima e levemente para dentro, parando logo antes de os halteres baterem no topo.",
+    "tips": "Mantenha o banco a 30° — mais inclinado transforma em um desenvolvimento de ombros. Aperte o peito com força no topo em vez de descansar no travamento.",
+    "mistakes": "Usar uma inclinação de 45–60° transfere a carga para os deltoides anteriores. Quicar os halteres nos ombros rouba o alongamento que gera crescimento do peitoral superior."
+  },
+  "chest-dip": {
+    "muscles": [
+      "Peitoral inferior",
+      "Tríceps",
+      "Deltoide anterior"
+    ],
+    "equipment": "Barras paralelas",
+    "difficulty": "Intermediário",
+    "type": "Pressão com peso corporal",
+    "description": "Um construtor brutal de peso corporal para peitoral inferior e tríceps. A inclinação frontal é o que transforma um mergulho de tríceps em um mergulho de peito.",
+    "setup": "Segure as barras paralelas um pouco mais largas que os ombros. Trave os braços, incline o tronco 30° para frente e cruze os tornozelos atrás de você.",
+    "execution": "Baixe sob controle até que seus ombros fiquem logo abaixo dos cotovelos e você sinta um alongamento no peito. Empurre de volta para o travamento mantendo a inclinação frontal.",
+    "tips": "Adicione peso com um cinto assim que as repetições de peso corporal ficarem fáceis. Mantenha os ombros puxados para baixo, longe das orelhas, durante todo o movimento.",
+    "mistakes": "Manter-se ereto transforma em um exercício apenas de tríceps. Descer além de uma flexão de cotovelo de 90° sem controle coloca sério estresse na articulação do ombro."
+  },
+  "cable-fly": {
+    "muscles": [
+      "Peito"
+    ],
+    "equipment": "Crossover, puxadores D",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "Isolamento puro de peito com tensão constante durante toda a amplitude de movimento — impossível de replicar com halteres.",
+    "setup": "Ajuste ambas as polias um pouco acima da altura dos ombros. Adote uma base escalonada, braços levemente flexionados e travados nesse ângulo.",
+    "execution": "Com uma leve flexão de cotovelo, varra os puxadores para baixo e para frente dos quadris como se abraçasse um barril. Aperte por um tempo, depois deixe os braços abrirem até sentir um alongamento profundo.",
+    "tips": "Pense 'cotovelo contra cotovelo', não 'mãos contra mãos'. Cruze os puxadores levemente na parte inferior para contrair totalmente a parte interna do peito.",
+    "mistakes": "Dobrar e esticar os cotovelos transforma o crucifixo em um supino. Colocar peso demais puxa os ombros para frente e para fora da articulação."
+  },
+  "machine-chest-press": {
+    "muscles": [
+      "Peito",
+      "Tríceps",
+      "Deltoide anterior"
+    ],
+    "equipment": "Máquina de supino",
+    "difficulty": "Iniciante",
+    "type": "Supino na máquina",
+    "description": "Um caminho fixo de empurrar permite que você chegue perto da falha com segurança — perfeito para trabalho de hipertrofia de alto volume ou quando você está exausto de um supino pesado.",
+    "setup": "Ajuste o assento para que as alças se alinhem com o meio do seu peito. Plante os pés, mantenha as escápulas presas para trás contra o banco.",
+    "execution": "Empurre as alças para frente sem travar totalmente no topo. Baixe lentamente até que suas mãos fiquem no nível do seu peito e você sinta um alongamento.",
+    "tips": "Pause a fase negativa por um segundo completo. Parar logo antes do travamento mantém tensão constante nos peitorais em todas as repetições.",
+    "mistakes": "Ajustar o assento muito baixo aponta o supino para cima e rouba o trabalho do peito. Deixar os ombros rolarem para frente reduz a ativação do peito."
+  },
+  "close-grip-bench-press": {
+    "muscles": [
+      "Tríceps",
+      "Peito",
+      "Deltoide anterior"
+    ],
+    "equipment": "Barra, banco reto",
+    "difficulty": "Intermediário",
+    "type": "Supino composto",
+    "description": "O movimento de tríceps mais pesado que você pode carregar. Usa um padrão de supino, mas transfere o trabalho para a cabeça longa e o tríceps medial.",
+    "setup": "Prepare-se como um supino, mas segure a barra na largura dos ombros — nunca mais estreito, ou os pulsos sofrerão.",
+    "execution": "Baixe a barra até a parte inferior do esterno com os cotovelos colados nas costelas. Empurre de volta em linha reta, travando com força.",
+    "tips": "Mantenha os cotovelos colados nas laterais — abrir transforma em um supino de peito. Foque na porção de travamento onde o tríceps faz mais trabalho.",
+    "mistakes": "Ficar estreito demais (polegares se tocando) colapsa os pulsos e belisca os ombros. Quicar no peito desperdiça a tensão no tríceps."
+  },
+  "overhead-cable-triceps-extension": {
+    "muscles": [
+      "Tríceps (cabeça longa)"
+    ],
+    "equipment": "Cabo, acessório de corda",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "Coloca a cabeça longa do tríceps em uma posição totalmente alongada, que é onde cresce mais rápido.",
+    "setup": "Ajuste a polia baixa, pegue a corda e vire de costas. Base dividida, tronco levemente inclinado para frente, cotovelos enquadrando sua cabeça.",
+    "execution": "Estenda a corda para frente e para cima até que seus braços travem acima da cabeça. Inverta lentamente até que suas mãos desçam atrás da cabeça e você sinta um alongamento profundo do tríceps.",
+    "tips": "Mantenha os braços superiores perfeitamente imóveis — apenas os antebraços se movem. Separe a corda no travamento para uma contração mais forte.",
+    "mistakes": "Deixar os cotovelos abrirem reduz o recrutamento da cabeça longa. Apressar o alongamento pula a parte mais produtiva da repetição."
+  },
+  "cable-triceps-pushdown": {
+    "muscles": [
+      "Tríceps"
+    ],
+    "equipment": "Cabo, corda ou barra",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "O finalizador clássico de tríceps. Altas repetições sob tensão constante do cabo para um pump selvagem e força de travamento da cabeça longa.",
+    "setup": "Ajuste a polia na altura da cabeça. Adote uma base na largura dos ombros com uma leve inclinação frontal, cotovelos colados nas costelas.",
+    "execution": "Empurre o puxador para baixo até que os cotovelos travem totalmente. Aperte por um tempo, depois deixe o peso viajar de volta até um pouco além de 90° no cotovelo.",
+    "tips": "Mantenha os cotovelos colados nas laterais durante toda a série. Separe a corda na parte inferior para martelar a cabeça externa.",
+    "mistakes": "Inclinar-se para frente e empurrar com os ombros transforma em um supino parcial. Deixar os cotovelos avançarem na subida mata a tensão."
+  },
+  "skull-crusher": {
+    "muscles": [
+      "Tríceps"
+    ],
+    "equipment": "Barra EZ ou halteres, banco",
+    "difficulty": "Intermediário",
+    "type": "Isolamento",
+    "description": "Uma extensão de tríceps deitada clássica que sobrecarrega a cabeça longa a partir de uma posição alongada. Ótimo construtor de massa quando feito corretamente.",
+    "setup": "Deite-se reto segurando uma barra EZ com pegada estreita. Empurre para cima e angule seus braços superiores levemente para trás em direção à cabeça — não reto para cima.",
+    "execution": "Dobre apenas nos cotovelos, baixando a barra logo acima da testa ou atrás da cabeça. Inverta o movimento apertando o tríceps para estender os braços.",
+    "tips": "Angular os braços superiores para trás mantém a tensão no tríceps no travamento em vez de despejá-la na articulação. Use uma barra EZ para poupar seus pulsos.",
+    "mistakes": "Deixar os cotovelos abrirem reduz o trabalho do tríceps. Trazer os braços superiores perpendiculares transforma em um pullover sem tensão no topo."
+  },
+  "bench-dip": {
+    "muscles": [
+      "Tríceps"
+    ],
+    "equipment": "Banco",
+    "difficulty": "Iniciante",
+    "type": "Isolamento com peso corporal",
+    "description": "Um finalizador de tríceps sem equipamentos — trabalho de pump após seu supino pesado.",
+    "setup": "Sente-se em um banco, coloque as mãos ao lado dos quadris segurando a borda. Caminhe com os pés para fora e deslize seus quadris para fora do banco.",
+    "execution": "Baixe-se dobrando apenas nos cotovelos até que os braços superiores fiquem paralelos ao chão. Empurre de volta com força pelas palmas das mãos.",
+    "tips": "Mantenha suas costas perto do banco para que a carga permaneça no tríceps, não nos ombros. Adicione uma anilha no colo para progressão.",
+    "mistakes": "Descer fundo demais belisca a articulação do ombro. Quadris se afastando do banco sobrecarregam os deltoides anteriores."
+  },
+  "barbell-curl": {
+    "muscles": [
+      "Bíceps",
+      "Antebraços"
+    ],
+    "equipment": "Barra",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "A variação de rosca mais pesada. Usa ambos os braços simetricamente para que você possa empurrar peso real e construir massa total de bíceps.",
+    "setup": "Fique com os pés na largura dos quadris, segure a barra na largura dos ombros com uma pegada supinada (palmas para cima). Cotovelos colados nas costelas.",
+    "execution": "Enrole a barra em um arco apertado sem balançar o tronco. Aperte forte no topo, depois baixe sob controle até que os braços estejam quase — mas não totalmente — retos.",
+    "tips": "Mantenha os cotovelos fixos. Diminua a fase de descida — a excêntrica é onde ocorre a maior parte do dano ao bíceps.",
+    "mistakes": "Balançar com os quadris transforma em um power clean. Deixar os cotovelos avançarem transforma em uma elevação frontal e rouba a tensão do bíceps."
+  },
+  "incline-dumbbell-curl": {
+    "muscles": [
+      "Bíceps (cabeça longa)"
+    ],
+    "equipment": "Halteres, banco inclinado",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "Coloca o bíceps em um alongamento profundo atrás do corpo — a maneira mais rápida de crescer a cabeça longa e alongar o pico do bíceps.",
+    "setup": "Ajuste o banco a 60°. Sente-se para trás com os halteres pendurados reto para baixo, palmas voltadas para frente, ombros presos para trás.",
+    "execution": "Enrole os halteres sem deixar os cotovelos avançarem. Aperte no topo, depois baixe lentamente até que os braços estejam totalmente estendidos e alongados.",
+    "tips": "Domine o alongamento na parte inferior — pausar lá por um tempo gera o maior crescimento. Mantenha o dedo mindinho mais alto que o polegar no topo para supinar totalmente.",
+    "mistakes": "Encolher os ombros para frente rouba o alongamento. Meia repetição na parte inferior pula a razão inteira de fazer este exercício."
+  },
+  "hammer-curl": {
+    "muscles": [
+      "Braquial",
+      "Antebraços",
+      "Bíceps"
+    ],
+    "equipment": "Halteres",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "O melhor construtor para o braquial — o músculo que fica sob o bíceps e empurra o pico para cima quando cresce.",
+    "setup": "Fique ereto, halteres nas laterais com uma pegada neutra (palmas voltadas uma para a outra).",
+    "execution": "Enrole ambos os halteres mantendo os pulsos neutros como se estivesse balançando um martelo. Aperte no topo, depois baixe com controle.",
+    "tips": "Alterne os braços se quiser mais foco por lado. Uma corda de cabo puxada para cima imita este movimento com tensão constante.",
+    "mistakes": "Rotacionar os pulsos na subida transforma em uma rosca normal. Balançar o tronco arruína o isolamento."
+  },
+  "preacher-curl": {
+    "muscles": [
+      "Bíceps (cabeça curta)"
+    ],
+    "equipment": "Banco Scott, barra EZ",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "O apoio mata toda trapaça e força o bíceps a fazer 100% do trabalho — a variação de rosca mais estrita que existe.",
+    "setup": "Sente-se no banco Scott com as axilas sobre o topo do apoio e os cotovelos na largura dos ombros sobre o apoio.",
+    "execution": "Enrole a barra até a altura dos ombros, apertando forte no topo. Baixe sob controle estrito até que os braços fiquem quase retos — nunca totalmente travados.",
+    "tips": "Pare um grau antes da extensão total para proteger os tendões do cotovelo. Use uma barra EZ para manter os pulsos felizes.",
+    "mistakes": "Quicar fora da posição inferior estressa o tendão do bíceps. Levantar-se ou sair do banco completamente derrota o propósito."
+  },
+  "cable-curl": {
+    "muscles": [
+      "Bíceps"
+    ],
+    "equipment": "Cabo, barra reta",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "Tensão constante de baixo para cima torna os cabos ideais para trabalho de pump de alta repetição no final de um dia de braços.",
+    "setup": "Ajuste a polia na posição mais baixa, prenda uma barra reta ou EZ, e fique a um pé de distância com os cotovelos colados nas laterais.",
+    "execution": "Enrole a barra, aperte no topo, depois resista ao cabo durante toda a descida — sinta a tensão o tempo todo.",
+    "tips": "Afaste-se levemente para que o cabo puxe para frente e para baixo no topo da repetição, mantendo a tensão onde os halteres a perdem.",
+    "mistakes": "Ficar muito perto faz a tensão desaparecer no topo. Balançar o tronco para trás transforma em um movimento de corpo inteiro."
+  },
+  "deadlift": {
+    "muscles": [
+      "Isquiotibiais",
+      "Glúteos",
+      "Costas",
+      "Trapézios",
+      "Antebraços"
+    ],
+    "equipment": "Barra, anilhas",
+    "difficulty": "Avançado",
+    "type": "Dobradiça de quadril",
+    "description": "O melhor construtor de força para o corpo inteiro. Trabalha toda a cadeia posterior, das panturrilhas aos trapézios, em um movimento.",
+    "setup": "Fique com os pés na largura dos quadris, barra sobre o meio do pé. Dobre os quadris, segure logo fora das canelas, canelas verticais, peito orgulhoso, dorsais travados para baixo.",
+    "execution": "Empurre o chão para longe com as pernas, mantendo a barra arrastando nas canelas. Uma vez passados os joelhos, encaixe os quadris para travar. Inverta o padrão para retornar a barra.",
+    "tips": "Respire fundo e trave o tronco antes de cada repetição. Reinicie sua pegada e base entre as repetições para singles pesados — sem 'touch-and-go'.",
+    "mistakes": "Puxar a barra com solavanco espeta a região lombar. Arredondar as costas superiores é aceitável com pesos altos, mas arredondar a lombar é uma passagem para lesões."
+  },
+  "pull-up": {
+    "muscles": [
+      "Dorsais",
+      "Bíceps",
+      "Costas médias"
+    ],
+    "equipment": "Barra de puxada",
+    "difficulty": "Intermediário",
+    "type": "Puxada vertical",
+    "description": "O rei dos construtores de largura de costas. Nada mais alonga e contrai os dorsais através de uma amplitude de movimento tão completa.",
+    "setup": "Segure a barra um pouco mais larga que os ombros, palmas para frente. Pendure-se com dorsais ativos — puxe as escápulas para baixo, longe das orelhas.",
+    "execution": "Puxe seu peito em direção à barra dirigindo os cotovelos para baixo e para trás. Pause no topo com a barra na altura do queixo, depois baixe lentamente até uma suspensão total.",
+    "tips": "Pense 'cotovelos para os quadris' em vez de 'queixo sobre a barra' para sentir os dorsais. Adicione peso com um cinto assim que fizer 10 repetições limpas.",
+    "mistakes": "Kipping e usar balanço de perna transforma em um movimento de CrossFit, não um construtor de costas. Parar antes da extensão total rouba os dorsais."
+  },
+  "barbell-row": {
+    "muscles": [
+      "Costas médias",
+      "Dorsais",
+      "Deltoide posterior",
+      "Bíceps"
+    ],
+    "equipment": "Barra",
+    "difficulty": "Intermediário",
+    "type": "Puxada horizontal",
+    "description": "O construtor mais pesado de espessura de costas. Remar com barra é a maneira mais rápida de preencher o meio das suas costas.",
+    "setup": "Dobre os quadris a um ângulo de tronco de 45°, joelhos levemente flexionados, barra pendurada com braços estendidos. Pegada pronada logo fora da largura dos ombros, peito para cima, dorsais travados.",
+    "execution": "Puxe a barra para as costelas inferiores dirigindo os cotovelos para trás. Aperte as escápulas juntas, depois baixe sob controle sem alterar o ângulo do tronco.",
+    "tips": "Mantenha o ângulo do tronco sólido durante toda a série. Uma pegada supinada leve permite remar mais pesado e atingir os dorsais com mais força.",
+    "mistakes": "Levantar-se ao puxar transforma em um encolhimento. Puxar para o peito em vez do umbigo recruta mais os trapézios que os dorsais."
+  },
+  "lat-pulldown": {
+    "muscles": [
+      "Dorsais",
+      "Bíceps",
+      "Costas médias"
+    ],
+    "equipment": "Cabo, barra de puxada",
+    "difficulty": "Iniciante",
+    "type": "Puxada vertical",
+    "description": "A melhor alternativa para barras — você pode ajustar exatamente a carga que seus dorsais conseguem suportar, do alongamento à contração.",
+    "setup": "Sente-se com as coxas bem ajustadas sob os apoios. Segure a barra um pouco mais larga que os ombros com palmas para frente, braços totalmente estendidos acima da cabeça.",
+    "execution": "Puxe a barra para seu peito superior dirigindo os cotovelos para baixo e para trás. Aperte, depois deixe a barra viajar de volta até sentir um alongamento nos dorsais.",
+    "tips": "Incline-se apenas levemente (5–10°). Inicie cada repetição deprimindo a escápula antes que os cotovelos se movam.",
+    "mistakes": "Puxar a barra por trás do pescoço coloca os ombros em uma posição comprometida. Inclinar-se muito para trás transforma em uma remada."
+  },
+  "seated-cable-row": {
+    "muscles": [
+      "Costas médias",
+      "Dorsais",
+      "Deltoide posterior"
+    ],
+    "equipment": "Cabo, puxador em V",
+    "difficulty": "Iniciante",
+    "type": "Puxada horizontal",
+    "description": "Alveja a espessura das costas médias com uma carga suave e controlável e nenhum estresse lombar de uma remada com barra.",
+    "setup": "Sente-se alto, pés travados, joelhos levemente flexionados. Pegue o puxador em V com braços estendidos, peito para cima.",
+    "execution": "Puxe o puxador para o umbigo dirigindo os cotovelos reto para trás e apertando as escápulas juntas. Estenda os braços totalmente para alongar os dorsais entre as repetições.",
+    "tips": "Mantenha o tronco quase vertical — não reme com seu corpo. Pause com os cotovelos colados às costelas para uma contração completa.",
+    "mistakes": "Balançar para frente e para trás transforma a remada em trabalho de momento. Arredondar os ombros no alongamento joga a carga na lombar."
+  },
+  "overhead-press": {
+    "muscles": [
+      "Deltoide anterior",
+      "Deltoide lateral",
+      "Tríceps",
+      "Peitoral superior"
+    ],
+    "equipment": "Barra",
+    "difficulty": "Intermediário",
+    "type": "Pressão vertical",
+    "description": "O verdadeiro teste de força da parte superior do corpo — empurrar peso acima da cabeça com o corpo inteiro travado. Constrói ombros de pedra e trapézios.",
+    "setup": "Fique com os pés na largura dos quadris, barra apoiada nos deltoides anteriores, cotovelos levemente à frente da barra, antebraços verticais. Trave o abdômen e os glúteos com força.",
+    "execution": "Empurre a barra reto para cima, movendo a cabeça para trás para a barra passar pelo queixo. Uma vez passada a testa, empurre a cabeça 'pela janela' e trave com a barra sobre o meio do pé.",
+    "tips": "Aperte os glúteos para evitar inclinar-se para trás. Respire fundo e trave antes de cada repetição.",
+    "mistakes": "Empurrar na frente do rosto em vez de reto para cima desperdiça força. Inclinar-se para trás vira um supino declinado e detona a lombar."
+  },
+  "dumbbell-lateral-raise": {
+    "muscles": [
+      "Deltoide lateral"
+    ],
+    "equipment": "Halteres",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "O melhor exercício único para largura de ombros. Cultive os deltoides laterais e seu físico muda da noite para o dia.",
+    "setup": "Fique em pé com uma leve inclinação para frente, halteres nas laterais, uma leve flexão nos cotovelos que permanece travada durante toda a série.",
+    "execution": "Eleve os halteres para as laterais em um arco amplo até atingirem a altura dos ombros. Lidere com os cotovelos, não com as mãos, depois baixe lentamente.",
+    "tips": "Pense em derramar água de uma jarra no topo — mindinho ligeiramente mais alto que o polegar — para priorizar os deltoides laterais. Use menos peso do que seu ego deseja.",
+    "mistakes": "Balançar e usar os trapézios faz seus trapézios crescerem. Trazer as mãos acima dos ombros transfere a carga para os trapézios."
+  },
+  "rear-delt-fly": {
+    "muscles": [
+      "Deltoide posterior",
+      "Costas superiores"
+    ],
+    "equipment": "Halteres ou voador inverso",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "Atinge os deltoides posteriores, a cabeça mais subtreinada do ombro. Inegociável para ombros 3D equilibrados e postura saudável.",
+    "setup": "Dobre-se para frente até que o tronco fique quase paralelo ao chão, halteres pendurados reto para baixo com palmas voltadas uma para a outra, leve flexão de cotovelo.",
+    "execution": "Eleve os halteres para as laterais em um arco amplo até atingirem a altura dos ombros. Aperte os deltoides posteriores com força, depois baixe sob controle.",
+    "tips": "Lidere com os cotovelos e mantenha os polegares apontando levemente para baixo para priorizar os deltoides posteriores sobre os trapézios. Vá leve — a forma é tudo aqui.",
+    "mistakes": "Dobrar e esticar os cotovelos transforma o crucifixo em uma remada. Encolher ao levantar recruta os trapézios e pula completamente os deltoides posteriores."
+  },
+  "face-pull": {
+    "muscles": [
+      "Deltoide posterior",
+      "Rotadores externos",
+      "Trapézios"
+    ],
+    "equipment": "Cabo, corda",
+    "difficulty": "Iniciante",
+    "type": "Puxada de pré-habilitação",
+    "description": "O melhor movimento de saúde de ombro que existe. Fortalece os deltoides posteriores e o manguito rotador — levantadores pesados de supino precisam disso semanalmente.",
+    "setup": "Ajuste uma corda na altura do peito superior. Segure com os polegares em cima da corda, dê um passo atrás com uma leve inclinação, braços estendidos.",
+    "execution": "Puxe a corda em direção ao rosto abrindo os cotovelos para fora e rotacionando as mãos para que os nós dos dedos terminem ao lado das orelhas. Aperte, depois inverta lentamente.",
+    "tips": "Altas repetições (15–25) com um aperto no topo geram os melhores resultados. Dica: 'mostre-me seus bíceps' na posição de pico.",
+    "mistakes": "Puxar para o peito transforma em uma remada. Não rotacionar externamente pula completamente o benefício do manguito rotador."
+  },
+  "arnold-press": {
+    "muscles": [
+      "Deltoide anterior",
+      "Deltoide lateral",
+      "Tríceps"
+    ],
+    "equipment": "Halteres, banco",
+    "difficulty": "Intermediário",
+    "type": "Pressão vertical",
+    "description": "Um desenvolvimento com halteres rotacionado inventado por Arnold. A torção recruta tanto os deltoides anteriores quanto os laterais através de uma amplitude de movimento maior que um desenvolvimento normal.",
+    "setup": "Sente-se em um banco com suporte para as costas. Comece com halteres na frente dos ombros, palmas voltadas para você, cotovelos fechados.",
+    "execution": "Empurre os halteres acima da cabeça enquanto rotaciona as palmas para frente, terminando totalmente estendido com as palmas para fora. Inverta o movimento suavemente de volta ao início.",
+    "tips": "Mantenha a rotação lenta e deliberada. Use peso moderado — perseguir recordes quebra a torção e transforma em um desenvolvimento normal.",
+    "mistakes": "Apressar a rotação rouba a amplitude de movimento. Travar os cotovelos agressivamente no topo estressa as articulações."
+  },
+  "back-squat": {
+    "muscles": [
+      "Quadríceps",
+      "Glúteos",
+      "Isquiotibiais",
+      "Core"
+    ],
+    "equipment": "Barra, suporte para agachamento",
+    "difficulty": "Avançado",
+    "type": "Agachamento",
+    "description": "O rei da força da parte inferior do corpo. Nada mais sobrecarrega as pernas, quadris e core em um movimento como um agachamento pesado.",
+    "setup": "Barra alta nos trapézios (não no pescoço), pegada estreita para travar as costas superiores firmes. Tire do suporte, dê um passo atrás, pés na largura dos ombros, pontas dos pés voltadas para fora ~15°.",
+    "execution": "Sente-se para trás e para baixo entre os quadris, mantendo o peito para cima e joelhos acompanhando os dedos dos pés. Desça até que o vinco do quadril caia abaixo do joelho, depois empurre por todo o pé.",
+    "tips": "Respire fundo, trave o tronco, depois desça. Empurre os joelhos para fora na descida para mantê-los acompanhando os pés.",
+    "mistakes": "Deixar os joelhos colapsarem para dentro sobrecarrega os ligamentos em vez dos músculos. Arredondar a lombar na parte inferior é o padrão clássico de lesão."
+  },
+  "romanian-deadlift": {
+    "muscles": [
+      "Isquiotibiais",
+      "Glúteos",
+      "Lombar"
+    ],
+    "equipment": "Barra",
+    "difficulty": "Intermediário",
+    "type": "Dobradiça de quadril",
+    "description": "Uma dobradiça de quadril pura que constrói os isquiotibiais de ponta a ponta. O melhor exercício para hipertrofia de isquiotibiais — ponto final.",
+    "setup": "Fique em pé segurando uma barra na altura do quadril, pés na largura dos quadris, leve flexão nos joelhos que permanece travada durante toda a repetição.",
+    "execution": "Empurre os quadris reto para trás, mantendo a barra arrastando pelas coxas. Baixe até sentir um alongamento profundo nos isquiotibiais — geralmente na metade da canela — depois empurre os quadris para frente para ficar de pé.",
+    "tips": "A amplitude é limitada pela flexibilidade dos seus isquiotibiais, não pelo chão. Mantenha a barra em contato com as pernas durante toda a descida.",
+    "mistakes": "Dobrar os joelhos mais transforma em um agachamento romeno. Arredondar a lombar no alongamento é a maneira #1 de se machucar aqui."
+  },
+  "leg-press": {
+    "muscles": [
+      "Quadríceps",
+      "Glúteos",
+      "Isquiotibiais"
+    ],
+    "equipment": "Leg press",
+    "difficulty": "Iniciante",
+    "type": "Agachamento na máquina",
+    "description": "Permite sobrecarregar os quadríceps com peso pesado e zero demanda de equilíbrio — perfeito para alto volume após agachamentos.",
+    "setup": "Sente-se fundo no assento, lombar pressionada contra o encosto. Coloque os pés na largura dos ombros no meio da plataforma.",
+    "execution": "Desbloqueie as travas, baixe a plataforma dobrando os joelhos até que suas coxas cheguem perto do seu peito. Empurre de volta sem travar totalmente os joelhos.",
+    "tips": "A posição dos pés importa: baixo = mais quadríceps, alto = mais glúteos e isquiotibiais. Nunca deixe os quadris levantarem do assento na parte inferior.",
+    "mistakes": "Travar totalmente no topo hiperextende os joelhos sob carga. Quadris girando para baixo (butt wink) na parte inferior sobrecarrega a lombar."
+  },
+  "bulgarian-split-squat": {
+    "muscles": [
+      "Quadríceps",
+      "Glúteos",
+      "Adutores",
+      "Core"
+    ],
+    "equipment": "Halteres, banco",
+    "difficulty": "Intermediário",
+    "type": "Agachamento unilateral",
+    "description": "O exercício de perna única mais difícil. Corrige desequilíbrios de força, constrói tamanho sério de quadríceps e glúteos e incendeia os estabilizadores.",
+    "setup": "Fique a um passo de distância na frente de um banco, apoie o topo do pé de trás nele. Pé da frente plano, tronco alto, halteres nas laterais.",
+    "execution": "Baixe o joelho de trás em direção ao chão dobrando a perna da frente até que o joelho de trás beije o solo. Empurre pelo calcanhar da frente.",
+    "tips": "Tronco ereto = foco em quadríceps. Leve inclinação para frente = foco em glúteos. O comprimento do passo muda tudo — experimente.",
+    "mistakes": "Colocar o pé da frente muito perto empurra o joelho muito além dos dedos dos pés e detona a articulação. Equilibrar-se no pé de trás em vez de usá-lo como apoio rouba a carga da perna da frente."
+  },
+  "standing-calf-raise": {
+    "muscles": [
+      "Gastrocnêmio"
+    ],
+    "equipment": "Máquina de panturrilha ou Smith machine",
+    "difficulty": "Iniciante",
+    "type": "Isolamento",
+    "description": "A única maneira de crescer o gastrocnêmio — o músculo da panturrilha de duas cabeças que dá à panturrilha seu formato de diamante. Pernas retas é inegociável.",
+    "setup": "Fique em pé com as pontas dos pés na plataforma, calcanhares pendurados para fora. Pernas totalmente retas, quadris e ombros alinhados.",
+    "execution": "Baixe os calcanhares abaixo da plataforma até sentir um alongamento profundo, depois empurre pelas pontas dos pés para subir totalmente na ponta dos pés. Pause no topo.",
+    "tips": "Pause 1 segundo no topo e 1 segundo na parte inferior. Altas repetições (15–30) com forma estrita batem repetições pesadas e bruscas.",
+    "mistakes": "Quicar no alongamento encurta o crescimento. Dobrar os joelhos durante a elevação transforma em um padrão de panturrilha sentado que pula o gastrocnêmio."
+  }
+}
