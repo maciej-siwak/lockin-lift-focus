@@ -52,11 +52,11 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
 
   const greeting = useMemo(() => {
     const h = new Date().getHours();
-    if (h < 5) return "Late night.";
-    if (h < 12) return "Good morning.";
-    if (h < 18) return "Good afternoon.";
-    return "Good evening.";
-  }, []);
+    if (h < 5) return t("home.greetingLateNight");
+    if (h < 12) return t("home.greetingMorning");
+    if (h < 18) return t("home.greetingAfternoon");
+    return t("home.greetingEvening");
+  }, [t]);
 
   const today = useMemo(
     () =>
