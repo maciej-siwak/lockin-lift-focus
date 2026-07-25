@@ -95,7 +95,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
           {greeting}
         </h1>
         <p className="mt-2 text-[15px] leading-snug text-muted-foreground">
-          Time to <span className="text-foreground">lock in</span>
+          <span className="text-foreground">{t("home.timeToLockIn")}</span>
           <span className="text-primary">.</span>
         </p>
       </section>
