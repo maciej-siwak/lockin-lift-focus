@@ -241,7 +241,7 @@ export const Records = ({ onBack }: Props) => {
                   defaultOpen={false}
                   className={`rounded-xl border p-3 transition-base ${
                     brokenInLatest
-                      ? "bg-[hsl(45_95%_58%/0.06)] border-[hsl(45_95%_58%/0.5)]"
+                      ? "bg-primary/[0.06] border-primary/50"
                       : "bg-card border-border"
                   }`}
                 >
