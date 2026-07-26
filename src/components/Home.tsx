@@ -283,13 +283,13 @@ const ProgressTile = ({
 }) => (
   <button
     onClick={onClick}
-    className="rounded-2xl bg-card border border-border/70 p-4 flex flex-col gap-4 text-left transition-base hover:border-primary/40"
+    className="group press rounded-2xl bg-card border border-border/70 p-4 flex flex-col gap-4 text-left transition-base hover:border-primary/40"
   >
     <div className="flex items-center justify-between">
-      <div className="w-9 h-9 rounded-xl bg-secondary/70 flex items-center justify-center text-muted-foreground">
+      <div className="w-9 h-9 rounded-xl bg-secondary/70 flex items-center justify-center text-muted-foreground transition-base group-hover:text-primary group-hover:bg-primary/10">
         {icon}
       </div>
-      <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
+      <ChevronRight className="w-4 h-4 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5" />
     </div>
     <div>
       <p className="font-semibold text-[14px] leading-tight tracking-tight">{label}</p>
