@@ -63,25 +63,25 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 0 0% 4%;
-    --foreground: 43 14% 95%;
-    --card: 40 6% 8%;
-    --card-foreground: 43 14% 95%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 43 14% 95%;
-    --primary: 43 74% 54%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 40 5% 13%;
-    --secondary-foreground: 43 14% 95%;
-    --muted: 0 0% 11%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 43 74% 54%;
-    --accent-foreground: 0 0% 5%;
+    --background: 36 6% 4%;
+    --foreground: 42 12% 94%;
+    --card: 38 7% 8%;
+    --card-foreground: 42 12% 94%;
+    --popover: 38 7% 7%;
+    --popover-foreground: 42 12% 94%;
+    --primary: 42 64% 53%;
+    --primary-foreground: 36 30% 6%;
+    --secondary: 38 6% 13%;
+    --secondary-foreground: 42 12% 94%;
+    --muted: 38 5% 11%;
+    --muted-foreground: 40 6% 60%;
+    --accent: 42 64% 53%;
+    --accent-foreground: 36 30% 6%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 42 8% 17%;
-    --input: 0 0% 14%;
-    --ring: 43 74% 54%;
+    --border: 40 9% 16%;
+    --input: 38 6% 14%;
+    --ring: 42 64% 53%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -104,8 +104,8 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 6%;
 
-    --primary: 43 74% 44%;                /* deep premium gold, high contrast on white */
-    --primary-foreground: 0 0% 5%;
+    --primary: 40 62% 40%;                /* deep antique gold, high contrast on white */
+    --primary-foreground: 42 40% 96%;
 
     --secondary: 0 0% 94%;
     --secondary-foreground: 0 0% 6%;
@@ -113,22 +113,23 @@ All colors MUST be HSL.
     --muted: 0 0% 92%;
     --muted-foreground: 0 0% 35%;
 
-    --accent: 43 74% 44%;
-    --accent-foreground: 0 0% 5%;
+    --accent: 40 62% 40%;
+    --accent-foreground: 42 40% 96%;
 
     --destructive: 0 78% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --warning: 38 92% 45%;
+    --warning: 38 88% 42%;
 
-    --border: 0 0% 86%;
+    --border: 40 8% 86%;
     --input: 0 0% 92%;
-    --ring: 43 74% 44%;
+    --ring: 40 62% 40%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(46 82% 58%), hsl(38 70% 36%));
+    --gradient-primary: linear-gradient(135deg, hsl(46 66% 56%) 0%, hsl(40 62% 42%) 45%, hsl(34 56% 30%) 100%);
+    --gradient-gold-sheen: linear-gradient(100deg, hsl(36 52% 34%) 0%, hsl(46 70% 60%) 40%, hsl(40 62% 44%) 58%, hsl(33 54% 28%) 100%);
     --gradient-dark: linear-gradient(160deg, hsl(0 0% 100%), hsl(0 0% 95%));
-    --shadow-glow: 0 0 40px hsl(43 74% 44% / 0.3);
-    --shadow-glow-strong: 0 0 24px -8px hsl(43 74% 44% / 0.6);
+    --shadow-glow: 0 0 40px hsl(40 62% 40% / 0.22);
+    --shadow-glow-strong: 0 0 24px -8px hsl(40 62% 40% / 0.5);
     --shadow-card: 0 8px 30px -8px hsl(0 0% 20% / 0.15);
   }
 }
