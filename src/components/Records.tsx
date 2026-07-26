@@ -203,14 +203,14 @@ export const Records = ({ onBack }: Props) => {
                     key={key}
                     className={`flex items-center justify-between gap-3 rounded-xl border p-3 transition-base ${
                       gold
-                        ? "bg-[hsl(45_95%_58%/0.08)] border-[hsl(45_95%_58%/0.5)] shadow-[0_0_24px_-8px_hsl(45_95%_58%/0.6)]"
+                        ? "bg-primary/[0.08] border-primary/50 shadow-glow-strong"
                         : "bg-card border-border"
                     }`}
                   >
                     <p className="text-sm font-semibold truncate flex-1">{displayName[key] ?? key}</p>
                     <span
                       className={`font-mono-timer text-sm font-bold shrink-0 ${
-                        gold ? "text-[hsl(45_95%_58%)] drop-shadow-[0_0_8px_hsl(45_95%_58%/0.55)]" : "text-foreground"
+                        gold ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.55)]" : "text-foreground"
                       }`}
                     >
                       {mode === "weight_reps" && `${set.weight}${unit} × ${set.reps}`}
