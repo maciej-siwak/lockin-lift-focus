@@ -167,6 +167,15 @@ All colors MUST be HSL.
   }
   .bg-gradient-primary { background: var(--gradient-primary); }
   .bg-gradient-dark { background: var(--gradient-dark); }
+  /* Metallic gold text — for headline / hero numerals */
+  .text-gold-metal {
+    background: var(--gradient-gold-sheen);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gold-sheen 6s ease-in-out infinite;
+  }
   .shadow-glow { box-shadow: var(--shadow-glow); }
   .shadow-glow-strong { box-shadow: var(--shadow-glow-strong); }
   .shadow-card { box-shadow: var(--shadow-card); }
@@ -176,7 +185,51 @@ All colors MUST be HSL.
     0% { opacity: 0; transform: translateY(8px); }
     100% { opacity: 1; transform: translateY(0); }
   }
-  .animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
+  .animate-fade-in { animation: fade-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+  @keyframes gold-sheen {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Page / route entrance */
+  @keyframes page-in {
+    0% { opacity: 0; transform: translateY(10px) scale(0.995); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .animate-page-in { animation: page-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+  @keyframes slide-up-in {
+    0% { opacity: 0; transform: translateY(14px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slide-up { animation: slide-up-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+  @keyframes rise-in {
+    0% { opacity: 0; transform: translateY(18px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .animate-rise { animation: rise-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+  /* Staggered children entrance */
+  .stagger > * { animation: slide-up-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .stagger > *:nth-child(1) { animation-delay: 40ms; }
+  .stagger > *:nth-child(2) { animation-delay: 90ms; }
+  .stagger > *:nth-child(3) { animation-delay: 140ms; }
+  .stagger > *:nth-child(4) { animation-delay: 190ms; }
+  .stagger > *:nth-child(5) { animation-delay: 240ms; }
+  .stagger > *:nth-child(6) { animation-delay: 290ms; }
+  .stagger > *:nth-child(7) { animation-delay: 340ms; }
+  .stagger > *:nth-child(8) { animation-delay: 390ms; }
+  .delay-1 { animation-delay: 60ms; }
+  .delay-2 { animation-delay: 120ms; }
+  .delay-3 { animation-delay: 180ms; }
+  .delay-4 { animation-delay: 240ms; }
+  .delay-5 { animation-delay: 300ms; }
+
+  /* Premium press feedback */
+  .press { transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1), filter 160ms ease; }
+  .press:active { transform: scale(0.975); }
 
   @keyframes pulse-ring {
     0% { transform: scale(1); opacity: 1; }
@@ -191,6 +244,21 @@ All colors MUST be HSL.
   }
   .animate-count-pop { animation: count-pop 0.4s ease-out; }
 
+  /* Countdown emphasis — each tick breathes with a soft gold bloom */
+  @keyframes tick-emphasis {
+    0% { transform: scale(1.09); text-shadow: 0 0 34px hsl(var(--primary) / 0.5); }
+    55% { transform: scale(0.995); text-shadow: 0 0 16px hsl(var(--primary) / 0.22); }
+    100% { transform: scale(1); text-shadow: 0 0 10px hsl(var(--primary) / 0.14); }
+  }
+  .animate-tick { animation: tick-emphasis 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+
+  @keyframes tick-urgent {
+    0% { transform: scale(1.16); text-shadow: 0 0 46px hsl(var(--primary) / 0.7); }
+    60% { transform: scale(1); text-shadow: 0 0 22px hsl(var(--primary) / 0.34); }
+    100% { transform: scale(1); text-shadow: 0 0 14px hsl(var(--primary) / 0.24); }
+  }
+  .animate-tick-urgent { animation: tick-urgent 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+
   @keyframes border-pulse {
     0%, 100% {
       border-color: hsl(var(--primary) / 0.5);
@@ -202,4 +270,12 @@ All colors MUST be HSL.
     }
   }
   .animate-border-pulse { animation: border-pulse 2s ease-in-out infinite; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
