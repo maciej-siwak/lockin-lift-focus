@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Dark gym theme — applied by default. Premium gold accent. */
+    /* Dark gym theme — applied by default. Premium champagne-gold accent. */
     --background: 0 0% 4%;
     --foreground: 43 14% 95%;
 
@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover: 0 0% 7%;
     --popover-foreground: 43 14% 95%;
 
-    --primary: 43 92% 56%;
+    --primary: 43 74% 54%;
     --primary-foreground: 0 0% 5%;
 
     --secondary: 40 5% 13%;
@@ -27,7 +27,7 @@ All colors MUST be HSL.
     --muted: 0 0% 11%;
     --muted-foreground: 0 0% 60%;
 
-    --accent: 43 92% 56%;
+    --accent: 43 74% 54%;
     --accent-foreground: 0 0% 5%;
 
     --destructive: 0 84% 60%;
@@ -37,14 +37,14 @@ All colors MUST be HSL.
 
     --border: 42 8% 17%;
     --input: 0 0% 14%;
-    --ring: 43 92% 56%;
+    --ring: 43 74% 54%;
 
     --radius: 1rem;
 
     /* Gradients & shadows */
-    --gradient-primary: linear-gradient(135deg, hsl(48 96% 68%), hsl(38 88% 48%));
+    --gradient-primary: linear-gradient(135deg, hsl(46 90% 66%), hsl(38 76% 44%));
     --gradient-dark: linear-gradient(160deg, hsl(0 0% 7%), hsl(0 0% 3%));
-    --shadow-glow: 0 0 40px hsl(43 92% 56% / 0.35);
+    --shadow-glow: 0 0 40px hsl(43 74% 54% / 0.35);
     --shadow-card: 0 8px 30px -8px hsl(0 0% 0% / 0.6);
 
     --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
