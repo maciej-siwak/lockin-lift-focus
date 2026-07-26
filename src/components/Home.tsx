@@ -87,7 +87,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       }
     >
       {/* Greeting */}
-      <section className="pt-8 animate-fade-in">
+      <section className="pt-8 animate-slide-up">
         <p className="font-mono-data text-[10px] uppercase tracking-[0.32em] text-muted-foreground/80">
           {today}
         </p>
@@ -101,7 +101,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       </section>
 
       {/* Focus records strip */}
-      <section className="mt-8 rounded-2xl border border-border/70 bg-card/40 p-3.5 animate-fade-in">
+      <section className="mt-8 rounded-2xl border border-border/70 bg-card/40 p-3.5 animate-slide-up delay-1">
         <div className="flex items-center gap-2 mb-3">
           <Eye className="w-3.5 h-3.5 text-primary" />
           <h3 className="font-mono-data text-[10px] uppercase tracking-[0.24em] text-primary">
@@ -121,10 +121,10 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       </section>
 
       {/* Primary action */}
-      <section className="mt-4 animate-fade-in">
+      <section className="mt-4 animate-slide-up delay-2">
         <button
           onClick={onNewWorkout}
-          className="group relative w-full rounded-2xl border border-border bg-card p-4 text-left overflow-hidden transition-base hover:border-primary/50 active:scale-[0.995]"
+          className="group press relative w-full rounded-2xl border border-border bg-card p-4 text-left overflow-hidden transition-base hover:border-primary/50 hover:shadow-glow-strong"
         >
           <div className="flex items-center gap-4">
             <div className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shrink-0">
@@ -142,7 +142,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       </section>
 
       {/* Workouts */}
-      <section className="mt-10 animate-fade-in">
+      <section className="mt-10 animate-slide-up delay-3">
         <div className="flex items-baseline justify-between mb-4">
           <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground">{t("home.yourWorkouts")}</h3>
           <span className="font-mono-data text-[10px] tracking-[0.15em] text-muted-foreground/70 tabular-nums">
@@ -156,7 +156,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
             <p className="mt-4 text-[13px] text-muted-foreground">{t("home.noWorkouts")}</p>
           </div>
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-2 stagger">
             {workouts.map(w => {
               const totalSets = w.exercises.reduce((s, e) => s + e.sets, 0);
               const disabled = w.exercises.length === 0;
@@ -213,9 +213,9 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       </section>
 
       {/* Progress */}
-      <section className="mt-10 mb-8 animate-fade-in">
+      <section className="mt-10 mb-8 animate-slide-up delay-4">
         <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground mb-4">{t("home.progress")}</h3>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 stagger">
           <ProgressTile
             onClick={onOpenRecords}
             icon={<Trophy className="w-[15px] h-[15px]" strokeWidth={1.75} />}
@@ -283,13 +283,13 @@ const ProgressTile = ({
 }) => (
   <button
     onClick={onClick}
-    className="rounded-2xl bg-card border border-border/70 p-4 flex flex-col gap-4 text-left transition-base hover:border-primary/40"
+    className="group press rounded-2xl bg-card border border-border/70 p-4 flex flex-col gap-4 text-left transition-base hover:border-primary/40"
   >
     <div className="flex items-center justify-between">
-      <div className="w-9 h-9 rounded-xl bg-secondary/70 flex items-center justify-center text-muted-foreground">
+      <div className="w-9 h-9 rounded-xl bg-secondary/70 flex items-center justify-center text-muted-foreground transition-base group-hover:text-primary group-hover:bg-primary/10">
         {icon}
       </div>
-      <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
+      <ChevronRight className="w-4 h-4 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5" />
     </div>
     <div>
       <p className="font-semibold text-[14px] leading-tight tracking-tight">{label}</p>
