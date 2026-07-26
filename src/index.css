@@ -8,47 +8,49 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Dark gym theme — applied by default. Premium champagne-gold accent. */
-    --background: 0 0% 4%;
-    --foreground: 43 14% 95%;
+    /* Dark gym theme — applied by default. Premium 22k / champagne-gold accent. */
+    --background: 36 6% 4%;
+    --foreground: 42 12% 94%;
 
-    --card: 40 6% 8%;
-    --card-foreground: 43 14% 95%;
+    --card: 38 7% 8%;
+    --card-foreground: 42 12% 94%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 43 14% 95%;
+    --popover: 38 7% 7%;
+    --popover-foreground: 42 12% 94%;
 
-    --primary: 43 74% 54%;
-    --primary-foreground: 0 0% 5%;
+    --primary: 42 64% 53%;
+    --primary-foreground: 36 30% 6%;
 
-    --secondary: 40 5% 13%;
-    --secondary-foreground: 43 14% 95%;
+    --secondary: 38 6% 13%;
+    --secondary-foreground: 42 12% 94%;
 
-    --muted: 0 0% 11%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 38 5% 11%;
+    --muted-foreground: 40 6% 60%;
 
-    --accent: 43 74% 54%;
-    --accent-foreground: 0 0% 5%;
+    --accent: 42 64% 53%;
+    --accent-foreground: 36 30% 6%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --warning: 38 100% 55%;
+    --warning: 38 92% 56%;
 
-    --border: 42 8% 17%;
-    --input: 0 0% 14%;
-    --ring: 43 74% 54%;
+    --border: 40 9% 16%;
+    --input: 38 6% 14%;
+    --ring: 42 64% 53%;
 
     --radius: 1rem;
 
     /* Gradients & shadows */
-    --gradient-primary: linear-gradient(135deg, hsl(46 90% 66%), hsl(38 76% 44%));
-    --gradient-dark: linear-gradient(160deg, hsl(0 0% 7%), hsl(0 0% 3%));
-    --shadow-glow: 0 0 40px hsl(43 74% 54% / 0.35);
-    --shadow-glow-strong: 0 0 24px -8px hsl(43 74% 54% / 0.6);
-    --shadow-card: 0 8px 30px -8px hsl(0 0% 0% / 0.6);
+    /* Metallic gold: pale champagne highlight → core gold → deep antique brass */
+    --gradient-primary: linear-gradient(135deg, hsl(48 72% 74%) 0%, hsl(43 68% 57%) 42%, hsl(35 58% 36%) 100%);
+    --gradient-gold-sheen: linear-gradient(100deg, hsl(40 50% 44%) 0%, hsl(48 78% 78%) 38%, hsl(42 66% 56%) 55%, hsl(34 52% 34%) 100%);
+    --gradient-dark: linear-gradient(160deg, hsl(38 7% 8%), hsl(36 6% 3%));
+    --shadow-glow: 0 0 44px hsl(42 64% 53% / 0.28);
+    --shadow-glow-strong: 0 0 26px -8px hsl(42 64% 53% / 0.55);
+    --shadow-card: 0 8px 30px -10px hsl(0 0% 0% / 0.65);
 
-    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 220ms cubic-bezier(0.22, 1, 0.36, 1);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
