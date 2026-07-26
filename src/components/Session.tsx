@@ -624,10 +624,10 @@ export const Session = ({ workoutId, startAtIndex, onExit, onViewExercise }: Pro
                       key={timeLeft}
                       className={`relative font-mono-timer font-extrabold tracking-tighter ${
                         timerRunning && timeLeft <= 5 && timeLeft > 0
-                          ? "text-primary text-8xl animate-count-pop"
+                          ? "text-primary text-8xl animate-tick-urgent"
                           : timeLeft === 0
                             ? "text-primary text-8xl"
-                            : "text-primary text-7xl"
+                            : "text-primary text-7xl animate-tick"
                       }`}
                     >
                       {formatTime(timeLeft)}
@@ -667,7 +667,7 @@ export const Session = ({ workoutId, startAtIndex, onExit, onViewExercise }: Pro
               {restLeft <= 10 && (
                 <span className="absolute inset-0 rounded-full bg-primary/30 animate-pulse-ring" />
               )}
-              <div className={`relative font-mono-timer font-extrabold tracking-tighter ${restLeft <= 10 ? "text-primary text-[9rem] animate-count-pop" : "text-foreground text-[7rem]"}`}
+              <div className={`relative font-mono-timer font-extrabold tracking-tighter ${restLeft <= 10 ? "text-primary text-[9rem] animate-tick-urgent" : "text-foreground text-[7rem] animate-tick"}`}
                 key={restLeft}>
                 {formatTime(restLeft)}
               </div>
@@ -688,10 +688,10 @@ export const Session = ({ workoutId, startAtIndex, onExit, onViewExercise }: Pro
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
               {completedSetsAcrossExercises === 0 && setIdx === 0 ? t("session.starting") : t("session.getUp")}
             </p>
-            <h2 className="mt-4 font-extrabold tracking-tight text-5xl leading-tight">
+            <h2 className="mt-4 font-extrabold tracking-tight text-5xl leading-tight animate-rise">
               {t("session.readySetGo")}
             </h2>
-            <p className="mt-8 font-mono-timer text-6xl font-bold text-primary animate-count-pop" key={readyLeft}>
+            <p className="mt-8 font-mono-timer text-6xl font-bold text-primary animate-tick-urgent" key={readyLeft}>
               {readyLeft}
             </p>
             <p className="mt-4 text-sm text-muted-foreground">{t("session.setOf", { n: setIdx + 1, total: current!.sets, name: current!.name })}</p>
