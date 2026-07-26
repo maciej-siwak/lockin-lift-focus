@@ -165,6 +165,7 @@ All colors MUST be HSL.
   .bg-gradient-primary { background: var(--gradient-primary); }
   .bg-gradient-dark { background: var(--gradient-dark); }
   .shadow-glow { box-shadow: var(--shadow-glow); }
+  .shadow-glow-strong { box-shadow: var(--shadow-glow-strong); }
   .shadow-card { box-shadow: var(--shadow-card); }
   .transition-base { transition: all var(--transition-base); }
 
