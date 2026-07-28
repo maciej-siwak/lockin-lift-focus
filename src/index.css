@@ -243,7 +243,7 @@ All colors MUST be HSL.
   }
   .animate-count-pop { animation: count-pop 0.4s ease-out; }
 
-  /* Countdown emphasis — each tick breathes with a soft gold bloom */
+  /* Countdown emphasis — each tick breathes with a soft green bloom */
   @keyframes tick-emphasis {
     0% { transform: scale(1.09); text-shadow: 0 0 34px hsl(var(--primary) / 0.5); }
     55% { transform: scale(0.995); text-shadow: 0 0 16px hsl(var(--primary) / 0.22); }
