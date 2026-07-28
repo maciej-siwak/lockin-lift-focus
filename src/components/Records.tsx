@@ -197,12 +197,12 @@ export const Records = ({ onBack }: Props) => {
             </div>
             <ul className="mt-3 space-y-2">
               {hallOfFame.map(({ key, mode, set, brokenInLatest }) => {
-                const gold = brokenInLatest;
+                const isBroken = brokenInLatest;
                 return (
                   <li
                     key={key}
                     className={`flex items-center justify-between gap-3 rounded-xl border p-3 transition-base ${
-                      gold
+                      isBroken
                         ? "bg-primary/[0.08] border-primary/50 shadow-glow-strong"
                         : "bg-card border-border"
                     }`}
@@ -210,7 +210,7 @@ export const Records = ({ onBack }: Props) => {
                     <p className="text-sm font-semibold truncate flex-1">{displayName[key] ?? key}</p>
                     <span
                       className={`font-mono-timer text-sm font-bold shrink-0 ${
-                        gold ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.55)]" : "text-foreground"
+                        isBroken ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.55)]" : "text-foreground"
                       }`}
                     >
                       {mode === "weight_reps" && `${set.weight}${unit} × ${set.reps}`}
