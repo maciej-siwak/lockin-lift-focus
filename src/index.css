@@ -8,46 +8,45 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Dark gym theme — applied by default. Premium 22k / champagne-gold accent. */
-    --background: 36 6% 4%;
-    --foreground: 42 12% 94%;
+    /* Dark gym theme — applied by default. Electric lime accent. */
+    --background: 0 0% 4%;
+    --foreground: 60 6% 95%;
 
-    --card: 38 7% 8%;
-    --card-foreground: 42 12% 94%;
+    --card: 0 0% 7%;
+    --card-foreground: 60 6% 95%;
 
-    --popover: 38 7% 7%;
-    --popover-foreground: 42 12% 94%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 60 6% 95%;
 
-    --primary: 42 64% 53%;
-    --primary-foreground: 36 30% 6%;
+    --primary: 80 95% 55%;
+    --primary-foreground: 0 0% 5%;
 
-    --secondary: 38 6% 13%;
-    --secondary-foreground: 42 12% 94%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 60 6% 95%;
 
-    --muted: 38 5% 11%;
-    --muted-foreground: 40 6% 60%;
+    --muted: 0 0% 11%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 42 64% 53%;
-    --accent-foreground: 36 30% 6%;
+    --accent: 80 95% 55%;
+    --accent-foreground: 0 0% 5%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --warning: 38 92% 56%;
+    --warning: 38 100% 55%;
 
-    --border: 40 9% 16%;
-    --input: 38 6% 14%;
-    --ring: 42 64% 53%;
+    --border: 0 0% 15%;
+    --input: 0 0% 14%;
+    --ring: 80 95% 55%;
 
     --radius: 1rem;
 
     /* Gradients & shadows */
-    /* Metallic gold: pale champagne highlight → core gold → deep antique brass */
-    --gradient-primary: linear-gradient(135deg, hsl(48 72% 74%) 0%, hsl(43 68% 57%) 42%, hsl(35 58% 36%) 100%);
-    --gradient-gold-sheen: linear-gradient(100deg, hsl(40 50% 44%) 0%, hsl(48 78% 78%) 38%, hsl(42 66% 56%) 55%, hsl(34 52% 34%) 100%);
-    --gradient-dark: linear-gradient(160deg, hsl(38 7% 8%), hsl(36 6% 3%));
-    --shadow-glow: 0 0 44px hsl(42 64% 53% / 0.28);
-    --shadow-glow-strong: 0 0 26px -8px hsl(42 64% 53% / 0.55);
+    --gradient-primary: linear-gradient(135deg, hsl(80 95% 55%) 0%, hsl(140 80% 50%) 100%);
+    --gradient-gold-sheen: linear-gradient(100deg, hsl(70 90% 45%) 0%, hsl(90 95% 60%) 40%, hsl(80 95% 55%) 55%, hsl(150 70% 40%) 100%);
+    --gradient-dark: linear-gradient(160deg, hsl(0 0% 7%), hsl(0 0% 3%));
+    --shadow-glow: 0 0 44px hsl(80 95% 55% / 0.35);
+    --shadow-glow-strong: 0 0 26px -8px hsl(80 95% 55% / 0.55);
     --shadow-card: 0 8px 30px -10px hsl(0 0% 0% / 0.65);
 
     --transition-base: 220ms cubic-bezier(0.22, 1, 0.36, 1);
