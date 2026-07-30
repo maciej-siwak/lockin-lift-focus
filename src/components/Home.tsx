@@ -141,8 +141,13 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         </button>
       </section>
 
+      {/* Section divider */}
+      <div className="mt-8 flex items-center gap-3 animate-slide-up delay-3">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+      </div>
+
       {/* Workouts */}
-      <section className="mt-10 animate-slide-up delay-3">
+      <section className="mt-8 animate-slide-up delay-3">
         <div className="flex items-baseline justify-between mb-4">
           <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground">{t("home.yourWorkouts")}</h3>
           <span className="font-mono-data text-[10px] tracking-[0.15em] text-muted-foreground/70 tabular-nums">
@@ -212,8 +217,13 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         )}
       </section>
 
+      {/* Section divider */}
+      <div className="mt-10 flex items-center gap-3 animate-slide-up delay-4">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+      </div>
+
       {/* Progress */}
-      <section className="mt-10 mb-8 animate-slide-up delay-4">
+      <section className="mt-8 mb-8 animate-slide-up delay-4">
         <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground mb-4">{t("home.progress")}</h3>
         <div className="grid grid-cols-2 gap-2 stagger">
           <ProgressTile
