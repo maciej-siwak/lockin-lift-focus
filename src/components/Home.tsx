@@ -72,7 +72,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
     <AppShell
       left={
         <div className="flex items-center gap-3 pl-0.5">
-          <LockInLogo size={38} className="text-primary drop-shadow-[0_0_10px_hsl(var(--primary)/0.35)]" />
+          <LockInLogo size={44} className="text-primary drop-shadow-[0_0_10px_hsl(var(--primary)/0.35)]" />
           <span className="font-display text-[15px] uppercase tracking-[0.24em]">Lock In</span>
         </div>
       }
