@@ -143,7 +143,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
 
       {/* Section divider */}
       <div className="mt-8 flex items-center gap-3 animate-slide-up delay-3">
-        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
       </div>
 
       {/* Workouts */}
@@ -219,7 +219,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
 
       {/* Section divider */}
       <div className="mt-10 flex items-center gap-3 animate-slide-up delay-4">
-        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
       </div>
 
       {/* Progress */}
