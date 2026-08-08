@@ -149,7 +149,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       {/* Workouts */}
       <section className="mt-8 animate-slide-up delay-3">
         <div className="flex items-baseline justify-between mb-4">
-          <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground">{t("home.yourWorkouts")}</h3>
+          <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-primary">{t("home.yourWorkouts")}</h3>
           <span className="font-mono-data text-[10px] tracking-[0.15em] text-muted-foreground/70 tabular-nums">
             {String(workouts.length).padStart(2, "0")}
           </span>
@@ -224,7 +224,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
 
       {/* Progress */}
       <section className="mt-8 mb-8 animate-slide-up delay-4">
-        <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-muted-foreground mb-4">{t("home.progress")}</h3>
+        <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-primary mb-4">{t("home.progress")}</h3>
         <div className="grid grid-cols-2 gap-2 stagger">
           <ProgressTile
             onClick={onOpenRecords}
