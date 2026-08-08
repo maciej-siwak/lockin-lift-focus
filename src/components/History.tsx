@@ -94,7 +94,7 @@ export const History = ({ onBack }: Props) => {
                       {s.focusBreaks != null && (
                         <p className="text-[11px] mt-1">
                           <span className="text-muted-foreground">{t("session.focusBreaks", { n: "" }).replace(/\s*$/, "")}</span>
-                          <span className={`font-semibold mr-1 ${s.focusBreaks === 0 ? "text-primary" : "text-foreground"}`}>{s.focusBreaks}</span>
+                          <span className={`font-semibold ml-1 ${s.focusBreaks === 0 ? "text-primary" : "text-foreground"}`}>{s.focusBreaks}</span>
                         </p>
                       )}
                       </div>
@@ -123,7 +123,7 @@ export const History = ({ onBack }: Props) => {
                       {(s.focusScore != null || s.focusBreaks != null) && (
                         <div className="mt-2 flex items-center justify-between rounded-xl bg-secondary/50 px-3 py-2 text-[11px]">
                           <span className="text-muted-foreground">
-                            {t("session.focusBreaks", { n: "" }).replace(/\s*$/, "")}<span className="text-foreground font-semibold mr-1">{s.focusBreaks ?? 0}</span>
+                            {t("session.focusBreaks", { n: "" }).replace(/\s*$/, "")}<span className="text-foreground font-semibold ml-1">{s.focusBreaks ?? 0}</span>
                           </span>
                           {s.focusScore != null && (
                             <span className={`font-bold uppercase tracking-wider ${
