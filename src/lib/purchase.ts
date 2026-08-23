@@ -62,6 +62,9 @@ const setUnlocked = (val: boolean) => {
   if (changed || val) listeners.forEach(l => l(val));
 };
 
+/** Re-write the entitlement to every store (used after an app reset wipe). */
+export const restoreEntitlement = () => setUnlocked(true);
+
 /**
  * Rehydrate entitlement from the durable stores. Safe to call any time
  * (e.g. app boot, or right after an app reset wiped localStorage).
