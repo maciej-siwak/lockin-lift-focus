@@ -3,6 +3,7 @@ import { ArrowLeft, Check, Trash2 } from "lucide-react";
 import { AppShell } from "./AppShell";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { hydrateEntitlement, restoreEntitlement } from "@/lib/purchase";
 import { storage } from "@/lib/storage";
 import { toast } from "sonner";
 import { LANGUAGES, useI18n, type Lang } from "@/lib/i18n";
@@ -42,13 +43,16 @@ export const SettingsScreen = ({ onBack }: Props) => {
     setSkin(skin);
   };
 
-  const resetApp = () => {
+  const resetApp = async () => {
+    // Entitlement (one-time purchase) must survive a reset.
+    const wasUnlocked = await hydrateEntitlement();
     try {
       localStorage.clear();
       sessionStorage.clear();
     } catch {
       /* no-op */
     }
+    if (wasUnlocked) restoreEntitlement();
     toast.success(t("settings.resetDone"));
     // Hard reload to fully reinitialise app state
     setTimeout(() => window.location.reload(), 150);
