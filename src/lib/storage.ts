@@ -69,14 +69,14 @@ export const storage = {
   appendSession: (s: SessionLog) => {
     const all = storage.getSessions();
     all.unshift(s);
-    storage.saveSessions(all.slice(0, 100));
+    storage.saveSessions(all);
   },
   upsertSession: (s: SessionLog) => {
     const all = storage.getSessions();
     const idx = all.findIndex(x => x.id === s.id);
     if (idx >= 0) all[idx] = s;
     else all.unshift(s);
-    storage.saveSessions(all.slice(0, 100));
+    storage.saveSessions(all);
   },
 
   getSettings: (): Settings => ({ ...defaultSettings, ...read<Partial<Settings>>(KEYS.settings, {}) }),
