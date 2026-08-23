@@ -1,23 +1,82 @@
 // One-time unlock via Google Play Billing (Capacitor).
 // Uses cordova-plugin-purchase (works with Capacitor Android/iOS).
 // On web, falls back to a no-op mock so the app keeps working in the browser.
+//
+// Entitlement persistence: the unlock flag is mirrored to several stores that
+// survive an in-app "Reset app" (which clears localStorage/sessionStorage):
+//   1. Capacitor Preferences (native, backed by SharedPreferences/UserDefaults)
+//   2. A long-lived cookie (web fallback, untouched by localStorage.clear())
+//   3. localStorage (fast synchronous cache)
+// On native we additionally re-query Google Play ownership on every launch, so
+// the entitlement is always recoverable from the user's Play account.
 
 import { storage } from "./storage";
 
 export const UNLOCK_PRODUCT_ID = "lockin_full_unlock";
 export const FREE_SESSION_LIMIT = 9;
 const UNLOCK_KEY = "lockin.unlocked";
+const COOKIE_KEY = "lockin_entitlement";
 
 type Listener = (unlocked: boolean) => void;
 const listeners = new Set<Listener>();
 
-export const isUnlocked = (): boolean => {
+// ---- persistence layers ---------------------------------------------------
+
+const prefsPlugin = (): any => {
+  try { return (window as any).Capacitor?.Plugins?.Preferences ?? null; } catch { return null; }
+};
+
+const readCookie = (): boolean => {
+  try {
+    return document.cookie.split("; ").some(c => c === `${COOKIE_KEY}=1`);
+  } catch { return false; }
+};
+
+const writeCookie = (val: boolean) => {
+  try {
+    // 10 years; entitlement is permanent for a one-time purchase.
+    const maxAge = val ? 60 * 60 * 24 * 3650 : 0;
+    document.cookie = `${COOKIE_KEY}=${val ? "1" : "0"}; path=/; max-age=${maxAge}; SameSite=Lax`;
+  } catch { /* ignore */ }
+};
+
+const readLocal = (): boolean => {
   try { return localStorage.getItem(UNLOCK_KEY) === "1"; } catch { return false; }
 };
 
-const setUnlocked = (val: boolean) => {
+const writeLocal = (val: boolean) => {
   try { localStorage.setItem(UNLOCK_KEY, val ? "1" : "0"); } catch { /* ignore */ }
-  listeners.forEach(l => l(val));
+};
+
+/** Synchronous best-effort read (localStorage cache or cookie). */
+export const isUnlocked = (): boolean => readLocal() || readCookie();
+
+const setUnlocked = (val: boolean) => {
+  const changed = isUnlocked() !== val;
+  writeLocal(val);
+  writeCookie(val);
+  const prefs = prefsPlugin();
+  if (prefs) {
+    try { void prefs.set({ key: UNLOCK_KEY, value: val ? "1" : "0" }); } catch { /* ignore */ }
+  }
+  if (changed || val) listeners.forEach(l => l(val));
+};
+
+/**
+ * Rehydrate entitlement from the durable stores. Safe to call any time
+ * (e.g. app boot, or right after an app reset wiped localStorage).
+ */
+export const hydrateEntitlement = async (): Promise<boolean> => {
+  let unlocked = readLocal() || readCookie();
+  const prefs = prefsPlugin();
+  if (prefs) {
+    try {
+      const { value } = await prefs.get({ key: UNLOCK_KEY });
+      if (value === "1") unlocked = true;
+    } catch { /* ignore */ }
+  }
+  if (unlocked) setUnlocked(true);
+  return unlocked;
 };
 
 export const onUnlockChange = (l: Listener) => {
@@ -124,5 +183,19 @@ export const restorePurchases = async (): Promise<void> => {
   try { await store.restorePurchases(); } catch { /* ignore */ }
 };
 
-// Kick off store init on app load so `owned` state is detected early.
-export const initPurchases = () => { void initStore(); };
+// Kick off store init on app load so `owned` state is detected early, and
+// rehydrate the entitlement from durable storage / the Play account.
+export const initPurchases = () => {
+  void (async () => {
+    await hydrateEntitlement();
+    const store = await initStore();
+    if (!store) return;
+    try {
+      // Re-derive ownership from Google Play so a wiped device/app storage
+      // still recognises a previous purchase without user action.
+      await store.restorePurchases();
+      const { Platform } = (window as any).CdvPurchase;
+      if (store.get(UNLOCK_PRODUCT_ID, Platform.GOOGLE_PLAY)?.owned) setUnlocked(true);
+    } catch { /* ignore */ }
+  })();
+};
