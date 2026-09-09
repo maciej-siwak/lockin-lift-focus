@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "icons": "npx @capacitor/assets generate --android --iconBackgroundColor \"#0a0a0a\" --iconBackgroundColorDark \"#0a0a0a\" --splashBackgroundColor \"#0a0a0a\" --splashBackgroundColorDark \"#0a0a0a\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
