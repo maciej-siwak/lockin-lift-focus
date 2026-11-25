@@ -134,7 +134,7 @@ export const History = ({ onBack }: Props) => {
                           )}
                         </div>
                       )}
-                      <div className="mt-3 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" aria-hidden="true" />
+                      <div className="mt-3 h-px bg-gradient-to-r from-transparent via-border to-transparent" aria-hidden="true" />
                       <ul className="mt-3 space-y-1.5">
                         {s.exercises.map(e => {
                           return (

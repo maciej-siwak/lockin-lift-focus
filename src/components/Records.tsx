@@ -210,7 +210,7 @@ export const Records = ({ onBack }: Props) => {
                     <p className="text-sm font-semibold truncate flex-1">{displayName[key] ?? key}</p>
                     <span
                       className={`font-mono-timer text-sm font-bold shrink-0 ${
-                        isBroken ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.55)]" : "text-foreground"
+                        isBroken ? "text-primary" : "text-foreground"
                       }`}
                     >
                       {mode === "weight_reps" && `${set.weight}${unit} × ${set.reps}`}
