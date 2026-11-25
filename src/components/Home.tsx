@@ -72,7 +72,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
     <AppShell
       left={
         <div className="flex items-center gap-3 pl-0.5">
-          <LockInLogo size={44} className="text-primary drop-shadow-[0_0_10px_hsl(var(--primary)/0.35)]" />
+          <LockInLogo size={44} className="text-primary" />
           <span className="font-display text-[15px] uppercase tracking-[0.24em]">Lock In</span>
         </div>
       }
@@ -91,7 +91,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
         <p className="font-mono-data text-[10px] uppercase tracking-[0.32em] text-muted-foreground/80">
           {today}
         </p>
-        <h1 className="mt-3 text-[30px] leading-[1.05] font-display uppercase tracking-[-0.01em] break-words">
+        <h1 className="mt-3 text-[40px] leading-[0.95] font-display uppercase break-words">
           {greeting}
         </h1>
         <p className="mt-2 text-[15px] leading-snug text-muted-foreground">
@@ -101,10 +101,10 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       </section>
 
       {/* Focus records strip */}
-      <section className="mt-8 rounded-2xl border border-border/70 bg-card/40 p-3.5 animate-slide-up delay-1">
+      <section className="mt-8 rounded-2xl border border-border/70 bg-card p-4 shadow-glow animate-slide-up delay-1">
         <div className="flex items-center gap-2 mb-3">
-          <Eye className="w-3.5 h-3.5 text-primary" />
-          <h3 className="font-mono-data text-[10px] uppercase tracking-[0.24em] text-primary">
+          <Eye className="w-3.5 h-3.5 text-primary" strokeWidth={1.75} />
+          <h3 className="font-mono-data text-[10px] uppercase tracking-[0.2em] text-primary">
             {t("records.focusRecords")}
           </h3>
         </div>
@@ -124,7 +124,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       <section className="mt-4 animate-slide-up delay-2">
         <button
           onClick={onNewWorkout}
-          className="group press relative w-full rounded-2xl border border-border bg-card p-4 text-left overflow-hidden transition-base hover:border-primary/50 hover:shadow-glow-strong"
+          className="group press relative w-full rounded-2xl border border-border bg-card p-4 text-left overflow-hidden transition-base hover:border-primary/50 "
         >
           <div className="flex items-center gap-4">
             <div className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shrink-0">
@@ -143,13 +143,13 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
 
       {/* Section divider */}
       <div className="mt-8 flex items-center gap-3 animate-slide-up delay-3">
-        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        <div className="h-px flex-1 bg-border/80" />
       </div>
 
       {/* Workouts */}
       <section className="mt-8 animate-slide-up delay-3">
         <div className="flex items-baseline justify-between mb-4">
-          <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-primary">{t("home.yourWorkouts")}</h3>
+          <h3 className="font-mono-data text-[10px] uppercase tracking-[0.2em] text-primary">{t("home.yourWorkouts")}</h3>
           <span className="font-mono-data text-[10px] tracking-[0.15em] text-muted-foreground/70 tabular-nums">
             {String(workouts.length).padStart(2, "0")}
           </span>
@@ -219,12 +219,12 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
 
       {/* Section divider */}
       <div className="mt-10 flex items-center gap-3 animate-slide-up delay-4">
-        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        <div className="h-px flex-1 bg-border/80" />
       </div>
 
       {/* Progress */}
       <section className="mt-8 mb-8 animate-slide-up delay-4">
-        <h3 className="font-mono-data text-[10px] uppercase tracking-[0.28em] text-primary mb-4">{t("home.progress")}</h3>
+        <h3 className="font-mono-data text-[10px] uppercase tracking-[0.2em] text-primary mb-4">{t("home.progress")}</h3>
         <div className="grid grid-cols-2 gap-2 stagger">
           <ProgressTile
             onClick={onOpenRecords}
@@ -269,7 +269,7 @@ const FocusCell = ({
 }) => (
   <div className="px-2 first:pl-0 last:pr-0 text-center">
     <div className="flex items-baseline justify-center gap-1">
-      <span className={`font-display text-[24px] leading-none tabular-nums ${accent ? "text-primary" : "text-foreground"}`}>
+      <span className={`font-display text-[30px] leading-none tabular-nums ${accent ? "text-primary" : "text-foreground"}`}>
         {value}
       </span>
       {icon && <span className={accent ? "text-primary" : "text-muted-foreground/60"}>{icon}</span>}

@@ -10,24 +10,24 @@ All colors MUST be HSL.
   :root {
     /* Dark gym theme — applied by default. Electric lime accent. */
     --background: 0 0% 4%;
-    --foreground: 60 6% 95%;
+    --foreground: 40 10% 94%;
 
-    --card: 0 0% 7%;
+    --card: 30 4% 7.5%;
     --card-foreground: 60 6% 95%;
 
     --popover: 0 0% 7%;
     --popover-foreground: 60 6% 95%;
 
-    --primary: 80 95% 55%;
+    --primary: 78 72% 58%;
     --primary-foreground: 0 0% 5%;
 
     --secondary: 0 0% 12%;
     --secondary-foreground: 60 6% 95%;
 
     --muted: 0 0% 11%;
-    --muted-foreground: 0 0% 60%;
+    --muted-foreground: 40 3% 58%;
 
-    --accent: 80 95% 55%;
+    --accent: 78 72% 58%;
     --accent-foreground: 0 0% 5%;
 
     --destructive: 0 84% 60%;
@@ -35,9 +35,9 @@ All colors MUST be HSL.
 
     --warning: 38 100% 55%;
 
-    --border: 0 0% 15%;
+    --border: 30 3% 14%;
     --input: 0 0% 14%;
-    --ring: 80 95% 55%;
+    --ring: 78 72% 58%;
 
     --radius: 1rem;
 
@@ -45,8 +45,8 @@ All colors MUST be HSL.
     --gradient-primary: linear-gradient(135deg, hsl(80 95% 55%) 0%, hsl(140 80% 50%) 100%);
     --gradient-gold-sheen: linear-gradient(100deg, hsl(70 90% 45%) 0%, hsl(90 95% 60%) 40%, hsl(80 95% 55%) 55%, hsl(150 70% 40%) 100%);
     --gradient-dark: linear-gradient(160deg, hsl(0 0% 7%), hsl(0 0% 3%));
-    --shadow-glow: 0 0 44px hsl(80 95% 55% / 0.35);
-    --shadow-glow-strong: 0 0 26px -8px hsl(80 95% 55% / 0.55);
+    --shadow-glow: 0 1px 0 hsl(0 0% 100% / 0.04) inset, 0 12px 32px -16px hsl(0 0% 0% / 0.8);
+    --shadow-glow-strong: 0 1px 0 hsl(0 0% 100% / 0.05) inset, 0 16px 40px -18px hsl(0 0% 0% / 0.9);
     --shadow-card: 0 8px 30px -10px hsl(0 0% 0% / 0.65);
 
     --transition-base: 220ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -63,24 +63,24 @@ All colors MUST be HSL.
 
   .dark {
     --background: 0 0% 4%;
-    --foreground: 60 6% 95%;
-    --card: 0 0% 7%;
+    --foreground: 40 10% 94%;
+    --card: 30 4% 7.5%;
     --card-foreground: 60 6% 95%;
     --popover: 0 0% 7%;
     --popover-foreground: 60 6% 95%;
-    --primary: 80 95% 55%;
+    --primary: 78 72% 58%;
     --primary-foreground: 0 0% 5%;
     --secondary: 0 0% 12%;
     --secondary-foreground: 60 6% 95%;
     --muted: 0 0% 11%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 80 95% 55%;
+    --muted-foreground: 40 3% 58%;
+    --accent: 78 72% 58%;
     --accent-foreground: 0 0% 5%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
+    --border: 30 3% 14%;
     --input: 0 0% 14%;
-    --ring: 80 95% 55%;
+    --ring: 78 72% 58%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -189,8 +189,9 @@ All colors MUST be HSL.
   }
 
   body {
+    font-feature-settings: "ss01", "cv11";
     @apply bg-background text-foreground antialiased;
-    font-family: 'Hind', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Geist', system-ui, -apple-system, sans-serif;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior: none;
   }
@@ -202,16 +203,17 @@ All colors MUST be HSL.
 
 @layer utilities {
   .font-mono-timer {
-    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    font-family: 'Geist Mono', 'SF Mono', ui-monospace, monospace;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
   }
   .font-display {
-    font-family: 'Archivo Black', 'Hind', system-ui, sans-serif;
-    letter-spacing: -0.01em;
+    font-family: 'Barlow Condensed', 'Geist', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.005em;
   }
   .font-mono-data {
-    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    font-family: 'Geist Mono', 'SF Mono', ui-monospace, monospace;
     font-variant-numeric: tabular-nums;
   }
   .bg-gradient-primary { background: var(--gradient-primary); }
