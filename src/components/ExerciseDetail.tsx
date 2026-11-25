@@ -141,9 +141,9 @@ export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
       }
     >
       <div className="pt-5 pb-8 space-y-8 animate-fade-in">
-        {/* Hero card */}
-        <div className="relative rounded-3xl bg-gradient-dark border border-border overflow-hidden shadow-card">
-          <div className="aspect-[4/3] flex items-center justify-center p-8">
+        {/* Hero card: artwork on top, wording underneath */}
+        <div className="rounded-3xl bg-gradient-dark border border-border overflow-hidden shadow-card">
+          <div className="aspect-[4/3] flex items-center justify-center px-6 pt-6 pb-2">
             <img
               src={image}
               alt={info.name}
@@ -155,8 +155,7 @@ export const ExerciseDetail = ({ exerciseName, onBack, onStart }: Props) => {
               fetchPriority="high"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent pointer-events-none" />
-          <div className="absolute bottom-0 left-0 right-0 p-5">
+          <div className="px-5 pt-4 pb-5 border-t border-border/70">
             <div className="flex items-center gap-2 text-[11px] font-bold text-primary uppercase tracking-[0.2em]">
               <Dumbbell className="w-3.5 h-3.5" /> {type}
             </div>
