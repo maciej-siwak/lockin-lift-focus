@@ -7,6 +7,7 @@ import ja from "./exercise-locales/ja.json";
 import ko from "./exercise-locales/ko.json";
 import pl from "./exercise-locales/pl.json";
 import bg from "./exercise-locales/bg.json";
+import hi from "./exercise-locales/hi.json";
 
 export interface LocalizedExerciseFields {
   muscles: string[];
@@ -31,6 +32,7 @@ const LOCALES: Record<Lang, LocaleMap> = {
   ko: ko as LocaleMap,
   pl: pl as LocaleMap,
   bg: bg as LocaleMap,
+  hi: hi as LocaleMap,
 };
 
 /** Look up localized text for an exercise by its imageKey slug. Falls back to English. */
