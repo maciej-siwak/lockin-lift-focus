@@ -5,6 +5,7 @@ import { storage } from "@/lib/storage";
 import type { Workout, SessionLog } from "@/lib/types";
 import { useT } from "@/lib/i18n";
 import { LockInLogo } from "./LockInLogo";
+import { SectionDivider } from "./SectionDivider";
 import { ConfirmDelete } from "./ConfirmDelete";
 
 interface Props {
@@ -71,9 +72,9 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
   return (
     <AppShell
       left={
-        <div className="flex items-center gap-3 pl-0.5">
-          <LockInLogo size={44} className="text-primary" />
-          <span className="font-display text-[15px] uppercase tracking-[0.24em]">Lock In</span>
+        <div className="flex items-center gap-3.5 pl-0.5">
+          <LockInLogo size={58} className="text-primary -my-1" />
+          <span className="font-display text-[18px] uppercase tracking-[0.26em]">Lock In</span>
         </div>
       }
       right={
@@ -142,9 +143,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       </section>
 
       {/* Section divider */}
-      <div className="mt-8 flex items-center gap-3 animate-slide-up delay-3">
-        <div className="h-px flex-1 bg-border/80" />
-      </div>
+      <SectionDivider className="mt-12 animate-slide-up delay-3" />
 
       {/* Workouts */}
       <section className="mt-8 animate-slide-up delay-3">
@@ -218,9 +217,7 @@ export const Home = ({ onNewWorkout, onEditWorkout, onStartWorkout, onOpenSettin
       </section>
 
       {/* Section divider */}
-      <div className="mt-10 flex items-center gap-3 animate-slide-up delay-4">
-        <div className="h-px flex-1 bg-border/80" />
-      </div>
+      <SectionDivider className="mt-12 animate-slide-up delay-4" />
 
       {/* Progress */}
       <section className="mt-8 mb-8 animate-slide-up delay-4">

@@ -6,6 +6,7 @@ import type { SessionLog, SetLog } from "@/lib/types";
 import { toast } from "sonner";
 import { useT } from "@/lib/i18n";
 import { ConfirmDelete } from "./ConfirmDelete";
+import { SectionDivider } from "./SectionDivider";
 
 const formatSet = (s: SetLog, unit: string): string => {
   if ((s.seconds ?? 0) > 0 && s.weight === 0 && s.reps === 0) return `${s.seconds}s`;
@@ -134,7 +135,7 @@ export const History = ({ onBack }: Props) => {
                           )}
                         </div>
                       )}
-                      <div className="mt-3 h-px bg-gradient-to-r from-transparent via-border to-transparent" aria-hidden="true" />
+                      <SectionDivider className="mt-3" />
                       <ul className="mt-3 space-y-1.5">
                         {s.exercises.map(e => {
                           return (
