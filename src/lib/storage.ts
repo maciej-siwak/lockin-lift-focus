@@ -88,6 +88,12 @@ export const storage = {
     all[exerciseName.toLowerCase()] = weight;
     write(KEYS.lastWeights, all);
   },
+
+  // Clear workout data without touching the separately stored purchase entitlement.
+  clearAppData: () => {
+    Object.values(KEYS).forEach(key => localStorage.removeItem(key));
+    sessionStorage.clear();
+  },
 };
 
 export const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
